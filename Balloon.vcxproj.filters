@@ -585,6 +585,9 @@
     <ClInclude Include="Game\States\Player\PlayerSitState.h">
       <Filter>Game\States\ObjectStates\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Parameters\ParameterBuffers.h">
+      <Filter>Game\Parameters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />

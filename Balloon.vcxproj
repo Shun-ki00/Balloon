@@ -234,6 +234,7 @@
     <ClInclude Include="Game\Node\NodeBase.h" />
     <ClInclude Include="Game\Node\Root.h" />
     <ClInclude Include="Game\Object\Object.h" />
+    <ClInclude Include="Game\Parameters\ParameterBuffers.h" />
     <ClInclude Include="Game\Parameters\ParameterKeys.h" />
     <ClInclude Include="Game\Parameters\Parameters.h" />
     <ClInclude Include="Game\Particle\EffectController.h" />
