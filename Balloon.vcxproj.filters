@@ -1,0 +1,999 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>288a6bb8-1228-46cf-9135-1f923f4cce7f</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>085852c2-85c0-4e40-9dc1-3b789ff7748e</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dds;dlg;fbx;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{37178241-e782-43a5-9413-f9194c0ebd00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{e1ac835e-bfee-4a98-848c-d059bdc2685d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{c70f60ab-debe-433c-b906-7029e63acaf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Microsoft">
+      <UniqueIdentifier>{17d53b41-9ebe-458f-a2f3-788c987f12cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Resources">
+      <UniqueIdentifier>{26e45e39-a651-4d9d-af83-4a06f8ce9341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Resources\Header">
+      <UniqueIdentifier>{73d1d080-157b-4a95-bf4e-112de50d1307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Resources\Source">
+      <UniqueIdentifier>{f1816b61-2529-4521-bce6-f9905294ba7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{6e594391-cf0d-4636-89e0-7e64602abe58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SkyBox">
+      <UniqueIdentifier>{03a0074f-c404-4e7b-9613-7ab16593d265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scenes">
+      <UniqueIdentifier>{3aee92cb-5d3e-4e41-b309-d2486713ce44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Cameras">
+      <UniqueIdentifier>{68bf2626-0e6f-4209-b8ac-0ed02ffa6362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MagicEnum">
+      <UniqueIdentifier>{05be99cb-b04b-4159-beae-1963e1d956b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{150f0065-d7d6-4faa-8ab1-5630ec2caf6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\SkyBox">
+      <UniqueIdentifier>{16e8961d-3464-4507-8fc2-498864a0f508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PBRLit">
+      <UniqueIdentifier>{f830f5a4-b226-409c-8215-40affb252a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Balloon">
+      <UniqueIdentifier>{65cda6b7-0d39-4520-ae07-a2098509f3db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Sea">
+      <UniqueIdentifier>{5d906aa9-70b9-478b-a39a-c9e53aa3cf3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\UI">
+      <UniqueIdentifier>{1a440377-d92d-42c4-b86b-cb1f09d435c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Transform">
+      <UniqueIdentifier>{5ae3ca95-46cc-40ba-9f7b-87c55a062b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Tween">
+      <UniqueIdentifier>{18765e54-777e-448b-9e35-b330099a631b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Message">
+      <UniqueIdentifier>{80c7c29a-9024-45e0-82f4-35663387b481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Object">
+      <UniqueIdentifier>{a51235e3-2b4d-462f-a574-676bc41bc332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects">
+      <UniqueIdentifier>{d3db543d-50ac-4163-b146-c889562befee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects\Player">
+      <UniqueIdentifier>{a247ecd8-ccde-4d22-ae87-6c9d99b15cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects\Balloon">
+      <UniqueIdentifier>{192f8d1c-f8b6-40dc-9599-e2526c2c72b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects\Enemy">
+      <UniqueIdentifier>{7b57f30d-f01e-4709-944b-98451659d60e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\RenderableObjects">
+      <UniqueIdentifier>{157a11d1-2a7d-4734-aac3-7accca2c4ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Buffers">
+      <UniqueIdentifier>{bd6492e2-5e1e-40c8-ae80-1b3f89ce104c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects\Player\Header">
+      <UniqueIdentifier>{04c813f4-861c-4d5b-989b-141b411bbb15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects\Player\Source">
+      <UniqueIdentifier>{10e6da19-afca-4920-a2bc-8663c4f180bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Node">
+      <UniqueIdentifier>{f5a9e71b-7e43-4a7f-8c81-0d0264307e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Sea">
+      <UniqueIdentifier>{e5d2d51d-b9c4-41a3-a656-7659d151eb02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UIObject">
+      <UniqueIdentifier>{c4f9a4ce-20be-4039-aa1d-a0da13ec75fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UIObjects">
+      <UniqueIdentifier>{11ae79d6-d7a5-4c43-9433-ee9bdb9b6f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States">
+      <UniqueIdentifier>{8dbfea36-0b23-4a2f-8717-20ca28af9b5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\SceneStates">
+      <UniqueIdentifier>{4a851ede-a798-421c-8c5c-a5d4de301a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\ObjectStates">
+      <UniqueIdentifier>{3c6d8db8-dafd-496b-b5c2-f091b2617fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\ObjectStates\Player">
+      <UniqueIdentifier>{be1d3fac-84dc-41d3-a5a8-705f43b69bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\ObjectStates\Enemy">
+      <UniqueIdentifier>{c71ccec1-4712-454c-befb-36a3e59d913a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\ObjectStates\Balloon">
+      <UniqueIdentifier>{3212d712-cfcd-4943-8494-027c534e16c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Parameters">
+      <UniqueIdentifier>{b015532b-bc87-4fcd-98fb-6e9795dbd753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SteeringBehavior">
+      <UniqueIdentifier>{f9e52bf4-3a93-4ce9-bac6-c5f01c48cc7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Objects\AmbientLight">
+      <UniqueIdentifier>{322c405a-7e31-46cb-a883-061f8dbadf2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SteeringBehavior\Header">
+      <UniqueIdentifier>{dc045c6a-b788-4605-a0e3-98cde659d88d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\SteeringBehavior\Source">
+      <UniqueIdentifier>{ca306479-3e61-4df7-8298-468911bc6332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Particle">
+      <UniqueIdentifier>{4fa16318-5cde-4f6d-9b7f-335aba81cfd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Particle">
+      <UniqueIdentifier>{c63d1cfd-d0ce-439c-a5eb-7a58979d52c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Factorys">
+      <UniqueIdentifier>{8a503d5e-934e-4429-ac48-77a63c3fe7d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Visitor">
+      <UniqueIdentifier>{1f851cbe-771f-4c1a-9d7f-11bc17420eb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\BehaviorTree">
+      <UniqueIdentifier>{7c58296e-1b99-4af4-aa7e-532347e4ba45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Factorys\Header">
+      <UniqueIdentifier>{e6570bff-a91c-4b55-bc8f-2223825416f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Factorys\Source">
+      <UniqueIdentifier>{fcb372be-6d41-4e47-bf17-2f46b7a6fa36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Fade">
+      <UniqueIdentifier>{c71eb17c-c13a-46b5-8ed0-b461dd1f98f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UIObjects\Header">
+      <UniqueIdentifier>{d5bbc13b-ef8a-4765-b509-67a23ae00303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\UIObjects\Source">
+      <UniqueIdentifier>{84cfea50-ba48-45f2-b27f-8eef63ee41b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\SceneStates\FadeStates">
+      <UniqueIdentifier>{855f91d6-099a-416d-bd4d-c98514e0d5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scenes\Header">
+      <UniqueIdentifier>{cee0b6b2-686d-4167-a09a-076e7239b110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Scenes\Source">
+      <UniqueIdentifier>{bda8c1a2-07c5-40af-9f4c-1625b4674e74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\ShadowMap">
+      <UniqueIdentifier>{f5153248-ac36-4e61-8e91-e722a12a2c2b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_dx11.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Framework\DeviceResources.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\StepTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Microsoft\DebugDraw.h">
+      <Filter>Framework\Microsoft</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Microsoft\ReadData.h">
+      <Filter>Framework\Microsoft</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Microsoft\RenderTexture.h">
+      <Filter>Framework\Microsoft</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\CommonResources.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\AudioManager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DepthStencil.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Easing.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\InputManager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Sounds.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Resources\ModelResources.h">
+      <Filter>Framework\Resources\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Resources\Resources.h">
+      <Filter>Framework\Resources\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Resources\ShaderResources.h">
+      <Filter>Framework\Resources\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Resources\TextureResources.h">
+      <Filter>Framework\Resources\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SkyBox\SkyBox.h">
+      <Filter>Game\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Buffers.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IScene.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\SceneManager.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Cameras\DebugCamera.h">
+      <Filter>Game\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Resources\ResourceKeys.h">
+      <Filter>Framework\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="MagicEnum\magic_enum.hpp">
+      <Filter>MagicEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Transform\Transform.h">
+      <Filter>Game\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Tween\Tween.h">
+      <Filter>Framework\Tween</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Tween\TweenManager.h">
+      <Filter>Framework\Tween</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ICamera.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IObserver.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Message\Message.h">
+      <Filter>Game\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IState.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Object\Object.h">
+      <Filter>Game\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IRenderableObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\RenderableObjects\PlayerRenderableObject.h">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Buffers\ConstantBuffer.h">
+      <Filter>Game\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\Body.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\Head.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\LeftArm.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\LeftFoot.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\Player.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\RightFoot.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player\RightArm.h">
+      <Filter>Game\Objects\Player\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IComposite.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ILeaf.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IPlayerFactory.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Renderer.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IEnemyFactory.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Enemy\Enemy.h">
+      <Filter>Game\Objects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\RenderableObjects\EnemyRenderableObject.h">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Node\NodeBase.h">
+      <Filter>Game\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Node\Root.h">
+      <Filter>Game\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Sea\Sea.h">
+      <Filter>Game\Sea</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObject\UIObject.h">
+      <Filter>Game\UIObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Balloon\Balloon.h">
+      <Filter>Game\Objects\Balloon</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Balloon\BalloonBody.h">
+      <Filter>Game\Objects\Balloon</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Balloon\BalloonRope.h">
+      <Filter>Game\Objects\Balloon</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IBalloonFactory.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\RenderableObjects\BalloonRenderableObject.h">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Message\KeyboardMessenger.h">
+      <Filter>Game\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\Player\PlayerIdleState.h">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\Player\PlayerAttackState.h">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\Player\PlayerRunState.h">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Parameters\Parameters.h">
+      <Filter>Game\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Parameters\ParameterKeys.h">
+      <Filter>Game\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ISteeringBehavior.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Message\ObjectMessenger.h">
+      <Filter>Game\Message</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\AmbientLight\AmbientLight.h">
+      <Filter>Game\Objects\AmbientLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\FloatBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\FloatForceBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\KnockbackBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\PushBackBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\WindBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Particle\Particle.h">
+      <Filter>Game\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Particle\ParticleEmitter.h">
+      <Filter>Game\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Particle\EffectController.h">
+      <Filter>Game\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ICollisionVisitor.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ICollision.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Visitor\CollisionVisitor.h">
+      <Filter>Game\Visitor</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\SeekBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\IBehaviorNode.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BehaviorTree\SelectorNode.h">
+      <Filter>Game\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BehaviorTree\SequenceNode.h">
+      <Filter>Game\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BehaviorTree\ActionNode.h">
+      <Filter>Game\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\BehaviorTree\DecoratorNode.h">
+      <Filter>Game\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Enemy\AIConditions.h">
+      <Filter>Game\Objects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Enemy\ActionSelection.h">
+      <Filter>Game\Objects\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\RenderableObjects\UIRenderableObject .h">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\CameraSystem.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Cameras\BlendingCamera.h">
+      <Filter>Game\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Cameras\FixedCamera.h">
+      <Filter>Game\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Cameras\FollowCamera.h">
+      <Filter>Game\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\BalloonFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\CameraFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\EffectFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\EnemyFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\PlayerFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Fade\Fade.h">
+      <Filter>Game\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\PLayerIconUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\PlaySceneKeysGuideUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\ResultSceneKeyGuideUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\ResultButtonTextUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\ScoreFrameUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\StageSelectKeyGuideUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\StartTextUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\TimeFrameUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\TitleLogoUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\FadeStates\FadeInState.h">
+      <Filter>Game\States\SceneStates\FadeStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\FadeStates\FadeOutState.h">
+      <Filter>Game\States\SceneStates\FadeStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\TitleMainState.h">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\DebugScene.h">
+      <Filter>Game\Scenes\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\GameClearScene.h">
+      <Filter>Game\Scenes\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\PlayScene.h">
+      <Filter>Game\Scenes\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\TitleScene.h">
+      <Filter>Game\Scenes\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\UIFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\ResultSceneButtons.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\ResultTextUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\GameOverScene.h">
+      <Filter>Game\Scenes\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\HPGaugeUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\HPFrameUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\HPUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\SceneFactory.h">
+      <Filter>Game\Factorys</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\BalloonFrameUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\BalloonGaugeUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\BalloonHPUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\Player\PlayerSitState.h">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\Main.cpp" />
+    <ClCompile Include="Framework\DeviceResources.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Microsoft\DebugDraw.cpp">
+      <Filter>Framework\Microsoft</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Microsoft\RenderTexture.cpp">
+      <Filter>Framework\Microsoft</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\AudioManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\DepthStencil.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\InputManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Resources\ModelResources.cpp">
+      <Filter>Framework\Resources\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Resources\Resources.cpp">
+      <Filter>Framework\Resources\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Resources\ShaderResources.cpp">
+      <Filter>Framework\Resources\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SkyBox\SkyBox.cpp">
+      <Filter>Game\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\SceneManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Cameras\DebugCamera.cpp">
+      <Filter>Game\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Resources\TextureResources.cpp">
+      <Filter>Framework\Resources\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Transform\Transform.cpp">
+      <Filter>Game\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Tween\Tween.cpp">
+      <Filter>Framework\Tween</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Tween\TweenManager.cpp">
+      <Filter>Framework\Tween</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Object\Object.cpp">
+      <Filter>Game\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\RenderableObjects\PlayerRenderableObject.cpp">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\Body.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\Head.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\LeftArm.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\LeftFoot.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\Player.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\RightArm.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player\RightFoot.cpp">
+      <Filter>Game\Objects\Player\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Renderer.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy\Enemy.cpp">
+      <Filter>Game\Objects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\RenderableObjects\EnemyRenderableObject.cpp">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Node\NodeBase.cpp">
+      <Filter>Game\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Node\Root.cpp">
+      <Filter>Game\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Sea\Sea.cpp">
+      <Filter>Game\Sea</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObject\UIObject.cpp">
+      <Filter>Game\UIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Balloon\Balloon.cpp">
+      <Filter>Game\Objects\Balloon</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Balloon\BalloonBody.cpp">
+      <Filter>Game\Objects\Balloon</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Balloon\BalloonRope.cpp">
+      <Filter>Game\Objects\Balloon</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\RenderableObjects\BalloonRenderableObject.cpp">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Message\KeyboardMessenger.cpp">
+      <Filter>Game\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Player\PlayerIdleState.cpp">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Player\PlayerAttackState.cpp">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Player\PlayerRunState.cpp">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Parameters\Parameters.cpp">
+      <Filter>Game\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Message\ObjectMessenger.cpp">
+      <Filter>Game\Message</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\AmbientLight\AmbientLight.cpp">
+      <Filter>Game\Objects\AmbientLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\FloatBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\KnockbackBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\FloatForceBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\PushBackBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\WindBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Particle\Particle.cpp">
+      <Filter>Game\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Particle\ParticleEmitter.cpp">
+      <Filter>Game\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Particle\EffectController.cpp">
+      <Filter>Game\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Visitor\CollisionVisitor.cpp">
+      <Filter>Game\Visitor</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\SeekBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy\AIConditions.cpp">
+      <Filter>Game\Objects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Enemy\ActionSelection.cpp">
+      <Filter>Game\Objects\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\RenderableObjects\UIRenderableObject .cpp">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\CameraSystem.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Cameras\BlendingCamera.cpp">
+      <Filter>Game\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Cameras\FixedCamera.cpp">
+      <Filter>Game\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Cameras\FollowCamera.cpp">
+      <Filter>Game\Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\BalloonFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\CameraFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\EnemyFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\EffectFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\PlayerFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Fade\Fade.cpp">
+      <Filter>Game\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\TitleLogoUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\TimeFrameUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\StartTextUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\StageSelectKeyGuideUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\ScoreFrameUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\ResultButtonTextUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\ResultSceneKeyGuideUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\PlaySceneKeysGuideUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\PLayerIconUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\FadeStates\FadeInState.cpp">
+      <Filter>Game\States\SceneStates\FadeStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\FadeStates\FadeOutState.cpp">
+      <Filter>Game\States\SceneStates\FadeStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\TitleMainState.cpp">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\DebugScene.cpp">
+      <Filter>Game\Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\GameClearScene.cpp">
+      <Filter>Game\Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\PlayScene.cpp">
+      <Filter>Game\Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\TitleScene.cpp">
+      <Filter>Game\Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\UIFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\ResultSceneButtons.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\ResultTextsUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\GameOverScene.cpp">
+      <Filter>Game\Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\HPFrameUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\HPGaugeUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\HPUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\SceneFactory.cpp">
+      <Filter>Game\Factorys</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\BalloonFrameUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\BalloonGaugeUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\BalloonHPUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Player\PlayerSitState.cpp">
+      <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\Shaders\hlsl\SkyBox.hlsli">
+      <Filter>Shaders\SkyBox</Filter>
+    </None>
+    <None Include="Resources\Shaders\hlsl\Common.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\hlsl\PBRLit.hlsli">
+      <Filter>Shaders\PBRLit</Filter>
+    </None>
+    <None Include="Resources\Shaders\hlsl\Sea.hlsli">
+      <Filter>Shaders\Sea</Filter>
+    </None>
+    <None Include="Resources\Shaders\hlsl\UI.hlsli">
+      <Filter>Shaders\UI</Filter>
+    </None>
+    <None Include="Resources\Shaders\hlsl\Particle.hlsli">
+      <Filter>Shaders\Particle</Filter>
+    </None>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="imgui\LICENSE.txt">
+      <Filter>imgui</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game\resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Game\Balloon.ico">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="Game\settings.manifest">
+      <Filter>Assets</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\hlsl\SkyBox_PS.hlsl">
+      <Filter>Shaders\SkyBox</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\SkyBox_VS.hlsl">
+      <Filter>Shaders\SkyBox</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\PBRLit_PS.hlsl">
+      <Filter>Shaders\PBRLit</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\PBRLit_VS.hlsl">
+      <Filter>Shaders\PBRLit</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Balloon_PS.hlsl">
+      <Filter>Shaders\Balloon</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Sea_DS.hlsl">
+      <Filter>Shaders\Sea</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Sea_HS.hlsl">
+      <Filter>Shaders\Sea</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Sea_PS.hlsl">
+      <Filter>Shaders\Sea</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Sea_VS.hlsl">
+      <Filter>Shaders\Sea</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\NumberUI_PS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\ScoreUI_PS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\UI_GS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\UI_PS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\UI_VS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\ShadowMap_PS.hlsl">
+      <Filter>Shaders\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\ShadowMap_VS.hlsl">
+      <Filter>Shaders\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Particle_VS.hlsl">
+      <Filter>Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Particle_PS.hlsl">
+      <Filter>Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\Particle_GS.hlsl">
+      <Filter>Shaders\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\hlsl\HPUI_PS.hlsl">
+      <Filter>Shaders\UI</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

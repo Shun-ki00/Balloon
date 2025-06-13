@@ -1,0 +1,139 @@
+{
+
+    "STEERING_BEHAVIOR": {
+        "KnockbackCount": 1,
+        "KnockbackFoce": 200.0,
+        "KnockbackRadius": 1.0,
+        "WindIdleTime": 5.0,
+        "WindMaxDuration": 5.0,
+        "WindMaxStrength": 2.0,
+        "WindMinDuration": 1.0,
+        "WindMinStrength": 0.5
+    },
+
+    "PLAYER": {
+        "PlayerBrakingRate": 0.0,
+        "PlayerMass": 0.0,
+        "PlayerMaxForce": 0.0,
+        "PlayerMaxSpeed": 0.0,
+        "PlayerMaxTurnRate": 0.0,
+        "PlayerRadius": 0.0,
+        "PlayerScale": 0.0
+    },
+
+    "ENEMY": {
+        "Number": 1
+    },
+
+
+    "PARTICLE": {
+        "EmissionRate": 30.0,
+        "EmissionDuration": 5.0,
+        "ParticleLifetime": 2.0,
+
+        "EmitPositionMin": [ -1.0, 0.0, -1.0 ],
+        "EmitPositionMax": [ 1.0, 0.0, 1.0 ],
+
+        "EmitDirectionMin": [ -0.5, 1.0, -0.5 ],
+        "EmitDirectionMax": [ 0.5, 1.0, 0.5 ],
+
+        "EmitSpeedMin": 2.0,
+        "EmitSpeedMax": 5.0,
+
+        "StartSizeMin": 0.5,
+        "StartSizeMax": 1.0,
+        "EndSizeMin": 0.2,
+        "EndSizeMax": 0.8,
+
+        "StartRotationMin": 0.0,
+        "StartRotationMax": 360.0,
+        "RotationSpeedMin": -90.0,
+        "RotationSpeedMax": 90.0,
+
+        "StartColor": [ 1.0, 1.0, 1.0, 1.0 ],
+        "EndColor": [ 1.0, 0.0, 0.0, 0.5 ],
+
+        "IsGravityEnabled": false,
+        "GravityAcceleration": [ 0.0, -9.8, 0.0 ],
+
+        "RandomnessFactor": 1.0,
+        "IsLooping": false,
+
+        "Texture": "Particle",
+        "Shader": "Particle_PS"
+    },
+
+    "BALLOON_EXPLOSION": {
+        "EmissionRate": 1.0,
+        "EmissionDuration": 1.3,
+        "ParticleLifetime": 1.5,
+
+        "EmitPositionMin": [ -1.0, 0.0, -1.0 ],
+        "EmitPositionMax": [ 1.0, 0.0, 1.0 ],
+
+        "EmitDirectionMin": [ -0.5, 1.0, -0.5 ],
+        "EmitDirectionMax": [ 0.5, 1.0, 0.5 ],
+
+        "EmitSpeedMin": 2.0,
+        "EmitSpeedMax": 5.0,
+
+        "StartSizeMin": 0.5,
+        "StartSizeMax": 1.0,
+        "EndSizeMin": 0.2,
+        "EndSizeMax": 0.8,
+
+        "StartRotationMin": 0.0,
+        "StartRotationMax": 360.0,
+        "RotationSpeedMin": -90.0,
+        "RotationSpeedMax": 90.0,
+
+        "StartColor": [ 1.0, 1.0, 1.0, 1.0 ],
+        "EndColor": [ 1.0, 0.0, 0.0, 0.5 ],
+
+        "IsGravityEnabled": true,
+        "GravityAcceleration": [ 0.0, -9.8, 0.0 ],
+
+        "RandomnessFactor": 0.1,
+        "IsLooping": false,
+
+        "Texture": "BalloonExplosion",
+        "Shader": "Particle_PS"
+    },
+
+    "EFFECT": {
+        "EmissionRate": 30.0,
+        "EmissionDuration": 5.0,
+        "ParticleLifetime": 2.0,
+
+        "EmitPositionMin": [ -1.0, 0.0, -1.0 ],
+        "EmitPositionMax": [ 1.0, 0.0, 1.0 ],
+
+        "EmitDirectionMin": [ -0.5, 1.0, -0.5 ],
+        "EmitDirectionMax": [ 0.5, 1.0, 0.5 ],
+
+        "EmitSpeedMin": 2.0,
+        "EmitSpeedMax": 5.0,
+
+        "StartSizeMin": 0.5,
+        "StartSizeMax": 1.0,
+        "EndSizeMin": 0.2,
+        "EndSizeMax": 0.8,
+
+        "StartRotationMin": 0.0,
+        "StartRotationMax": 360.0,
+        "RotationSpeedMin": -90.0,
+        "RotationSpeedMax": 90.0,
+
+        "StartColor": [ 1.0, 1.0, 1.0, 1.0 ],
+        "EndColor": [ 1.0, 0.0, 0.0, 0.5 ],
+
+        "IsGravityEnabled": true,
+        "GravityAcceleration": [ 0.0, -9.8, 0.0 ],
+
+        "RandomnessFactor": 0.5,
+        "IsLooping": true,
+
+        "Texture": "Particle",
+        "Shader": "Particle_PS"
+    }
+}

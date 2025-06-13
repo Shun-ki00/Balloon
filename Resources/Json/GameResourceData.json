@@ -1,0 +1,115 @@
+{
+    "TextureDirectory": "Resources/Textures",
+    "NormalMapTextureDirectory": "Resources/Textures/NormalMaps",
+    "DDSTextureDirectory": "Resources/Textures/DDS",
+    "ModelDirectory": "Resources/Models",
+    "PlayerModelDirectory": "Resources/Models/PlayerModels",
+    "EnemyModelDirectory": "Resources/Models/EnemyModels",
+    "ShaderDirectory": "Resources/Shaders/cso",
+
+    "Textures": {
+        "Logo": "Logo.png",
+        "Rule": "Fade.png",
+        "FadeMain": "FadeMain.png",
+        "ClearText": "ClearText.png",
+        "FailedText": "FailedText.png",
+        "Player": "Player.png",
+        "Enemy": "Enemy.png",
+        "Sea": "Sea.png",
+        "ReadyGo": "ReadyGo.png",
+        "Numbers": "Number00.png",
+        "Numbers1": "Number0.png",
+        "MenuButton": "MenuButtonText.png",
+        "MenuButtonFrame": "MenuButtonFrames.png",
+        "MenuButtonFrame2": "MenuButtonFrames2.png",
+        "KeyGuide": "KeyGuide.png",
+        "StartText": "StartText.png",
+        "PlayerIcon": "PLayerIcon.png",
+        "PlaySceneKeysGuide": "PlaySceneKeysGuide1.png",
+        "TimeFrame": "TimeFrame.png",
+        "ScoreFrame": "ScoreFrame.png",
+        "BalloonGageFrame": "BalloonGageFrame.png",
+        "BalloonGage": "BalloonGage.png",
+        "HeightMeter": "HeightMeter.png",
+        "HPGage": "HPGage.png",
+        "HPGageFrame": "HPGageFrame.png",
+        "CloudFrame": "CloudFrame.png",
+        "StageSelectTexts": "StageSelectTexts.png",
+        "StageSelectKeyGuide": "StageSelectKeyGuide.png",
+        "ResultText": "ResultText.png",
+        "ResultSceneKeyGuide": "ResultSceneKeyGuide.png",
+        "ResultButtonText": "ResultButtonText.png",
+        "Particle": "particle.png",
+        "BalloonExplosion": "BalloonExplosion.png"
+
+    },
+
+    "Textures_NormalMaps": {
+        "Meat": "Meat_normal.png",
+        "Wood": "Sea_normal.png",
+        "Rock": "Rock_normal.png",
+        "Sea2": "Sea_normal.png",
+        "Cloud": "Cloud_normal.png"
+    },
+
+    "Textures_DDS": {
+        "CubeMap": "CubeMap.dds",
+        "EveningCubeMap": "EveningCubeMap.dds",
+        "Balloon": "Balloon.dds"
+    },
+
+    "PlayerModels": {
+        "Head": "Head.cmo",
+        "Body": "Body.cmo",
+        "LeftArm": "LeftArm.cmo",
+        "RightArm": "RightArm.cmo",
+        "LeftFoot": "LeftFoot.cmo",
+        "RightFoot": "RightFoot.cmo"
+    },
+
+    "EnemyModel": {
+        "EHead": "EnemyFace.cmo"
+    },
+
+    "Models": {
+        "BalloonBody": "BalloonBody.cmo",
+        "BalloonRope": "BalloonRope.cmo",
+        "Box": "torus.cmo",
+        "Cloud": "Cloud.cmo",
+        "Sphere": "Sphere.cmo",
+        "Torus": "torus.cmo"
+    },
+
+    "Shaders": {
+        "VS": {
+            "PBRLit_VS": "PBRLit_VS.cso",
+            "ShadowMap_VS": "ShadowMap_VS.cso",
+            "SkyBox_VS": "SkyBox_VS.cso",
+            "Sea_VS": "Sea_VS.cso",
+            "UI_VS": "UI_VS.cso",
+            "Particle_VS": "Particle_VS.cso"
+        },
+        "PS": {
+            "PBRLit_PS": "PBRLit_PS.cso",
+            "Balloon_PS": "Balloon_PS.cso",
+            "ShadowMap_PS": "ShadowMap_PS.cso",
+            "SkyBox_PS": "SkyBox_PS.cso",
+            "Sea_PS": "Sea_PS.cso",
+            "UI_PS": "UI_PS.cso",
+            "NumberUI_PS": "NumberUI_PS.cso",
+            "ScoreUI_PS": "ScoreUI_PS.cso",
+            "HPUI_PS": "HPUI_PS.cso",
+            "Particle_PS": "Particle_PS.cso"
+        },
+        "GS": {
+            "UI_GS": "UI_GS.cso",
+            "Particle_GS": "Particle_GS.cso"
+        },
+        "HS": {
+            "Sea_HS": "Sea_HS.cso"
+        },
+        "DS": {
+            "Sea_DS": "Sea_DS.cso"
+        }
+    }
+}

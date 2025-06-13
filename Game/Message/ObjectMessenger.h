@@ -1,0 +1,54 @@
+#pragma once
+#include "Interface/IObject.h"
+#include "Game/Message/Message.h"
+
+class ObjectMessenger
+{
+public:
+
+	// オブジェクトを検索、取得する
+	IObject* FindObject(const IObject::ObjectID& objectId, const int& objectNumber);
+	// オブジェクトを登録する
+	void Register(const IObject::ObjectID& objectId ,const int& objectNumber, IObject* object);
+
+	// メッセージを送信する
+	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
+		, Message::MessageData messageData);
+	// メッセージを送信する IDのみ
+	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
+		, Message::MessageID messageID);
+
+private:
+	//	コンストラクタ
+	ObjectMessenger();
+	//	デストラクタ
+	~ObjectMessenger() = default;
+public:
+	ObjectMessenger(const ObjectMessenger&) = delete;             // コピー禁止
+	ObjectMessenger& operator=(const ObjectMessenger&) = delete;  // コピー代入禁止
+	ObjectMessenger(const ObjectMessenger&&) = delete;            // ムーブ禁止
+	ObjectMessenger& operator=(const ObjectMessenger&&) = delete; // ムーブ代入禁止
+
+	//	シングルトンインスタンスの取得
+	static ObjectMessenger* GetInstance()
+	{
+		static ObjectMessenger instance;
+		return &instance;
+	}
+
+	// アタッチ開始
+	void Begin();
+	// アタッチ終了
+	void End();
+
+	// リストの削除
+	void Clear();
+
+private:
+	
+	// オブジェクトIDをキーにオブジェクト番号とオブジェクトをマッピング
+	std::unordered_map<IObject::ObjectID, std::unordered_map<int, IObject*>> m_objects;
+
+	// アタッチ許可
+	bool m_isAttach;
+};
