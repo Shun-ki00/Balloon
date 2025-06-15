@@ -15,7 +15,7 @@ struct Player
 	DirectX::SimpleMath::Vector3 scale;
 	bool fixed;
 	float balloonIndex;
-	KnockbackBehaviorParams knockbackBehavior;
+	//KnockbackBehaviorParams knockbackBehavior;
 };
 // “G
 struct Enemy
@@ -25,7 +25,7 @@ struct Enemy
 	DirectX::SimpleMath::Vector3 scale;
 	bool fixed;
 	float balloonIndex;
-	KnockbackBehaviorParams knockbackBehavior;
+	//KnockbackBehaviorParams knockbackBehavior;
 };
 // •—‘D
 struct Balloon
@@ -37,6 +37,14 @@ struct Balloon
 
 // –Ø” 
 struct WoodBox
+{
+	DirectX::SimpleMath::Vector3 position;
+	DirectX::SimpleMath::Vector3 rotation;
+	DirectX::SimpleMath::Vector3 scale;
+};
+
+// UI
+struct UI
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;

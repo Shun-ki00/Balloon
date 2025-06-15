@@ -52,9 +52,28 @@ void SceneFactory::CreateTitleScene(Root* root)
 		DirectX::SimpleMath::Vector3::One));
 }
 
+/// <summary>
+/// ステージセレクトシーンオブジェクトの作成
+/// </summary>
+/// <param name="root">ルートオブジェクト</param>
+void SceneFactory::CreateStageSelectScene(Root* root)
+{
+
+	// ステージナンバー
+
+	// ステージセレクト背景
+
+	// ステージセレクト操作説明
+
+
+}
 
 
 
+/// <summary>
+/// プレイシーンオブジェクト作成
+/// </summary>
+/// <param name="root">ルートオブジェクト</param>
 void SceneFactory::CreatePlayScene(Root* root)
 {
 
@@ -91,8 +110,8 @@ void SceneFactory::CreatePlayScene(Root* root)
 	root->Attach(UIFactory::CreateHPUI(root, IObject::ObjectID::HP_UI,
 		{ 380.0f , 620.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.6f));
 	// フェード
-	/*root->Attach(UIFactory::CreateFade(root, IObject::ObjectID::FADE,
-		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::One));*/
+	//root->Attach(UIFactory::CreateFade(root, IObject::ObjectID::FADE,
+	//	DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::One));
 
 }
 

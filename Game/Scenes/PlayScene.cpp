@@ -67,7 +67,7 @@ void PlayScene::Update()
 	// ƒJƒƒ‰‚ðXV
 	m_debugCamera->Update();
 	m_commonResources->SetViewMatrix(m_debugCamera->GetViewMatrix());
-
+	m_commonResources->SetCameraTransform(m_debugCamera->GetTransform());
 
 	m_root->Update(elapsedTime);
 }

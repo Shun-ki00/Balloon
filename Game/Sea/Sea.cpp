@@ -2,8 +2,11 @@
 #include "Game/Sea/Sea.h"
 #include "Framework/CommonResources.h"
 #include "Framework/Resources/Resources.h"
+#include "Game/Buffers/ConstantBuffer.h"
 
-
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Sea::Sea()
 	:
 	m_inputLayout{},
@@ -11,10 +14,7 @@ Sea::Sea()
 	m_hullShader{},
 	m_domainShader{},
 	m_pixelShader{},
-	m_texture{},
-	m_blendState{},
-	m_depthStencilState{},
-	m_rasterizerState{}
+	m_texture{}
 {
 	m_commonResources = CommonResources::GetInstance();
 	m_resources       = Resources::GetInstance();
@@ -23,12 +23,12 @@ Sea::Sea()
 	m_device          = CommonResources::GetInstance()->GetDeviceResources()->GetD3DDevice();
 }
 
-
+/// <summary>
+/// 初期化処理
+/// </summary>
 void Sea::Initialize()
 {
 	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-
-	m_states = std::make_unique<DirectX::DX11::CommonStates>(device);
 
 	// シェーダーを取得する
 	m_vertexShader = m_resources->GetShaderResources()->GetVertexShader(VS_ID::Sea_VS);
@@ -40,55 +40,9 @@ void Sea::Initialize()
 
 	// テクスチャを取得する
 	m_texture = m_resources->GetTextureResources()->GetTexture(TextureKeyID::Sea);
-	m_NormalTexture = m_resources->GetTextureResources()->GetTexture(TextureKeyID::Wood);
-	m_CubeTexture = m_resources->GetTextureResources()->GetTexture(TextureKeyID::CubeMap);
 
-
-	this->CreateConstantBuffer();
-
-	// 頂点データを定義（4つの制御点）
-	const float SIZE = 30.0f;
-
-	const int GRID_X = 8;
-	const int GRID_Z = 4;
-	const int VERTEX_COUNT = GRID_X * GRID_Z;
-
-	DirectX::VertexPositionTexture vertex[VERTEX_COUNT];
-
-	for (int z = 0; z < GRID_Z; ++z)
-	{
-		for (int x = 0; x < GRID_X; ++x)
-		{
-			int index = z * GRID_X + x;
-			float fx = -SIZE + (2 * SIZE) * (float)x / (GRID_X - 1);
-			float fz = SIZE - (2 * SIZE) * (float)z / (GRID_Z - 1);
-			vertex[index] = {
-				DirectX::XMFLOAT3(fx, 0.0f, fz),
-				DirectX::XMFLOAT2((float)x / (GRID_X - 1), (float)z / (GRID_Z - 1))
-			};
-		}
-	}
-
-
-	// 頂点バッファの説明
-	D3D11_BUFFER_DESC vertexBufferDesc = {};
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(DirectX::VertexPositionTexture) * _countof(vertex); // 頂点データ全体のサイズ
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-
-	// 頂点データの初期化
-	D3D11_SUBRESOURCE_DATA vertexData = {};
-	vertexData.pSysMem = vertex;
-
-	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer);
-
-	// ブレンドステートの作成
-	CreateBlendState(device);
-	// 深度ステンシルステートの作成
-	CreateDepthStencilState(device);
-	// ラスタライザーステートの作成
-	CreateRasterizerState(device);
+	// 定数バッファの更新
+	this->CreateBuffer();
 
 	// 細分度
 	m_index = 1.0f;
@@ -96,6 +50,9 @@ void Sea::Initialize()
 	m_time = 0.0f;
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
 void Sea::Render()
 {
 	// タイマーの更新
@@ -106,17 +63,19 @@ void Sea::Render()
 
 	// ワールド行列作成
 	DirectX::SimpleMath::Matrix world = 
-		DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3::Down * 20);
+		DirectX::SimpleMath::Matrix::CreateTranslation(DirectX::SimpleMath::Vector3::Down * 20.0f);
+
+	DirectX::SimpleMath::Vector3 position = m_commonResources->GetCameraTransform()->GetLocalPosition();
 
 	//	シェーダーに渡す追加のバッファを作成する。
-	ConstBuffer cbuff;
-	cbuff.matView = m_commonResources->GetViewMatrix().Transpose();
-	cbuff.matProj = m_commonResources->GetProjectionMatrix().Transpose();
-	cbuff.matWorld = world.Transpose();
-	cbuff.TessellationFactor = DirectX::SimpleMath::Vector4(m_index, m_time, 2.0f, 0.0f);
-
-	//	受け渡し用バッファの内容更新(ConstBufferからID3D11Bufferへの変換）
-	m_context->UpdateSubresource(m_constantBuffer.Get(), 0, NULL, &cbuff, 0, 0);
+	TransformConstBuffer buffer;
+	buffer.matView = m_commonResources->GetViewMatrix().Transpose();
+	buffer.matProj = m_commonResources->GetProjectionMatrix().Transpose();
+	buffer.matWorld = world.Transpose();
+	buffer.cameraPosition = { position.x , position.y , position.z ,0.0f };
+	buffer.TessellationFactor = DirectX::SimpleMath::Vector4(m_index, m_time, 2.0f, 0.0f);
+	// 定数バッファの更新
+	m_transformBuffer->Update(m_context, buffer);
 
 	// 入力レイアウトを設定
 	m_context->IASetInputLayout(m_inputLayout);
@@ -128,28 +87,27 @@ void Sea::Render()
 	m_context->IASetVertexBuffers(0, 1, buffers, stride, offset);
 
 	//	シェーダーにバッファを渡す
-	ID3D11Buffer* cb[2] = { m_constantBuffer.Get() , m_waveConstantBuffer.Get()};
+	ID3D11Buffer* cb[3] = { m_transformBuffer->GetBuffer() , m_seaNoiseBuffer->GetBuffer() ,m_gerstnerWaveBuffer->GetBuffer()};
 	// スロット1から3に一括バインド
-	m_context->VSSetConstantBuffers(0, 2, cb);
-	m_context->HSSetConstantBuffers(0, 2, cb);
-	m_context->DSSetConstantBuffers(0, 2, cb);
-	m_context->PSSetConstantBuffers(0, 2, cb);
+	m_context->VSSetConstantBuffers(0, 3, cb);
+	m_context->HSSetConstantBuffers(0, 3, cb);
+	m_context->DSSetConstantBuffers(0, 3, cb);
+	m_context->PSSetConstantBuffers(0, 3, cb);
 
 	// サンプラーステートをピクセルシェーダーに設定
-	ID3D11SamplerState* sampler[1] = { m_states->LinearWrap() };
+	ID3D11SamplerState* sampler[1] = { m_commonStates->LinearWrap() };
 	m_context->PSSetSamplers(0, 1, sampler);
 
 	// ブレンドステートを設定 (半透明描画用)
-	//m_context->OMSetBlendState(m_blendState.Get(), nullptr, 0xFFFFFFFF);
+	m_context->OMSetBlendState(m_commonStates->AlphaBlend(), nullptr, 0xFFFFFFFF);
 
 	// プリミティブトポロジーを設定
 	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST);
 
 	//	深度バッファに書き込み参照する
-	m_context->OMSetDepthStencilState(m_states->DepthDefault(), 0);
+	m_context->OMSetDepthStencilState(m_commonStates->DepthDefault(), 0);
 	// ラスタライザーステートの設定
-	m_context->RSSetState(m_rasterizerState.Get());
-
+	m_context->RSSetState(m_commonStates->CullCounterClockwise());
 
 	//	シェーダをセットする
 	m_context->VSSetShader(m_vertexShader, nullptr, 0);
@@ -158,17 +116,11 @@ void Sea::Render()
 	m_context->PSSetShader(m_pixelShader, nullptr, 0);
 
 	// テクスチャの設定
-	std::vector<ID3D11ShaderResourceView*> tex = {
-		m_texture,
-		m_NormalTexture,
-		m_CubeTexture,
-	};
-
-	m_context->VSSetShaderResources(0, (UINT)tex.size(), tex.data());
-	m_context->PSSetShaderResources(0, (UINT)tex.size(), tex.data());
+	ID3D11ShaderResourceView* tex[1] = { m_texture };
+	m_context->PSSetShaderResources(0, 1, tex);
 
 	// 描画コール
-	m_context->Draw(32, 0);
+	m_context->Draw(static_cast<UINT>(32 * (700 * 700)), 0);
 
 	//	シェーダの登録を解除しておく
 	m_context->VSSetShader(nullptr, nullptr, 0);
@@ -181,100 +133,112 @@ void Sea::Render()
 	m_context->PSSetShaderResources(0, 1, nullsrv);
 }
 
-void Sea::CreateConstantBuffer()
+/// <summary>
+/// バッファの作成
+/// </summary>
+void Sea::CreateBuffer()
 {
-	//	シェーダーにデータを渡すためのコンスタントバッファ生成
-	D3D11_BUFFER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.ByteWidth = sizeof(ConstBuffer);
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.CPUAccessFlags = 0;
-	m_device->CreateBuffer(&desc, nullptr, m_constantBuffer.ReleaseAndGetAddressOf());
+	// Transformの定数バッファの作成
+	m_transformBuffer = std::make_unique<ConstantBuffer<TransformConstBuffer>>();
+	// 初期化
+	m_transformBuffer->Initialize(m_device);
 
-	WaveParams waveParams =
+	// 海ノイズの定数バッファの作成
+	m_seaNoiseBuffer = std::make_unique<ConstantBuffer<SeaNoiseConstBuffer>>();
+	// 初期化
+	m_seaNoiseBuffer->Initialize(m_device,UpdateStrategy::UPDATE_SUB_RESOURCE);
+
+	// 波の定数バッファの作成
+	m_gerstnerWaveBuffer = std::make_unique<ConstantBuffer<GerstnerWaveConstBuffer>>();
+	// 初期化
+	m_gerstnerWaveBuffer->Initialize(m_device, UpdateStrategy::UPDATE_SUB_RESOURCE);
+	
+
+	// 定数の更新
+	GerstnerWaveConstBuffer waveParams =
 	{
-		// 大波（高振幅・高速）
-		1.0f, -0.85f,  0.55f, 1.8f,   // active, dirX, dirZ, amplitude
-		12.0f, 2.5f, 0.75f, 0.0f,     // waveLength, speed, qRatio, pad
+		// 大波（うねり）
+		1.2f, -0.8f,  0.6f, 0.9f,
+		12.0f, 1.4f, 0.4f, 0.0f,
 
-		// 中波（対抗方向・中振幅）
-		1.0f, 0.6f, -0.6f, 0.9f,
-		6.0f, 2.0f, 0.55f, 0.0f,
+		// 中波（反射干渉）
+		0.9f,  0.6f, -0.7f, 0.6f,
+		6.0f,  1.6f, 0.5f, 0.0f,
 
-		// 細波（鋭い風波）
-		1.0f, 0.3f, -1.0f, 0.45f,
-		2.2f, 1.8f, 0.65f, 0.0f
+		// 小波（細かい風のさざ波）
+		0.6f, -0.3f, -1.1f, 0.3f,
+		2.5f, 2.0f,  0.65f, 0.0f
 	};
+	SeaNoiseConstBuffer seaNoise =
+	{
+		0.1f,
+		0.01f,
+		0.08f,
+		0.06f,
+		25.0f,
+		10.0f,
+		0.6f,
+		0.01f
+	};
+	m_gerstnerWaveBuffer->Update(m_context, waveParams);
+	m_seaNoiseBuffer->Update(m_context, seaNoise);
+
+	const int PATCH_COUNT_X = 700;
+	const int PATCH_COUNT_Z = 700;
+	const int PATCH_TOTAL = PATCH_COUNT_X * PATCH_COUNT_Z;
+	const int VERTICES_PER_PATCH = 32;
+	const int TOTAL_VERTICES = PATCH_TOTAL * VERTICES_PER_PATCH;
+
+	std::vector<DirectX::VertexPositionTexture> vertices(TOTAL_VERTICES);
+
+	// 1つのパッチのサイズ
+	const float PATCH_SIZE = 20.0f; // 各パッチの領域（ワールド座標で）
+	const float HALF_EXTENT_X = PATCH_COUNT_X * PATCH_SIZE * 0.5f;
+	const float HALF_EXTENT_Z = PATCH_COUNT_Z * PATCH_SIZE * 0.5f;
+
+	for (int patchZ = 0; patchZ < PATCH_COUNT_Z; ++patchZ) {
+		for (int patchX = 0; patchX < PATCH_COUNT_X; ++patchX) {
+
+			int patchIndex = patchZ * PATCH_COUNT_X + patchX;
+			int baseVertexIndex = patchIndex * VERTICES_PER_PATCH;
+
+			float offsetX = patchX * PATCH_SIZE - HALF_EXTENT_X;
+			float offsetZ = patchZ * PATCH_SIZE - HALF_EXTENT_Z;
+
+			for (int z = 0; z < 4; ++z) {
+				for (int x = 0; x < 8; ++x) {
+					int localIndex = z * 8 + x;
+
+					float fx = offsetX + PATCH_SIZE * (float)x / 7.0f;
+					float fz = offsetZ + PATCH_SIZE * (float)z / 3.0f;
+
+					float u = (float)x / 7.0f;
+					float v = (float)z / 3.0f;
+
+					vertices[baseVertexIndex + localIndex] = {
+						DirectX::XMFLOAT3(fx, 0.0f, fz),
+						DirectX::XMFLOAT2(u, v)
+					};
+				}
+			}
+		}
+	}
 
 
-	ZeroMemory(&desc, sizeof(desc));
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.ByteWidth = sizeof(WaveParams);
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.CPUAccessFlags = 0;
-	m_device->CreateBuffer(&desc, nullptr, &m_waveConstantBuffer);
+	// 頂点バッファの説明
+	D3D11_BUFFER_DESC vertexBufferDesc = {};
+	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = static_cast<UINT>(sizeof(DirectX::VertexPositionTexture) * vertices.size());
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = 0;
 
-	m_context->UpdateSubresource(m_waveConstantBuffer.Get(), 0, nullptr, &waveParams, 0, 0);
+	// 頂点データの初期化
+	D3D11_SUBRESOURCE_DATA vertexData = {};
+	vertexData.pSysMem = vertices.data();
+
+	m_device->CreateBuffer(&vertexBufferDesc, &vertexData, m_vertexBuffer.ReleaseAndGetAddressOf());
 
 }
 
 
 
-/// <summary>
-/// ブレンドステートの作成
-/// </summary>
-/// <param name="device">デバイス</param>
-void Sea::CreateBlendState(ID3D11Device1* device)
-{
-	D3D11_BLEND_DESC blendDesc = {};
-	blendDesc.AlphaToCoverageEnable = FALSE;  // カバレッジをアルファに基づいて有効化する
-	blendDesc.IndependentBlendEnable = FALSE; // 複数のレンダーターゲットを独立して設定する
-
-	D3D11_RENDER_TARGET_BLEND_DESC rtBlendDesc = {};
-	rtBlendDesc.BlendEnable = TRUE;              // ブレンドを有効化
-	rtBlendDesc.SrcBlend = D3D11_BLEND_SRC_ALPHA;        // ソースのアルファ
-	rtBlendDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;    // 逆アルファ
-	rtBlendDesc.BlendOp = D3D11_BLEND_OP_ADD;           // 加算ブレンド
-	rtBlendDesc.SrcBlendAlpha = D3D11_BLEND_ONE;              // アルファ値のソース
-	rtBlendDesc.DestBlendAlpha = D3D11_BLEND_ZERO;             // アルファ値のデスティネーション
-	rtBlendDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;           // アルファ値の加算
-	rtBlendDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // RGBA全てを有効
-
-	blendDesc.RenderTarget[0] = rtBlendDesc;
-
-	// カスタムブレンドステートを作成
-
-	device->CreateBlendState(&blendDesc, &m_blendState);
-}
-
-/// <summary>
-/// 深度ステンシルステートの作成
-/// </summary>
-/// <param name="device">デバイス</param>
-void Sea::CreateDepthStencilState(ID3D11Device1* device)
-{
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc = {};
-	depthStencilDesc.DepthEnable = TRUE;                          // 深度テストを有効化
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL; // 深度バッファの書き込みを有効化
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;      // 深度テスト条件 (小さい場合のみ描画)
-	depthStencilDesc.StencilEnable = FALSE;                       // ステンシルテストを無効化
-
-	// 深度ステンシルステートを作成
-	device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
-}
-
-/// <summary>
-/// ラスタライザーステートの作成
-/// </summary>
-/// <param name="device">デバイス</param>
-void Sea::CreateRasterizerState(ID3D11Device1* device)
-{
-	D3D11_RASTERIZER_DESC rasterDesc = {};
-	rasterDesc.FillMode = D3D11_FILL_WIREFRAME;      // 塗りつぶし (または D3D11_FILL_WIREFRAME)D3D11_FILL_SOLID
-	rasterDesc.CullMode = D3D11_CULL_FRONT;       // カリングなし (または D3D11_CULL_FRONT / D3D11_CULL_BACK)
-	rasterDesc.FrontCounterClockwise = FALSE;    // 時計回りの頂点順序を表面として認識
-	rasterDesc.DepthClipEnable = TRUE;           // 深度クリッピングを有効化
-	// ラスタライザーステートの作成
-	device->CreateRasterizerState(&rasterDesc, &m_rasterizerState);
-}

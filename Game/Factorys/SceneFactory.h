@@ -12,6 +12,7 @@ public:
 	// メニューシーンの作成
 
 	// ステージセレクトの作成
+	static void CreateStageSelectScene(Root* root);
 
 	// プレイシーンの作成
 	static void CreatePlayScene(Root* root);

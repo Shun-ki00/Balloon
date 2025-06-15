@@ -136,8 +136,9 @@ void ShaderResources::LoadResource(const nlohmann::json& data)
 
 	if (m_vertexShaders.contains("Sea_VS")) {
 		blob = DX::ReadData((directory + L"/Sea_VS.cso").c_str());
-		device->CreateInputLayout(SEA_INPUT_LAYOUT.data(),
-			(UINT)SEA_INPUT_LAYOUT.size(),
+		device->CreateInputLayout(
+			DirectX::VertexPositionTexture::InputElements,
+			DirectX::VertexPositionTexture::InputElementCount,
 			blob.data(), blob.size(),
 			m_SeaInputLayout.GetAddressOf());
 	}

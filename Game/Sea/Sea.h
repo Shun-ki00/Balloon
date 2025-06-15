@@ -1,4 +1,5 @@
 #pragma once
+#include "Game/Buffers/ConstantBuffer.h"
 
 class CommonResources;
 class Resources;
@@ -6,13 +7,45 @@ class Resources;
 class Sea
 {
 private:
-	//	データ受け渡し用コンスタントバッファ(送信側)
-	struct ConstBuffer
+
+	// 変換用定数バッファ
+	struct TransformConstBuffer
 	{
 		DirectX::SimpleMath::Matrix		matWorld;
 		DirectX::SimpleMath::Matrix		matView;
 		DirectX::SimpleMath::Matrix		matProj;
+		DirectX::SimpleMath::Vector4    cameraPosition;
 		DirectX::SimpleMath::Vector4    TessellationFactor;
+	};
+
+	// 海のノイズ用の定数バッファ
+	struct SeaNoiseConstBuffer
+	{
+		float flowVelocity;    // 流れる力
+		float swingSpeed;      // 左右の振れ
+		float fnUVPath1;       // ノイズの影響 (x軸)
+		float fnUVPath2;       // ノイズの影響 (y軸)
+
+		float fnUVPower;       // UVスケール
+		float fnOctaves;       // ノイズのオクターブ数
+		float fnPersistence;   // ノイズ持続度
+		float padding;         // パディング
+	};
+
+	// ゲルストナ波の定数バッファ
+	struct GerstnerWaveConstBuffer
+	{
+		// Wave1
+		float active1, direction1X, direction1Z, amplitude1;
+		float waveLength1, speed1, qRatio1, pad1;
+
+		// Wave2
+		float active2, direction2X, direction2Z, amplitude2;
+		float waveLength2, speed2, qRatio2, pad2;
+
+		// Wave3
+		float active3, direction3X, direction3Z, amplitude3;
+		float waveLength3, speed3, qRatio3, pad3;
 	};
 
 public:
@@ -30,15 +63,8 @@ public:
 
 private:
 
-	// 定数バッファの作成
-	void CreateConstantBuffer();
-
-	// ブレンドステートの作成
-	void CreateBlendState(ID3D11Device1* device);
-	// 深度ステンシルステートの作成
-	void CreateDepthStencilState(ID3D11Device1* device);
-	// ラスタライザーステートの作成
-	void CreateRasterizerState(ID3D11Device1* device);
+	// バッファの作成
+	void CreateBuffer();
 
 private:
 
@@ -51,9 +77,6 @@ private:
 	CommonResources* m_commonResources;
 	// コモンステート
 	DirectX::CommonStates* m_commonStates;
-
-	//	コモンステート
-	std::unique_ptr<DirectX::CommonStates> m_states;
 	// コンテキスト
 	ID3D11DeviceContext1* m_context;
 	// デバイス
@@ -75,25 +98,13 @@ private:
 	// テクスチャ
 	ID3D11ShaderResourceView* m_texture;
 
-	ID3D11ShaderResourceView* m_NormalTexture;
-	ID3D11ShaderResourceView* m_CubeTexture;
-
-	// ブレンドステート
-	Microsoft::WRL::ComPtr<ID3D11BlendState> m_blendState;
-	// 深度ステンシルステート
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_depthStencilState;
-	// ラスタライザーステート
-	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
-
-
-	// 定数バッファ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
-	// 波パラメータ
-	Microsoft::WRL::ComPtr<ID3D11Buffer> m_waveConstantBuffer;
-
-
+	// Transform定数バッファ
+	std::unique_ptr<ConstantBuffer<TransformConstBuffer>> m_transformBuffer;
+	// 海ノイズ定数バッファ
+	std::unique_ptr<ConstantBuffer<SeaNoiseConstBuffer>> m_seaNoiseBuffer;
+	// 波定数バッファ
+	std::unique_ptr<ConstantBuffer<GerstnerWaveConstBuffer>> m_gerstnerWaveBuffer;
 
 	// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
-
 };

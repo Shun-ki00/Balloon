@@ -4,7 +4,7 @@
 // 入力構造体
 struct VS_INPUT
 {
-    float3 position : POSITION; // 頂点位置
+    float4 position : SV_POSITION; // 頂点位置
     float2 uv       : TEXCOORD; // UV座標
 };
 // 出力構造体
@@ -49,6 +49,8 @@ struct DS_OUTPUT
 {
     float4 position : SV_POSITION;
     float2 uv : TEXCOORD0;
+    
+    float4 positionWS : POSITION;
 };
 
 
@@ -57,20 +59,36 @@ struct PS_INPUT
 {
     float4 position : SV_POSITION;
     float2 uv : TEXCOORD0;
+    
+    float4 positionWS : POSITION;
 };
 
 
-// 定数バッファ
-cbuffer ConstBuffer : register(b0)
+// 変換用データ
+cbuffer TransformConstBuffer : register(b0)
 {
     matrix matWorld;
     matrix matView;
     matrix matProj;
+    float4 cameraPosition;
     float4 TessellationFactor; 
 };
 
+// 海のノイズデータ
+cbuffer SeaNoiseConstBuffer : register(b1)
+{
+    float flowVelocity  : packoffset(c0.x);
+    float swingSpeed    : packoffset(c0.y);
+    float fnUVPath1     : packoffset(c0.z);
+    float fnUVPath2     : packoffset(c0.w);
+    float fnUVPower     : packoffset(c1.x);
+    float fnOctaves     : packoffset(c1.y);
+    float fnPersistence : packoffset(c1.z);
+    float pading        : packoffset(c1.w);
+}
 
-cbuffer WaveParams : register(b1)
+// ゲルストナ波のデータ
+cbuffer GerstnerWaveConstBuffer : register(b2)
 {   
     // Wave1
     float active1     : packoffset(c0.x);
@@ -104,11 +122,4 @@ cbuffer WaveParams : register(b1)
     float speed3      : packoffset(c5.y);
     float qRatio3     : packoffset(c5.z);
     float pad3        : packoffset(c5.w);
-}
-
-// 環境光定数バッファ
-cbuffer AmbientLightParameters : register(b3)
-{
-    float3 c_ambientLightColor : packoffset(c0); // 環境光の色
-    float f_ambientLightIntensity : packoffset(c0.w); // 環境光の強さ
 }

@@ -21,6 +21,13 @@ class IScene;
 class SceneManager
 {
 public:
+
+	// ステージ番号を取得
+	int GetStageNumber() const { return m_stageNumber; }
+	// ステージ番号を設定
+	void GetStageNumber(const int& number) { m_stageNumber = number; }
+
+public:
 	// 初期フレームの時にシーンを変更する
 	void ChageScene() { m_isChange = true; }
 	// チェックチェンジシーン
@@ -101,4 +108,7 @@ private:
 
 	// ゲーム終了フラグ
 	bool m_isExitGame;
+
+	// ステージ番号
+	int m_stageNumber;
 };

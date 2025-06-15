@@ -13,18 +13,19 @@
 class CommonResources;
 class Root;
 class Parameters;
+class SceneManager;
 // ステート
 class FadeInState;
 class TitleMainState;
 class FadeOutState;
 
-class TitleScene : public IScene
+class StageSelectScene : public IScene
 {
 public:
 	// コンストラクタ
-	TitleScene();
+	StageSelectScene();
 	// デストラクタ
-	~TitleScene();
+	~StageSelectScene();
 
 public:
 	// 初期化処理
@@ -45,14 +46,13 @@ public:
 
 private:
 
-	// オブジェクトの作成
-	void CreateObjects();
-	// UIオブジェクトの作成
-	void CreateUiObjects();
-	// カメラの作成
-	void CreateCameras();
 	// ステートの作成
 	void CreateStates();
+
+private:
+
+	// フェードオブジェクト番号
+	static const int FADE_OBJECT_NUMBER;
 	
 private:
 
@@ -60,6 +60,9 @@ private:
 	Parameters* m_parameters;
 	// 共有リソース
 	CommonResources* m_commonResources;
+	// シーンマネージャー
+	SceneManager* m_sceneManager;
+
 
 	// 現在の状態
 	IState* m_currentState;

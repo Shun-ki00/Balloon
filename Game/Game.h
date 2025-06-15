@@ -7,7 +7,6 @@
 #include "Framework/DeviceResources.h"
 #include "Framework/StepTimer.h"
 
-
 class CommonResources;
 class InputManager;
 class AudioManager;
@@ -18,6 +17,7 @@ class SkyBox;
 class Sea;
 class Parameters;
 class CollisionVisitor;
+class GameConfig;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -104,6 +104,9 @@ private:
     std::unique_ptr<Sea> m_sea;
     // スカイボックス
     std::unique_ptr<SkyBox> m_skyBox;
+
+    // ゲームデータ
+    GameConfig* m_gameConfig;
 
     // パラメーター
     Parameters* m_parameters;

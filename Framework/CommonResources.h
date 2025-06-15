@@ -44,6 +44,11 @@ public:
 	// スクリーンサイズ
 	void GetScreenSize(int& width, int& height) const { width = m_screenW; height = m_screenH; }
 	void SetScreenSize(const int& width, const int& height) { m_screenW = width; m_screenH = height; }
+
+	// カメラのTransform
+	void SetCameraTransform(Transform* transform) { m_cameraTransform = transform; }
+	Transform* GetCameraTransform() const { return m_cameraTransform; }
+
 	// ビュー行列
 	void SetViewMatrix(const DirectX::SimpleMath::Matrix& view) { m_view = view; }
 	const DirectX::SimpleMath::Matrix& GetViewMatrix() { return m_view; };
@@ -96,6 +101,9 @@ private:
 	SkyBox* m_skyBox;
 	// スクリーンサイズ
 	int m_screenW, m_screenH;
+
+	// カメラのTransform
+	Transform* m_cameraTransform;
 
 	// ビュー行列
 	DirectX::SimpleMath::Matrix m_view;

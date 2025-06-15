@@ -8,7 +8,7 @@ VS_OUTPUT main(VS_INPUT input)
     VS_OUTPUT output;
 
    // ローカル空間 → ワールド空間
-    float4 worldPos = mul(float4(input.position, 1.0f), matWorld);
+    float4 worldPos = mul(input.position, matWorld);
     
     // ワールド空間 → ビュー空間 → クリップ空間
     output.position = mul(worldPos, matView);
@@ -20,7 +20,7 @@ VS_OUTPUT main(VS_INPUT input)
     // ローカル空間 → ワールド空間
    // output.position = mul(float4(input.position, 1.0f), matWorld);
     
-    output.position = float4(input.position, 1.0f);
+    output.position = input.position;
     // 頂点色とUV座標をそのまま渡す
     output.uv = input.uv;
 

@@ -1,0 +1,64 @@
+{
+    "player": {
+        "position": [ 2.7, -0.5, -1.5 ],
+        "rotation": [ 0.0, -45.0, 0.0 ],
+        "scale": [ 0.1, 0.1, 0.1 ],
+        "fixed": true,
+        "balloonIndex": 0.0
+    },
+
+
+    "ui": {
+        "Countdown": {
+            "position": [ 1580.0, 360.0, 1.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 1.0, 1.0, 0.0 ]
+        },
+        "TimerFrame": {
+            "position": [ 120.0, 120.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 0.7, 0.7, 0.7 ]
+        },
+        "TimeNumber": {
+            "position": [ 120.0, 120.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 0.7, 0.7, 0.7 ]
+        },
+        "HeightMeter": {
+            "position": [ 1210.0, 360.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 0.7, 0.7, 0.7 ]
+        },
+        "PlaySceneKeyGuide": {
+            "position": [ 1030.0, 620.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 2.0, 2.0, 0.0 ]
+        },
+        "BalloonFrame": {
+            "position": [ 130.0, 590.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "BalloonHP": {
+            "position": [ 130.0, 720.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        "HP": {
+            "position": [ 380.0, 620.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 0.6, 0.6, 0.6 ]
+        },
+        "Fade": {
+            "position": [ 0.0, 0.0, 0.0 ],
+            "rotation": [ 0.0, 0.0, 0.0 ],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        }
+    },
+
+    "camera": {
+        "type": "Fixed",
+        "direction": [ 0.0, 0.0, -1.0 ],
+        "rotation": [ 10.0, 30.0, 0.0 ]
+    }
+}

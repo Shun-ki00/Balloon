@@ -5,18 +5,17 @@
 #include "Game/Buffers.h"
 
 
+// アップデートの種類
+enum class UpdateStrategy
+{
+    MAP,
+    UPDATE_SUB_RESOURCE,
+};
+
+
 template<typename T>
 class ConstantBuffer {
     static_assert(std::is_trivially_copyable_v<T>, "ConstantBuffer<T>: T must be trivially copyable");
-
-public:
-
-    // アップデートの種類
-    enum class UpdateStrategy 
-    {
-        MAP,
-        UPDATE_SUB_RESOURCE,
-    };
 
 public:
 
