@@ -588,6 +588,18 @@
     <ClInclude Include="Game\Parameters\ParameterBuffers.h">
       <Filter>Game\Parameters</Filter>
     </ClInclude>
+    <ClInclude Include="Game\UIObjects\HeightMeterUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\MeterUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\CountdownUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\TimeUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -895,6 +907,18 @@
     </ClCompile>
     <ClCompile Include="Game\States\Player\PlayerSitState.cpp">
       <Filter>Game\States\ObjectStates\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\HeightMeterUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\MeterUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\CountdownUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\TimeUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

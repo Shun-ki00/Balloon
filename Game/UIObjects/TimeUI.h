@@ -5,7 +5,7 @@ class Transform;
 class CommonResources;
 class UIRenderableObject;
 
-class TimeFrameUI : public UIObject
+class TimeUI : public UIObject
 {
 public:
 	// オブジェクトのアクティブ設定
@@ -27,13 +27,13 @@ public:
 public:
 
 	// コンストラクタ
-	TimeFrameUI(IObject* parent, IObject::ObjectID objectID,
+	TimeUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
 		const DirectX::SimpleMath::Vector3& scale);
 
 	// デストラクタ
-	~TimeFrameUI() override = default;
+	~TimeUI() override = default;
 
 	// 初期化する
 	void Initialize() override;
@@ -45,6 +45,11 @@ public:
 	void Update(const float& elapsedTime) override;
 	// 後処理を行う
 	void Finalize() override;
+
+private:
+
+	// 時間を設定する
+	void SplitTimeToDigits();
 
 private:
 
@@ -64,5 +69,8 @@ private:
 	std::unique_ptr<Transform> m_transform;
 	// 描画オブジェクト
 	std::unique_ptr<UIRenderableObject> m_renderableObject;
+
+	// 現在の時間
+	float m_currentTime;
 
 };

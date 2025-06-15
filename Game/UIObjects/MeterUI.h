@@ -5,7 +5,7 @@ class Transform;
 class CommonResources;
 class UIRenderableObject;
 
-class TimeFrameUI : public UIObject
+class MeterUI : public UIObject
 {
 public:
 	// オブジェクトのアクティブ設定
@@ -27,13 +27,13 @@ public:
 public:
 
 	// コンストラクタ
-	TimeFrameUI(IObject* parent, IObject::ObjectID objectID,
+	MeterUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
 		const DirectX::SimpleMath::Vector3& scale);
 
 	// デストラクタ
-	~TimeFrameUI() override = default;
+	~MeterUI() override = default;
 
 	// 初期化する
 	void Initialize() override;
@@ -59,7 +59,7 @@ private:
 	IObject::ObjectID m_objectID;
 	// 親オブジェクト
 	IObject* m_parent;
-
+	
 	// Transform
 	std::unique_ptr<Transform> m_transform;
 	// 描画オブジェクト

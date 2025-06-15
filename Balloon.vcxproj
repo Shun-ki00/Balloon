@@ -275,9 +275,12 @@
     <ClInclude Include="Game\UIObjects\BalloonFrameUI.h" />
     <ClInclude Include="Game\UIObjects\BalloonGaugeUI.h" />
     <ClInclude Include="Game\UIObjects\BalloonHPUI.h" />
+    <ClInclude Include="Game\UIObjects\CountdownUI.h" />
+    <ClInclude Include="Game\UIObjects\HeightMeterUI.h" />
     <ClInclude Include="Game\UIObjects\HPFrameUI.h" />
     <ClInclude Include="Game\UIObjects\HPGaugeUI.h" />
     <ClInclude Include="Game\UIObjects\HPUI.h" />
+    <ClInclude Include="Game\UIObjects\MeterUI.h" />
     <ClInclude Include="Game\UIObjects\PLayerIconUI.h" />
     <ClInclude Include="Game\UIObjects\PlaySceneKeysGuideUI.h" />
     <ClInclude Include="Game\UIObjects\ResultSceneButtons.h" />
@@ -288,6 +291,7 @@
     <ClInclude Include="Game\UIObjects\StartTextUI.h" />
     <ClInclude Include="Game\UIObjects\ResultTextUI.h" />
     <ClInclude Include="Game\UIObjects\TimeFrameUI.h" />
+    <ClInclude Include="Game\UIObjects\TimeUI.h" />
     <ClInclude Include="Game\UIObjects\TitleLogoUI.h" />
     <ClInclude Include="Game\UIObject\UIObject.h" />
     <ClInclude Include="Game\Visitor\CollisionVisitor.h" />
@@ -398,9 +402,12 @@
     <ClCompile Include="Game\UIObjects\BalloonFrameUI.cpp" />
     <ClCompile Include="Game\UIObjects\BalloonGaugeUI.cpp" />
     <ClCompile Include="Game\UIObjects\BalloonHPUI.cpp" />
+    <ClCompile Include="Game\UIObjects\CountdownUI.cpp" />
+    <ClCompile Include="Game\UIObjects\HeightMeterUI.cpp" />
     <ClCompile Include="Game\UIObjects\HPFrameUI.cpp" />
     <ClCompile Include="Game\UIObjects\HPGaugeUI.cpp" />
     <ClCompile Include="Game\UIObjects\HPUI.cpp" />
+    <ClCompile Include="Game\UIObjects\MeterUI.cpp" />
     <ClCompile Include="Game\UIObjects\PLayerIconUI.cpp" />
     <ClCompile Include="Game\UIObjects\PlaySceneKeysGuideUI.cpp" />
     <ClCompile Include="Game\UIObjects\ResultSceneButtons.cpp" />
@@ -411,6 +418,7 @@
     <ClCompile Include="Game\UIObjects\StartTextUI.cpp" />
     <ClCompile Include="Game\UIObjects\ResultTextsUI.cpp" />
     <ClCompile Include="Game\UIObjects\TimeFrameUI.cpp" />
+    <ClCompile Include="Game\UIObjects\TimeUI.cpp" />
     <ClCompile Include="Game\UIObjects\TitleLogoUI.cpp" />
     <ClCompile Include="Game\UIObject\UIObject.cpp" />
     <ClCompile Include="Game\Visitor\CollisionVisitor.cpp" />

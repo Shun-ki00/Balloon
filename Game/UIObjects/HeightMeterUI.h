@@ -1,11 +1,12 @@
 #pragma once
 #include "Game/UIObject/UIObject.h"
+#include "Interface/IComposite.h"
 
 class Transform;
 class CommonResources;
 class UIRenderableObject;
 
-class TimeFrameUI : public UIObject
+class HeightMeterUI : public UIObject , public IComposite
 {
 public:
 	// オブジェクトのアクティブ設定
@@ -24,16 +25,21 @@ public:
 	// 親オブジェクトを取得する
 	IObject* GetParent() const override { return m_parent; }
 
+	// オブジェクトをアタッチする
+	void Attach(std::unique_ptr<IObject> object) override;
+	// オブジェクトを削除する
+	void Detach(std::unique_ptr<IObject> object) override;
+
 public:
 
 	// コンストラクタ
-	TimeFrameUI(IObject* parent, IObject::ObjectID objectID,
+	HeightMeterUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
 		const DirectX::SimpleMath::Vector3& scale);
 
 	// デストラクタ
-	~TimeFrameUI() override = default;
+	~HeightMeterUI() override = default;
 
 	// 初期化する
 	void Initialize() override;
@@ -59,7 +65,9 @@ private:
 	IObject::ObjectID m_objectID;
 	// 親オブジェクト
 	IObject* m_parent;
-
+	// 子オブジェクト
+	std::vector<std::unique_ptr<IObject>> m_childs;
+	
 	// Transform
 	std::unique_ptr<Transform> m_transform;
 	// 描画オブジェクト

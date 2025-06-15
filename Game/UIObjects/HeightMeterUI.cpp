@@ -1,19 +1,21 @@
 // ============================================
 // 
-// ファイル名: PLayerIconUI.cpp
-// 概要: プレイヤーアイコンUIオブジェクト
+// ファイル名: HeightMeterUI.cpp
+// 概要: リザルトシーンキーガイドUIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
 // ============================================
 #include "pch.h"
-#include "Game/UIObjects/PLayerIconUI.h"
+#include "Game/UIObjects/HeightMeterUI.h"
 #include "Framework/CommonResources.h"
 // リソース
 #include "Framework/Resources/Resources.h"
 #include "Framework/Resources/ResourceKeys.h"
 // レンダリングオブジェクト
 #include "Game/RenderableObjects/UIRenderableObject .h"
+// ファクトリー
+#include "Game/Factorys/UIFactory.h"
 
 /// <summary>
 /// コンストラクタ
@@ -25,7 +27,7 @@
 /// <param name="rotation">回転</param>
 /// <param name="scale">スケール</param>
 /// <param name="messageID">メッセージID</param>
-PLayerIconUI::PLayerIconUI(IObject* parent, IObject::ObjectID objectID,
+HeightMeterUI::HeightMeterUI(IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
 	const DirectX::SimpleMath::Vector3& scale)
@@ -59,63 +61,72 @@ PLayerIconUI::PLayerIconUI(IObject* parent, IObject::ObjectID objectID,
 /// <summary>
 /// 初期化処理
 /// </summary>
-void PLayerIconUI::Initialize()
+void HeightMeterUI::Initialize()
 {
 
-	// テクスチャサイズを取得する
-	float width, height;
-	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::PlayerIcon, width, height);
+	// 高さ用のメーターを作成
+	this->Attach(UIFactory::CreateMeterUI(
+		this, IObject::ObjectID::METER_UI,
+		DirectX::SimpleMath::Vector3::Zero,
+		DirectX::SimpleMath::Vector3::Zero,
+		DirectX::SimpleMath::Vector3::One
+	));
+	// プレイヤーアイコンを作成
+	this->Attach(UIFactory::CreatePlayerIconUI(
+		this, IObject::ObjectID::PLAYER_ICON_UI,
+		{-80.0f ,0.0f,0.0f},
+		DirectX::SimpleMath::Vector3::Zero,
+		DirectX::SimpleMath::Vector3::One * 0.5f
+	));
 
-	UIVertexBuffer vertexBuffer =
-	{
-		{m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y ,0.0f ,0.0f},
-		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y , 0.0f},
-		{width * 0.3f , height * 0.3f},
-		{0.0f ,0.0f , 1.0f ,1.0f },
-		{1.0f ,1.0f ,1.0f ,1.0f },
-		{0.0f ,0.0f ,1.0f ,0.0f}
-	};
-
-	// 描画オブジェクト作成
-	m_renderableObject = std::make_unique<UIRenderableObject>();
-	// 初期化
-	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::PlayerIcon, TextureKeyID::Rule,PS_ID::UI_PS);
-
-	// 描画管理者に渡す
-	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
 }
 
 /// <summary>
 /// 更新処理
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
-void PLayerIconUI::Update(const float& elapsedTime)
+void HeightMeterUI::Update(const float& elapsedTime)
 {
 	// Transformの更新処理
 	m_transform->Update();
-
-	// ワールド座標を設定
-	m_renderableObject->SetPosition(m_transform->GetWorldPosition());
-	// スケールを設定
-	m_renderableObject->SetScale({ m_transform->GetWorldScale().x , m_transform->GetWorldScale().y });
-
-	// 描画オブジェクト更新処理
-	m_renderableObject->Update(
-		m_commonResources->GetDeviceResources()->GetD3DDeviceContext(),
-		m_transform->GetWorldMatrix());
+	
+	// 子オブジェクトの更新処理
+	for (const auto& child : m_childs)
+	{
+		child->Update(elapsedTime);
+	}
 }
 
 /// <summary>
 /// 終了処理
 /// </summary>
-void PLayerIconUI::Finalize() {}
+void HeightMeterUI::Finalize() {}
+
+/// <summary>
+/// オブジェクトをアタッチする
+/// </summary>
+/// <param name="object">追加オブジェクト</param>
+void HeightMeterUI::Attach(std::unique_ptr<IObject> object)
+{
+	m_childs.push_back(std::move(object));
+}
+
+/// <summary>
+/// オブジェクトを削除する
+/// </summary>
+/// <param name="object">削除するオブジェクト</param>
+void HeightMeterUI::Detach(std::unique_ptr<IObject> object)
+{
+
+}
+
 
 
 /// <summary>
 /// メッセンジャーを通知する
 /// </summary>
 /// <param name="messageData">メッセージデータ</param>
-void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
+void HeightMeterUI::OnMessegeAccepted(Message::MessageData messageData)
 {
 	UNREFERENCED_PARAMETER(messageData);
 }
@@ -125,7 +136,7 @@ void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
 /// </summary>
 /// <param name="type">キータイプ</param>
 /// <param name="key">キー</param>
-void PLayerIconUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
+void HeightMeterUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(type);
 	UNREFERENCED_PARAMETER(key);

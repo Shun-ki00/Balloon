@@ -23,7 +23,7 @@
 #include "Game/Factorys/EffectFactory.h"
 #include "Game/Message/ObjectMessenger.h"
 
-#include "Game/UIObjects/TitleLogoUI.h"
+#include "Game/Factorys/SceneFactory.h"
 
 
 PlayScene::PlayScene()
@@ -47,15 +47,9 @@ void PlayScene::Initialize()
 
 	m_root->Initialize();
 
-	m_root->Attach(PlayerFactory::CreatePlayer(m_root,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Up , DirectX::SimpleMath::Vector3::One * 0.1f,true));
-
-
-	std::unique_ptr<IObject> logo = std::make_unique<TitleLogoUI>(m_root, nullptr, IObject::ObjectID::NODE_BASE,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Quaternion::Identity, DirectX::SimpleMath::Vector3::One);
-	logo->Initialize();
-
-	 m_root->Attach(std::move(logo));
+	// オブジェクトを作成する
+	SceneFactory::CreatePlayScene(m_root);
+	
 }
 
 void PlayScene::Start()

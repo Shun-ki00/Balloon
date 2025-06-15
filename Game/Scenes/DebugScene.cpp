@@ -75,9 +75,12 @@ void DebugScene::Initialize()
 	// バルーンのゲージの作成
 	m_root->Attach(UIFactory::CreateBalloonHPUI(m_root, IObject::ObjectID::HP_UI,
 		DirectX::SimpleMath::Vector3(1280.0f / 2.0f, 720.0f / 2.0f + 130, 0.0f), DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-	// プレイヤーアイコンの作成
-	m_root->Attach(UIFactory::CreatePlayerIconUI(m_root, IObject::ObjectID::PLAYER_ICON_UI,
-		DirectX::SimpleMath::Vector3(1280.0f / 2.0f + 400.0f, 720.0f / 2.0f + 130, 0.0f), DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.4f));
+
+	m_root->Attach(UIFactory::CreateHeightMeterUI(m_root, IObject::ObjectID::PLAYER_ICON_UI,
+		DirectX::SimpleMath::Vector3(1280.0f / 2.0f + 400.0f, 720.0f / 2.0f + 130, 0.0f), DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.4f)
+	);
+
+	
 
 
 

@@ -53,6 +53,51 @@ void SceneFactory::CreateTitleScene(Root* root)
 }
 
 
+
+
+void SceneFactory::CreatePlayScene(Root* root)
+{
+
+	// プレイヤー （固定）0
+	root->Attach(PlayerFactory::CreatePlayer(root,
+		{ 2.7f , -0.5f ,-1.5f }, { 0.0f ,-45.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, true));
+
+	// 敵　複数
+
+	// カウントダウンUI
+	root->Attach(UIFactory::CreateCountdownUI(root, IObject::ObjectID::COUNTDOWN_UI,
+		{ 1280.0f + 300.0f  , 720.0f / 2.0f,1.0f }, DirectX::SimpleMath::Vector3::Zero, {1.0f ,1.0f ,0.0f}));
+	// タイマーUI
+	root->Attach(UIFactory::CreateTimerFrameUI(root, IObject::ObjectID::TIME_FRAME_UI,
+		{ 120.0f , 120.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.7f));
+	// タイムナンバーUI
+	root->Attach(UIFactory::CreateTimeUI(root, IObject::ObjectID::TIME_NUMBER_UI,
+		{ 120.0f , 120.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.7f));
+	// プレイヤーの高さUI
+	root->Attach(UIFactory::CreateHeightMeterUI(root, IObject::ObjectID::HEIGHT_METER_UI,
+		{ 1280.0f - 70.0f , 720.0f / 2.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.7f));
+	// キー操作説明UI
+	root->Attach(UIFactory::CreatePlaySceneKeyGuideUI(root, IObject::ObjectID::HEIGHT_METER_UI,
+		{ 1280.0f - 250.0f , 720.0f - 100.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, {2.0f , 2.0f,0.0f}));
+	// 風船の大きさゲージフレームUI
+	root->Attach(UIFactory::CreateBalloonFrameUI(root, IObject::ObjectID::BALLOON_HP_FRAME_UI,
+		DirectX::SimpleMath::Vector3(130.0f, 590.0f, 0.0f), DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.5f
+	));
+	// 風船の大きさゲージUI
+	root->Attach(UIFactory::CreateBalloonHPUI(root, IObject::ObjectID::BALLOON_HP_UI,
+		{ 130.0f , 590.0f + 130.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+
+	// 体力ゲージUI
+	root->Attach(UIFactory::CreateHPUI(root, IObject::ObjectID::HP_UI,
+		{ 380.0f , 620.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.6f));
+	// フェード
+	/*root->Attach(UIFactory::CreateFade(root, IObject::ObjectID::FADE,
+		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::One));*/
+
+}
+
+
+
 /// <summary>
 /// ゲームクリアシーンのオブジェクトを作成
 /// </summary>

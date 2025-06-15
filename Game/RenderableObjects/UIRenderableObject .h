@@ -27,7 +27,7 @@ public:
         m_uiVertexBuffer.rect.x = offset.x; m_uiVertexBuffer.rect.y = offset.y; }
     // テクスチャの分割数を設定
     void SetUvScale(DirectX::SimpleMath::Vector2 scale) {
-        m_uiVertexBuffer.rect.z = scale.x; m_uiVertexBuffer.rect.x = scale.y;
+        m_uiVertexBuffer.rect.z = scale.x; m_uiVertexBuffer.rect.w = scale.y;
     }
     // テクスチャのサイズを設定
     void SetTextureSize(DirectX::SimpleMath::Vector2 size) { m_uiVertexBuffer.size = size; }

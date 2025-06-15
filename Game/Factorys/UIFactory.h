@@ -9,16 +9,68 @@ class UIFactory
 {
 public:
 
+	// ==== static UIオブジェクト ====
+
+	
+
 	// フェードオブジェクト
 	static std::unique_ptr<IObject> CreateFade(
-		IObject* parent , const IObject::ObjectID& objectID,
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+	
+
+	// ==== タイトルシーン ====
+
+	// タイトルロゴ
+	static std::unique_ptr<IObject> CreateTitleLogoUI(
+		IObject* parent, const IObject::ObjectID& objectID,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
 		const DirectX::SimpleMath::Vector3& initialScale);
 
-	// タイトルロゴ
-	static std::unique_ptr<IObject> CreateTitleLogoUI(
-		IObject* parent , const IObject::ObjectID& objectID,
+	// スタートテキスト
+	static std::unique_ptr<IObject> CreateStartTextUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+
+	// ==== プレイシーン ====
+
+	// プレイシーン操作説明
+	static std::unique_ptr<IObject> CreatePlaySceneKeyGuideUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// カウントダウン
+	static std::unique_ptr<IObject> CreateCountdownUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// タイマーフレーム
+	static std::unique_ptr<IObject> CreateTimerFrameUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// タイム
+	static std::unique_ptr<IObject> CreateTimeUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// メータ　（高さ）
+	static std::unique_ptr<IObject> CreateMeterUI(
+		IObject* parent, const IObject::ObjectID& objectID,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
 		const DirectX::SimpleMath::Vector3& initialScale);
@@ -38,42 +90,7 @@ public:
 		const DirectX::SimpleMath::Vector3& initialScale);
 
 
-	// スタートテキスト
-	static std::unique_ptr<IObject> CreateStartTextUI(
-		IObject* parent , const IObject::ObjectID& objectID,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale);
-
-	// リザルトテキスト
-	static std::unique_ptr<IObject> CreateResultTextUI(
-		IObject* parent, const IObject::ObjectID& objectID,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale,
-		const ResultTextUI::TextID& textId);
-
-	// リザルトシーンのボタン
-	static std::unique_ptr<IObject> CreateResultButtonText(
-		IObject* parent , const IObject::ObjectID& objectID,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale,
-		const ResultButtonTextUI::TextID& textId);
-
-	// リザルトシーンのボタンシステム
-	static std::unique_ptr<IObject> CreateResultSceneButtons(
-		IObject* parent, const IObject::ObjectID& objectID,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale);
-
-	// リザルトシーンキーガイド
-	static std::unique_ptr<IObject> CreateResultSceneKeyGuideUI(
-		IObject* parent, const IObject::ObjectID& objectID,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale);
+	// ==== HP ゲージ ====
 
 	// HP
 	static std::unique_ptr<IObject> CreateHPUI(
@@ -95,7 +112,9 @@ public:
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
 		const DirectX::SimpleMath::Vector3& initialScale);
+	
 
+	// ==== 風船　大きさゲージ ====
 
 	// 風船HP
 	static std::unique_ptr<IObject> CreateBalloonHPUI(
@@ -117,7 +136,39 @@ public:
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
 		const DirectX::SimpleMath::Vector3& initialScale);
+	
 
+	// ==== リザルトシーン ====
+
+	// リザルトテキスト
+	static std::unique_ptr<IObject> CreateResultTextUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale,
+		const ResultTextUI::TextID& textId);
+
+	// リザルトシーンのボタン
+	static std::unique_ptr<IObject> CreateResultButtonText(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale,
+		const ResultButtonTextUI::TextID& textId);
+
+	// リザルトシーンのボタンシステム
+	static std::unique_ptr<IObject> CreateResultSceneButtons(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// リザルトシーンキーガイド
+	static std::unique_ptr<IObject> CreateResultSceneKeyGuideUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
 
 private:
 	// 回転ベクトルをクォータニオンに変換する

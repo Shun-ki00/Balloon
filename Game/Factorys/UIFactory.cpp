@@ -20,6 +20,12 @@
 #include "Game/UIObjects/BalloonFrameUI.h"
 #include "Game/UIObjects/BalloonGaugeUI.h"
 #include "Game/UIObjects/PLayerIconUI.h"
+#include "Game/UIObjects/HeightMeterUI.h"
+#include "Game/UIObjects/MeterUI.h"
+#include "Game/UIObjects/PlaySceneKeysGuideUI.h"
+#include "Game/UIObjects/TimeFrameUI.h"
+#include "Game/UIObjects/CountdownUI.h"
+#include "Game/UIObjects/TimeUI.h"
 
 
 /// <summary>
@@ -124,7 +130,42 @@ std::unique_ptr<IObject> UIFactory::CreatePlayerIconUI(
 }
 
 /// <summary>
-/// タイトルロゴUIオブジェクトの作成
+/// メーターの作成
+/// </summary>
+/// <param name="root">ルート</param>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+/// <returns>フェードオブジェクト</returns>
+std::unique_ptr<IObject> UIFactory::CreateMeterUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<MeterUI> titleLogo = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	titleLogo.reset(new MeterUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	titleLogo->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::METER_UI, titleLogo->GetObjectNumber(), titleLogo.get());
+	// インスタンスを返す
+	return std::move(titleLogo);
+}
+
+
+
+/// <summary>
+/// 高さメーターUIオブジェクトの作成
 /// </summary>
 /// <param name="root">ルート</param>
 /// <param name="parent">親オブジェクト</param>
@@ -140,18 +181,18 @@ std::unique_ptr<IObject> UIFactory::CreateHeightMeterUI(
 	const DirectX::SimpleMath::Vector3& initialRotation,
 	const DirectX::SimpleMath::Vector3& initialScale)
 {
-	std::unique_ptr<TitleLogoUI> titleLogo = nullptr;
+	std::unique_ptr<HeightMeterUI> titleLogo = nullptr;
 
 	// 回転をクォータニオンに変換
 	DirectX::SimpleMath::Quaternion rotation =
 		UIFactory::ConvertToYawPitchRoll(initialRotation);
 
 	// インスタンス生成
-	titleLogo.reset(new TitleLogoUI(Root::GetInstance(), parent, objectID, initialPosition, rotation, initialScale));
+	titleLogo.reset(new HeightMeterUI(parent, objectID, initialPosition, rotation, initialScale));
 	// 初期化処理
 	titleLogo->Initialize();
 	// メッセンジャーに登録
-	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::TITLE_LOGO_UI, titleLogo->GetObjectNumber(), titleLogo.get());
+	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::HEIGHT_METER_UI, titleLogo->GetObjectNumber(), titleLogo.get());
 	// インスタンスを返す
 	return std::move(titleLogo);
 }
@@ -189,6 +230,41 @@ std::unique_ptr<IObject> UIFactory::CreateStartTextUI(
 	// インスタンスを返す
 	return std::move(startText);
 }
+
+
+/// <summary>
+/// プレイシーン操作説明UIオブジェクトの作成
+/// </summary>
+/// <param name="root">ルート</param>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+/// <returns>フェードオブジェクト</returns>
+std::unique_ptr<IObject> UIFactory::CreatePlaySceneKeyGuideUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<PlaySceneKeysGuideUI> startText = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	startText.reset(new PlaySceneKeysGuideUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	startText->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, startText->GetObjectNumber(), startText.get());
+	// インスタンスを返す
+	return std::move(startText);
+}
+
 
 /// <summary>
 /// リザルトシーンのテキスト
@@ -531,6 +607,129 @@ std::unique_ptr<IObject> UIFactory::CreateBalloonGaugeUI(
 	// インスタンスを返す
 	return std::move(resultSceneKeyGuide);
 }
+
+
+/// <summary>
+/// タイマーフレームオブジェクト作成
+/// </summary>
+/// <param name="root">ルート</param>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+/// <returns>風船HP　ゲージ</returns>
+std::unique_ptr<IObject> UIFactory::CreateTimerFrameUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<TimeFrameUI> resultSceneKeyGuide = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	resultSceneKeyGuide.reset(new TimeFrameUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	resultSceneKeyGuide->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, resultSceneKeyGuide->GetObjectNumber(), resultSceneKeyGuide.get());
+	// インスタンスを返す
+	return std::move(resultSceneKeyGuide);
+}
+
+/// <summary>
+/// カウントダウンオブジェクト作成
+/// </summary>
+/// <param name="root">ルート</param>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+std::unique_ptr<IObject> UIFactory::CreateCountdownUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<CountdownUI> resultSceneKeyGuide = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	resultSceneKeyGuide.reset(new CountdownUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	resultSceneKeyGuide->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, resultSceneKeyGuide->GetObjectNumber(), resultSceneKeyGuide.get());
+	// インスタンスを返す
+	return std::move(resultSceneKeyGuide);
+}
+
+
+
+/// <summary>
+/// カウントダウンオブジェクト作成
+/// </summary>
+/// <param name="root">ルート</param>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+std::unique_ptr<IObject> UIFactory::CreateTimeUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<TimeUI> resultSceneKeyGuide = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	resultSceneKeyGuide.reset(new TimeUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	resultSceneKeyGuide->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, resultSceneKeyGuide->GetObjectNumber(), resultSceneKeyGuide.get());
+	// インスタンスを返す
+	return std::move(resultSceneKeyGuide);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

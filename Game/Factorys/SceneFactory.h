@@ -14,6 +14,7 @@ public:
 	// ステージセレクトの作成
 
 	// プレイシーンの作成
+	static void CreatePlayScene(Root* root);
 
 
 	// ゲームクリアシーンの作成

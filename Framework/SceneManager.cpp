@@ -18,6 +18,7 @@
 #include "Game/Scenes/DebugScene.h"
 #include "Game/Scenes/TitleScene.h"
 #include "Game/Scenes/GameClearScene.h"
+#include "Game/Scenes/PlayScene.h"
 
 /// <summary>
 /// コンストラクタ
@@ -45,7 +46,7 @@ void SceneManager::Initialize()
 	KeyboardMessenger::GetInstance()->Begin();
 
 	// 初期シーンの作成
-	m_currentScene = std::make_unique<TitleScene>();
+	m_currentScene = std::make_unique<PlayScene>();
 	// 初期シーンの初期化
 	m_currentScene->Initialize();
 

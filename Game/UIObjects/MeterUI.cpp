@@ -1,19 +1,22 @@
 // ============================================
 // 
-// ファイル名: PLayerIconUI.cpp
-// 概要: プレイヤーアイコンUIオブジェクト
+// ファイル名: HeightMeterUI.cpp
+// 概要: リザルトシーンキーガイドUIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
 // ============================================
 #include "pch.h"
-#include "Game/UIObjects/PLayerIconUI.h"
+#include "Game/UIObjects/MeterUI.h"
 #include "Framework/CommonResources.h"
 // リソース
 #include "Framework/Resources/Resources.h"
 #include "Framework/Resources/ResourceKeys.h"
 // レンダリングオブジェクト
 #include "Game/RenderableObjects/UIRenderableObject .h"
+// ファクトリー
+#include "Game/Factorys/PlayerFactory.h"
+#include "Game/Factorys/EnemyFactory.h"
 
 /// <summary>
 /// コンストラクタ
@@ -25,7 +28,7 @@
 /// <param name="rotation">回転</param>
 /// <param name="scale">スケール</param>
 /// <param name="messageID">メッセージID</param>
-PLayerIconUI::PLayerIconUI(IObject* parent, IObject::ObjectID objectID,
+MeterUI::MeterUI(IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
 	const DirectX::SimpleMath::Vector3& scale)
@@ -59,18 +62,19 @@ PLayerIconUI::PLayerIconUI(IObject* parent, IObject::ObjectID objectID,
 /// <summary>
 /// 初期化処理
 /// </summary>
-void PLayerIconUI::Initialize()
+void MeterUI::Initialize()
 {
-
 	// テクスチャサイズを取得する
 	float width, height;
-	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::PlayerIcon, width, height);
+	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::HeightMeter, width, height);
 
+	// 初期頂点バッファデータ
 	UIVertexBuffer vertexBuffer =
 	{
-		{m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y ,0.0f ,0.0f},
+		{m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y ,
+		m_transform->GetLocalPosition().z ,0.0f},
 		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y , 0.0f},
-		{width * 0.3f , height * 0.3f},
+		{width , height},
 		{0.0f ,0.0f , 1.0f ,1.0f },
 		{1.0f ,1.0f ,1.0f ,1.0f },
 		{0.0f ,0.0f ,1.0f ,0.0f}
@@ -79,7 +83,7 @@ void PLayerIconUI::Initialize()
 	// 描画オブジェクト作成
 	m_renderableObject = std::make_unique<UIRenderableObject>();
 	// 初期化
-	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::PlayerIcon, TextureKeyID::Rule,PS_ID::UI_PS);
+	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::HeightMeter, TextureKeyID::Rule,PS_ID::UI_PS);
 
 	// 描画管理者に渡す
 	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
@@ -89,7 +93,7 @@ void PLayerIconUI::Initialize()
 /// 更新処理
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
-void PLayerIconUI::Update(const float& elapsedTime)
+void MeterUI::Update(const float& elapsedTime)
 {
 	// Transformの更新処理
 	m_transform->Update();
@@ -108,14 +112,14 @@ void PLayerIconUI::Update(const float& elapsedTime)
 /// <summary>
 /// 終了処理
 /// </summary>
-void PLayerIconUI::Finalize() {}
+void MeterUI::Finalize() {}
 
 
 /// <summary>
 /// メッセンジャーを通知する
 /// </summary>
 /// <param name="messageData">メッセージデータ</param>
-void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
+void MeterUI::OnMessegeAccepted(Message::MessageData messageData)
 {
 	UNREFERENCED_PARAMETER(messageData);
 }
@@ -125,7 +129,7 @@ void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
 /// </summary>
 /// <param name="type">キータイプ</param>
 /// <param name="key">キー</param>
-void PLayerIconUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
+void MeterUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(type);
 	UNREFERENCED_PARAMETER(key);

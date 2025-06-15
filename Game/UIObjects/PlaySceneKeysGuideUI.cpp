@@ -28,18 +28,17 @@
 /// <param name="rotation">回転</param>
 /// <param name="scale">スケール</param>
 /// <param name="messageID">メッセージID</param>
-PlaySceneKeysGuideUI::PlaySceneKeysGuideUI(IObject* root, IObject* parent, IObject::ObjectID objectID,
+PlaySceneKeysGuideUI::PlaySceneKeysGuideUI(
+	IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
-	const DirectX::SimpleMath::Vector3& scale,
-	Message::MessageID messageID)
+	const DirectX::SimpleMath::Vector3& scale)
 	:
 	// 基底クラス
 	UIObject(),
 	m_isActive(true),
-	m_objectNumber(root->GetObjectNumber() + UIObject::GetNumber()),
+	m_objectNumber(Root::GetInstance()->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
-	m_messageID(messageID),
 	m_parent(parent),
 	m_transform{}
 {
@@ -68,12 +67,15 @@ void PlaySceneKeysGuideUI::Initialize()
 {
 	
 
+	// テクスチャサイズを取得する
+	float width, height;
+	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::PlaySceneKeysGuide, width, height);
 
 	UIVertexBuffer vertexBuffer =
 	{
-		{1280.0f / 2.0f , 720.0f / 2.0f ,0.0f ,0.0f},
-		{0.5f ,0.5f , 0.0f},
-		{1280.0f , 720.0f},
+		{m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y ,0.0f ,0.0f},
+		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y , 0.0f},
+		{width * 0.3f , height * 0.3f},
 		{0.0f ,0.0f , 1.0f ,1.0f },
 		{1.0f ,1.0f ,1.0f ,1.0f },
 		{0.0f ,0.0f ,1.0f ,0.0f}

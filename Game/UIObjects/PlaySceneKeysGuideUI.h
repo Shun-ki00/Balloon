@@ -27,11 +27,10 @@ public:
 public:
 
 	// コンストラクタ
-	PlaySceneKeysGuideUI(IObject* root, IObject* parent, IObject::ObjectID objectID,
+	PlaySceneKeysGuideUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale,
-		Message::MessageID messageID);
+		const DirectX::SimpleMath::Vector3& scale);
 
 	// デストラクタ
 	~PlaySceneKeysGuideUI() override = default;
@@ -60,8 +59,7 @@ private:
 	IObject::ObjectID m_objectID;
 	// 親オブジェクト
 	IObject* m_parent;
-	// メッセージID
-	Message::MessageID m_messageID;
+
 
 	// Transform
 	std::unique_ptr<Transform> m_transform;

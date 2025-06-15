@@ -1,13 +1,13 @@
 // ============================================
 // 
-// ファイル名: PLayerIconUI.cpp
+// ファイル名: TimeUI.cpp
 // 概要: プレイヤーアイコンUIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
 // ============================================
 #include "pch.h"
-#include "Game/UIObjects/PLayerIconUI.h"
+#include "Game/UIObjects/TimeUI.h"
 #include "Framework/CommonResources.h"
 // リソース
 #include "Framework/Resources/Resources.h"
@@ -25,7 +25,7 @@
 /// <param name="rotation">回転</param>
 /// <param name="scale">スケール</param>
 /// <param name="messageID">メッセージID</param>
-PLayerIconUI::PLayerIconUI(IObject* parent, IObject::ObjectID objectID,
+TimeUI::TimeUI(IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
 	const DirectX::SimpleMath::Vector3& scale)
@@ -59,19 +59,21 @@ PLayerIconUI::PLayerIconUI(IObject* parent, IObject::ObjectID objectID,
 /// <summary>
 /// 初期化処理
 /// </summary>
-void PLayerIconUI::Initialize()
+void TimeUI::Initialize()
 {
+	// 時間を初期化
+	m_currentTime = 60.0f;
 
 	// テクスチャサイズを取得する
 	float width, height;
-	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::PlayerIcon, width, height);
+	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::Numbers, width, height);
 
 	UIVertexBuffer vertexBuffer =
 	{
 		{m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y ,0.0f ,0.0f},
 		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y , 0.0f},
-		{width * 0.3f , height * 0.3f},
-		{0.0f ,0.0f , 1.0f ,1.0f },
+		{width / 4.0f , height},
+		{1.0f ,0.0f , 1.0f ,1.0f },
 		{1.0f ,1.0f ,1.0f ,1.0f },
 		{0.0f ,0.0f ,1.0f ,0.0f}
 	};
@@ -79,7 +81,7 @@ void PLayerIconUI::Initialize()
 	// 描画オブジェクト作成
 	m_renderableObject = std::make_unique<UIRenderableObject>();
 	// 初期化
-	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::PlayerIcon, TextureKeyID::Rule,PS_ID::UI_PS);
+	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::Numbers, TextureKeyID::Rule,PS_ID::NumberUI_PS);
 
 	// 描画管理者に渡す
 	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
@@ -89,7 +91,7 @@ void PLayerIconUI::Initialize()
 /// 更新処理
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
-void PLayerIconUI::Update(const float& elapsedTime)
+void TimeUI::Update(const float& elapsedTime)
 {
 	// Transformの更新処理
 	m_transform->Update();
@@ -98,6 +100,10 @@ void PLayerIconUI::Update(const float& elapsedTime)
 	m_renderableObject->SetPosition(m_transform->GetWorldPosition());
 	// スケールを設定
 	m_renderableObject->SetScale({ m_transform->GetWorldScale().x , m_transform->GetWorldScale().y });
+
+	// 時間を更新
+	m_currentTime -= elapsedTime;
+	this->SplitTimeToDigits();
 
 	// 描画オブジェクト更新処理
 	m_renderableObject->Update(
@@ -108,14 +114,14 @@ void PLayerIconUI::Update(const float& elapsedTime)
 /// <summary>
 /// 終了処理
 /// </summary>
-void PLayerIconUI::Finalize() {}
+void TimeUI::Finalize() {}
 
 
 /// <summary>
 /// メッセンジャーを通知する
 /// </summary>
 /// <param name="messageData">メッセージデータ</param>
-void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
+void TimeUI::OnMessegeAccepted(Message::MessageData messageData)
 {
 	UNREFERENCED_PARAMETER(messageData);
 }
@@ -125,9 +131,28 @@ void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
 /// </summary>
 /// <param name="type">キータイプ</param>
 /// <param name="key">キー</param>
-void PLayerIconUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
+void TimeUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(type);
 	UNREFERENCED_PARAMETER(key);
 }
 
+void TimeUI::SplitTimeToDigits()
+{
+	// 現在の時間を整数で取得
+	int currentTime = static_cast<int>(m_currentTime);
+
+	int seconds = currentTime % 60;
+	int minutes = (currentTime / 60);
+
+	// 各桁を分解
+	float x = static_cast<float>((minutes / 10) % 10); // 分の十の位
+	float y = static_cast<float>(minutes % 10);        // 分の一の位
+
+	float z = static_cast<float>((seconds / 10) % 10); // 秒の十の位
+	float w = static_cast<float>(seconds % 10);		   // 秒の一の位
+
+	// Rectを設定
+	m_renderableObject->SetUvOffset({ x,y });
+	m_renderableObject->SetUvScale({ z,w });
+}
