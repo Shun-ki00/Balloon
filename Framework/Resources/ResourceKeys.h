@@ -39,11 +39,13 @@ enum class TextureKeyID : int
     ResultSceneKeyGuide,
     ResultButtonText,
     BalloonExplosion,
+    WoodBox,
 
     Meat,
     Wood,
     Rock,
     Cloud,
+    WoodBoxNormal,
 
     CubeMap,
     EveningCubeMap,
@@ -64,7 +66,8 @@ enum class ModelKeyID : int
     Box,
     Cloud,
     Sphere,
-    Torus
+    Torus,
+    WoodBox,
 };
 
 // ピクセルシェーダーID

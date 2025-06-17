@@ -40,7 +40,8 @@
         "ResultSceneKeyGuide": "ResultSceneKeyGuide.png",
         "ResultButtonText": "ResultButtonText.png",
         "Particle": "particle.png",
-        "BalloonExplosion": "BalloonExplosion.png"
+        "BalloonExplosion": "BalloonExplosion.png",
+        "WoodBox": "woodBox.png"
 
     },
 
@@ -49,7 +50,8 @@
         "Wood": "Sea_normal.png",
         "Rock": "Rock_normal.png",
         "Sea2": "Sea_normal.png",
-        "Cloud": "Cloud_normal.png"
+        "Cloud": "Cloud_normal.png",
+        "WoodBoxNormal": "WoodBox_normal.png"
     },
 
     "Textures_DDS": {
@@ -77,7 +79,8 @@
         "Box": "torus.cmo",
         "Cloud": "Cloud.cmo",
         "Sphere": "Sphere.cmo",
-        "Torus": "torus.cmo"
+        "Torus": "torus.cmo",
+        "WoodBox": "WoodBox.cmo"
     },
 
     "Shaders": {

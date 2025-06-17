@@ -207,7 +207,9 @@ void Renderer::ModelRender(const DirectX::SimpleMath::Matrix& viewMatrix, const 
 		IObject* object = m_objectKeys[i];
 		IRenderableObject* renderable = m_modelRenderableObjects[object];
 
-		if (object->GetIsActive() && renderable->GetIsActive())
+		bool active = this->IsHierarchyActive(object);
+
+		if (active && renderable->GetIsActive())
 		{
 			renderable->Render(m_context, m_commonStates, viewMatrix, projectionMatrix);
 		}
@@ -389,4 +391,19 @@ void Renderer::UIRender()
 	// ジオメトリシェーダーの解放
 	m_context->GSSetShader(nullptr, nullptr, 0);
 
+}
+
+
+bool Renderer::IsHierarchyActive(IObject* object)
+{
+	while (object != nullptr && object != Root::GetInstance())
+	{
+		if (!object->GetIsActive())
+			return false;
+
+		object = object->GetParent();
+	}
+
+	// Root まで到達したら、Root 自体もチェック（必要であれば）
+	return Root::GetInstance()->GetIsActive();
 }

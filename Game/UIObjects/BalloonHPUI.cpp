@@ -66,7 +66,7 @@ void BalloonHPUI::Initialize()
 	// バーの作成
 	this->Attach(UIFactory::CreateBalloonGaugeUI(
 		this, ObjectID::BALLOON_HP_GAUGE_UI,
-		{ 0.0f , -130.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.5f
+		{ 0.0f , -70.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.5f
 	));
 
 }
@@ -118,7 +118,17 @@ void BalloonHPUI::Detach(std::unique_ptr<IObject> object)
 /// <param name="messageData">メッセージデータ</param>
 void BalloonHPUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::BALLOON_SCALE:
+
+			// 風船の大きさを設定する
+			m_transform->SetLocalScale({ 0.1f + (0.6f - 0.1f) * messageData.dataFloat , 0.1f + (0.6f - 0.1f) * messageData.dataFloat , 0.0f});
+
+			break;
+		default:
+			break;
+	}
 }
 
 /// <summary>

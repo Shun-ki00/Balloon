@@ -28,7 +28,7 @@
 #include "Game/States/SceneStates/TitleMainState.h"
 
 // フェードオブジェクト番号
-const int GameOverScene::FADE_OBJECT_NUMBER = 5;
+const int GameOverScene::FADE_OBJECT_NUMBER = 6;
 
 
 /// <summary>

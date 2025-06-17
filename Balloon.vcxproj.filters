@@ -191,6 +191,9 @@
     <Filter Include="Framework\Utilities">
       <UniqueIdentifier>{9c47ba72-4442-4359-8989-db3f0116ff48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Objects\WoodBox">
+      <UniqueIdentifier>{563e5690-5f1d-4698-93ed-38a275df5243}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -618,6 +621,15 @@
     <ClInclude Include="Game\Scenes\StageSelectScene.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Game\WoodBox\WoodBox.h">
+      <Filter>Game\Objects\WoodBox</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\RenderableObjects\WoodBoxRenderableObject.h">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Factorys\WoodBoxFactory.h">
+      <Filter>Game\Factorys\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -949,6 +961,15 @@
     </ClCompile>
     <ClCompile Include="Game\Scenes\StageSelectScene.cpp">
       <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\WoodBox\WoodBox.cpp">
+      <Filter>Game\Objects\WoodBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\RenderableObjects\WoodBoxRenderableObject.cpp">
+      <Filter>Game\RenderableObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Factorys\WoodBoxFactory.cpp">
+      <Filter>Game\Factorys\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

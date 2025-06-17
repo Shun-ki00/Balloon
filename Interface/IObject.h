@@ -33,6 +33,8 @@ public:
 		BALLOON_YELLOW,
 		BALLOON_PURPLE,
 
+		WOOD_BOX,
+
 		FADE,
 
 		CAMERA_SYSTEM,
