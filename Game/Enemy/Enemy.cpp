@@ -144,13 +144,13 @@ void Enemy::Update(const float& elapsedTime)
 		dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, 0)));
 
 	// 操舵力から加速度を計算する
-	DirectX::SimpleMath::Vector3 acceleration =
+	/*DirectX::SimpleMath::Vector3 acceleration =
 		m_steeringBehavior->Calculate() + m_knockbackBehavior->Calculate() +
 		m_floatBehavior->Calculate() + m_floatForceBehavior->Calculate() +
-		m_pushBackBehavior->Calculate() + m_seekBehavior->Calculate();
+		m_pushBackBehavior->Calculate() + m_seekBehavior->Calculate();*/
 
 	// 速度に加速度を加算する
-	m_velocity += acceleration * elapsedTime;
+	//m_velocity += acceleration * elapsedTime;
 	// 現在の位置を更新する
 	m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
 
@@ -218,12 +218,13 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 				m_velocity.y = m_velocity.y * -1.0f;
 
 				// 相手の風船を破棄する
-				auto enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, messageData.dataInt);
-				if (enemy->GetParent()->GetParent()->GetObjectID() == ObjectID::PLAYER)
-				{
-					// 敵のオブジェクトをキャストする
-					enemy->SetIsActive(false);
-				}
+				auto enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::BALLOON, messageData.dataInt)->GetParent();
+
+				if(enemy == nullptr)
+					enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY, messageData.dataInt);
+
+				// 敵のオブジェクトをキャストする
+				enemy->SetIsActive(false);
 			}
 
 			break;

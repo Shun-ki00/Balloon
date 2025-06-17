@@ -19,6 +19,7 @@
 #include "Game/Scenes/TitleScene.h"
 #include "Game/Scenes/GameClearScene.h"
 #include "Game/Scenes/PlayScene.h"
+#include "Game/Scenes/GameOverScene.h"
 
 /// <summary>
 /// コンストラクタ

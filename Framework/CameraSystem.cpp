@@ -47,9 +47,16 @@ void CameraSystem::Update(const float& elapsedTime)
 	// ƒrƒ…[s—ñ‚ÌŒvŽZ
 	// ‘JˆÚ’†‚©‚Ç‚¤‚©
 	if (m_blendingCamera->GetisBlending())
+	{
 		m_commonResources->SetViewMatrix(m_blendingCamera->CalculateViewMatrix());
+		m_commonResources->SetCameraTransform(m_blendingCamera->GetTransform());
+	}
 	else
+	{
 		m_commonResources->SetViewMatrix(m_currentCamera->CalculateViewMatrix());
+		m_commonResources->SetCameraTransform(m_currentCamera->GetTransform());
+	}
+		
 
 }
 

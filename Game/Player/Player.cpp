@@ -215,25 +215,29 @@ void Player::Update(const float& elapsedTime)
 	{
 		m_balloonScale -= 2.0f * elapsedTime;
 
-		if (m_balloonScale <= -1.0f)
-			m_balloonScale = -1.0f;
+		if (m_balloonScale <= 0.0f)
+			m_balloonScale = 0.0f;
 
-		m_floatForceBehavior->SetForceStrength(m_balloonScale * 3.0f);
+		m_floatForceBehavior->SetForceStrength(m_balloonScale  - 3.0f);
 	}
+
+	// 風船の大きさをUIに渡す
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI, {Message::MessageID::BALLOON_SCALE , 0,m_balloonScale,false});
+
 
 	Object::Update(elapsedTime);
 
 	// 操舵力から加速度を計算する
-	//DirectX::SimpleMath::Vector3 acceleration = 
-	//	m_steeringBehavior->Calculate() + m_knockbackBehavior->Calculate() + 
-	//	m_floatBehavior->Calculate() + m_floatForceBehavior->Calculate() + m_pushBackBehavior->Calculate();
+	DirectX::SimpleMath::Vector3 acceleration = 
+		m_steeringBehavior->Calculate() + m_knockbackBehavior->Calculate() + 
+		m_floatBehavior->Calculate() + m_floatForceBehavior->Calculate() + m_pushBackBehavior->Calculate();
 
-	//// 速度に加速度を加算する
-	//m_velocity += acceleration * elapsedTime;
-	//// 現在の位置を更新する
-	//m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
+	// 速度に加速度を加算する
+	m_velocity += acceleration * elapsedTime;
+	// 現在の位置を更新する
+	m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
 
-	//m_velocity = m_velocity * (1.0f - 2.0f * elapsedTime);
+	m_velocity = m_velocity * (1.0f - 2.0f * elapsedTime);
 
 	// Transformの更新処理
 	m_transform->Update();
@@ -343,8 +347,8 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 				m_velocity.y = m_velocity.y * -1.0f;
 
 				// 相手の風船を破棄する
-				auto enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY, messageData.dataInt);
-				if (enemy->GetParent()->GetParent()->GetObjectID() == ObjectID::ENEMY)
+				auto enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::BALLOON, messageData.dataInt)->GetParent();
+				if (enemy->GetParent()->GetParent()->GetObjectID() == ObjectID::BALLOON)
 				{
 					// 敵のオブジェクトをキャストする
 					enemy->SetIsActive(false);

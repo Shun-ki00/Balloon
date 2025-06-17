@@ -228,6 +228,7 @@
     <ClInclude Include="Game\Factorys\PlayerFactory.h" />
     <ClInclude Include="Game\Factorys\SceneFactory.h" />
     <ClInclude Include="Game\Factorys\UIFactory.h" />
+    <ClInclude Include="Game\Factorys\WoodBoxFactory.h" />
     <ClInclude Include="Game\Fade\Fade.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameConfig\GameConfig.h" />
@@ -254,6 +255,7 @@
     <ClInclude Include="Game\RenderableObjects\EnemyRenderableObject.h" />
     <ClInclude Include="Game\RenderableObjects\PlayerRenderableObject.h" />
     <ClInclude Include="Game\RenderableObjects\UIRenderableObject .h" />
+    <ClInclude Include="Game\RenderableObjects\WoodBoxRenderableObject.h" />
     <ClInclude Include="Game\Scenes\DebugScene.h" />
     <ClInclude Include="Game\Scenes\GameClearScene.h" />
     <ClInclude Include="Game\Scenes\GameOverScene.h" />
@@ -299,6 +301,7 @@
     <ClInclude Include="Game\UIObjects\TitleLogoUI.h" />
     <ClInclude Include="Game\UIObject\UIObject.h" />
     <ClInclude Include="Game\Visitor\CollisionVisitor.h" />
+    <ClInclude Include="Game\WoodBox\WoodBox.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -361,6 +364,7 @@
     <ClCompile Include="Game\Factorys\PlayerFactory.cpp" />
     <ClCompile Include="Game\Factorys\SceneFactory.cpp" />
     <ClCompile Include="Game\Factorys\UIFactory.cpp" />
+    <ClCompile Include="Game\Factorys\WoodBoxFactory.cpp" />
     <ClCompile Include="Game\Fade\Fade.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameConfig\GameConfig.cpp" />
@@ -385,6 +389,7 @@
     <ClCompile Include="Game\RenderableObjects\EnemyRenderableObject.cpp" />
     <ClCompile Include="Game\RenderableObjects\PlayerRenderableObject.cpp" />
     <ClCompile Include="Game\RenderableObjects\UIRenderableObject .cpp" />
+    <ClCompile Include="Game\RenderableObjects\WoodBoxRenderableObject.cpp" />
     <ClCompile Include="Game\Scenes\DebugScene.cpp" />
     <ClCompile Include="Game\Scenes\GameClearScene.cpp" />
     <ClCompile Include="Game\Scenes\GameOverScene.cpp" />
@@ -430,6 +435,7 @@
     <ClCompile Include="Game\UIObjects\TitleLogoUI.cpp" />
     <ClCompile Include="Game\UIObject\UIObject.cpp" />
     <ClCompile Include="Game\Visitor\CollisionVisitor.cpp" />
+    <ClCompile Include="Game\WoodBox\WoodBox.cpp" />
     <ClCompile Include="imgui\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

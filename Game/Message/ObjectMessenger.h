@@ -17,6 +17,8 @@ public:
 	// メッセージを送信する IDのみ
 	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
 		, Message::MessageID messageID);
+	// オブジェクトIDのみでメッセージを送信する
+	void Dispatch(const IObject::ObjectID& objectId,const Message::MessageData& messageData);
 
 private:
 	//	コンストラクタ

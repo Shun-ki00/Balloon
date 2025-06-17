@@ -69,6 +69,22 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& obj
 	}
 }
 
+void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const Message::MessageData& messageData)
+{
+	// メッセージを送信するオブジェクトを検索する
+	auto typeIt = m_objects.find(objectId);
+
+	// メッセージを送信するオブジェクトが見つかった場合
+	if (typeIt != m_objects.end())
+	{
+		for (const auto it : typeIt->second)
+		{
+			// 送信するオブジェクトのメッセージハンドラを呼び出す
+			it.second->OnMessegeAccepted(messageData);
+		}
+	}
+}
+
 
 // オブジェクトを取得する
 IObject* ObjectMessenger::FindObject(const IObject::ObjectID& objectId, const int& objectNumber)

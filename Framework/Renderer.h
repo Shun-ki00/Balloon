@@ -43,6 +43,9 @@ private:
 	// UI描画
 	void UIRender();
 
+	// アクティブ状態を探す
+	bool IsHierarchyActive(IObject* object);
+
 private:
 	// 共有リソース
 	CommonResources* m_commonResources;

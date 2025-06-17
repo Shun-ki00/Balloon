@@ -111,9 +111,9 @@ void Sea::Render()
 
 	//	シェーダをセットする
 	m_context->VSSetShader(m_vertexShader, nullptr, 0);
-	m_context->HSSetShader(m_hullShader, nullptr, 0);
+	m_context->HSSetShader(m_hullShader  , nullptr, 0);
 	m_context->DSSetShader(m_domainShader, nullptr, 0);
-	m_context->PSSetShader(m_pixelShader, nullptr, 0);
+	m_context->PSSetShader(m_pixelShader , nullptr, 0);
 
 	// テクスチャの設定
 	ID3D11ShaderResourceView* tex[1] = { m_texture };

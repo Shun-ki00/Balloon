@@ -43,6 +43,9 @@ public:
 		BUTTON_OFF,
 
 
+		// •—‘D‚Ì‘å‚«‚³‚ðÝ’è
+		BALLOON_SCALE,
+
 
 
 	};
