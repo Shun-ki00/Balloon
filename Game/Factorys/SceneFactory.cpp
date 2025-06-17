@@ -80,7 +80,7 @@ void SceneFactory::CreatePlayScene(Root* root)
 
 	// プレイヤー （固定）0
 	root->Attach(PlayerFactory::CreatePlayer(root,
-		DirectX::SimpleMath::Vector3::Zero, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, false));
+		DirectX::SimpleMath::Vector3::Up * 10.0f, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, false));
 
 	// 敵　複数
 	root->Attach(EnemyFactory::CreateEnemy(root,

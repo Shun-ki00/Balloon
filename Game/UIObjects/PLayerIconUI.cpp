@@ -98,6 +98,9 @@ void PLayerIconUI::Update(const float& elapsedTime)
 	m_renderableObject->SetPosition(m_transform->GetWorldPosition());
 	// スケールを設定
 	m_renderableObject->SetScale({ m_transform->GetWorldScale().x , m_transform->GetWorldScale().y });
+	
+	// 回転を設定
+	m_renderableObject->SetRotate(DirectX::XMConvertToRadians(m_transform->GetLocalScale().z));
 
 	// 描画オブジェクト更新処理
 	m_renderableObject->Update(
@@ -117,7 +120,32 @@ void PLayerIconUI::Finalize() {}
 /// <param name="messageData">メッセージデータ</param>
 void PLayerIconUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	// プレイヤーの高さ
+	float playerHeight = 0.0f;
+
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::PLAYER_HEIGHT:
+
+			// 高さを設定する
+			playerHeight = messageData.dataFloat;
+			playerHeight = std::clamp(playerHeight, -10.0f, 10.0f);
+
+			// UIの高さを設定
+			m_transform->SetLocalPosition({
+				m_transform->GetLocalPosition().x,
+				-playerHeight * (240.0f / 10.0f),
+				m_transform->GetLocalPosition().z
+				});
+			break;
+		default:
+			break;
+
+		case Message::MessageID::PLAY_PLAYER_ICON_ANIMATION:
+			
+			// アニメーション開始
+			m_transform->GetTween()->DOScaleZ(-45.0f, 1.5f).SetLoops(10000, Tween::LoopType::Yoyo);
+	}
 }
 
 /// <summary>

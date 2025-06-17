@@ -74,9 +74,9 @@ void HeightMeterUI::Initialize()
 	// プレイヤーアイコンを作成
 	this->Attach(UIFactory::CreatePlayerIconUI(
 		this, IObject::ObjectID::PLAYER_ICON_UI,
-		{60.0f ,240.0f,0.0f},
+		{60.0f ,0.0f,0.0f},
 		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.5f
+		{0.5f ,0.5f ,45.0f}
 	));
 
 }

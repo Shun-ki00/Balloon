@@ -223,6 +223,8 @@ void Player::Update(const float& elapsedTime)
 
 	// •—‘D‚Ì‘å‚«‚³‚ðUI‚É“n‚·
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI, {Message::MessageID::BALLOON_SCALE , 0,m_balloonScale,false});
+	// ƒvƒŒƒCƒ„[‚Ì‚‚³‚ðUI‚É“n‚·
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false});
 
 
 	Object::Update(elapsedTime);

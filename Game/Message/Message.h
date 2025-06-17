@@ -46,6 +46,12 @@ public:
 		// 風船の大きさを設定
 		BALLOON_SCALE,
 
+		// プレイヤーの高さを設定する
+		PLAYER_HEIGHT,
+
+		// プレイヤーアイコンアニメーション
+		PLAY_PLAYER_ICON_ANIMATION,
+
 
 
 	};

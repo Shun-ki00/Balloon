@@ -49,6 +49,9 @@ void PlayScene::Initialize()
 
 	// オブジェクトを作成する
 	SceneFactory::CreatePlayScene(m_root);
+
+	// アニメーション開始
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAY_PLAYER_ICON_ANIMATION });
 	
 }
 

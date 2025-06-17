@@ -124,7 +124,7 @@ std::unique_ptr<IObject> UIFactory::CreatePlayerIconUI(
 	// 初期化処理
 	titleLogo->Initialize();
 	// メッセンジャーに登録
-	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::TITLE_LOGO_UI, titleLogo->GetObjectNumber(), titleLogo.get());
+	ObjectMessenger::GetInstance()->Register(objectID, titleLogo->GetObjectNumber(), titleLogo.get());
 	// インスタンスを返す
 	return std::move(titleLogo);
 }

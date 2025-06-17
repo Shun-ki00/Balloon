@@ -52,27 +52,24 @@ void main(
     {
         PS_INPUT element = (PS_INPUT) 0;
 
-        // サイズに基づくオフセット計算
-        float4 offset = VERTEX_OFFSET[i] * float4(scale.x * input[0].size.x, scale.y * input[0].size.y, 0.0f, 1.0f);
+        float2 size = scale * input[0].size.xy;
+        float4 offset = VERTEX_OFFSET[i] * float4(size.x, size.y, 0.0f, 1.0f);
 
-        // 中心を基準に回転
-        offset.xy -= VERTEX_OFFSET[3].xy * float2(scale.x * input[0].size.x, scale.y * input[0].size.y);
+    // 中心を基準に回転（補正なしでそのまま回す）
         offset = mul(offset, rot);
-        offset.xy += VERTEX_OFFSET[3].xy * float2(scale.x * input[0].size.x, scale.y * input[0].size.y);
 
-        // 射影変換適用
+    // 射影変換適用
         float4 p = input[0].position + offset;
         p = mul(p, proj);
         element.position = p;
 
-        // UV座標の計算
+    // UV
         element.uv.x = 1 - (i + 1) % 2;
         element.uv.y = i >= 2 ? 0 : 1;
 
-        // その他の属性をコピー
         element.color = input[0].color;
-        element.rect  = input[0].rect;
-        element.rule  = input[0].rule;
+        element.rect = input[0].rect;
+        element.rule = input[0].rule;
 
         output.Append(element);
     }
