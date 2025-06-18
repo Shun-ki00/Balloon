@@ -83,6 +83,8 @@ void HPGaugeUI::Initialize()
 
 	// 描画管理者に渡す
 	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
+
+	m_hp = 1.0f;
 }
 
 /// <summary>
@@ -99,12 +101,8 @@ void HPGaugeUI::Update(const float& elapsedTime)
 	// 大きさの設定
 	m_renderableObject->SetScale({ m_transform->GetWorldScale().x ,m_transform->GetWorldScale().y });
 
-	static float hp = 1.0f;
-
-	if(hp >= 0.5f)
-	hp -= elapsedTime * 0.2f;
-
-	m_renderableObject->SetUvOffset({ hp,0.0f });
+	// HPゲージの更新
+	m_renderableObject->SetUvOffset({ m_hp,0.0f });
 
 	// 描画オブジェクト更新処理
 	m_renderableObject->Update(
@@ -143,7 +141,15 @@ void HPGaugeUI::Detach(std::unique_ptr<IObject> object)
 /// <param name="messageData">メッセージデータ</param>
 void HPGaugeUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::HP_GAUGE:
+			// HPの設定
+			m_hp = messageData.dataFloat;
+			break;
+		default:
+			break;
+	}
 }
 
 /// <summary>

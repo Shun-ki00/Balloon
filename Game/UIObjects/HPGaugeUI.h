@@ -72,4 +72,7 @@ private:
 	// 描画オブジェクト
 	std::unique_ptr<UIRenderableObject> m_renderableObject;
 
+	// HP
+	float m_hp;
+
 };

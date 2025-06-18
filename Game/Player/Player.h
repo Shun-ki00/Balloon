@@ -89,8 +89,15 @@ public:
 
 	// 衝突判定の準備
 	void PrepareCollision(ICollisionVisitor* collision) override;
-	// 衝突判定する
+	// 衝突判定するt
 	void DetectCollision(ICollisionVisitor* collision, IObject* bullets) override;
+
+private:
+
+	// HPの更新処理
+	void UpdateHP(const float& elapsedTime);
+	// HPを減らす処理
+	bool HpReduction(const float& hp);
 
 
 private:
@@ -156,6 +163,12 @@ private:
 
 	// 風船の大きさ
 	float m_balloonScale;
+	// HP
+	float m_hp;
+
+	float m_targetHp;
+
+	bool m_isHpReducing;
 
 	// 風船を膨らませているか
 	bool m_isBalloon;

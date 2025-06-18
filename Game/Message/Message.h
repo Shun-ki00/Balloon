@@ -52,6 +52,9 @@ public:
 		// プレイヤーアイコンアニメーション
 		PLAY_PLAYER_ICON_ANIMATION,
 
+		// HPゲージの変更
+		HP_GAUGE,
+
 
 
 	};

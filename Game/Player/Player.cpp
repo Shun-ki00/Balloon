@@ -66,7 +66,8 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_parent(parent),
 	m_transform{},
 	m_childs {},
-	m_isFixed{}
+	m_isFixed{},
+	m_hp{}
 {
 	m_collisionVisitor = CollisionVisitor::GetInstance();
 
@@ -134,6 +135,8 @@ void Player::Initialize()
 	m_isBalloon = false;
 	m_isFixed = false;
 	m_balloonScale = 0.0f;
+	m_hp = 1.0f;
+	m_isHpReducing = false;
 
 	// 体を追加する
 	this->Attach(PlayerFactory::CreatePlayerBody(this,
@@ -141,13 +144,13 @@ void Player::Initialize()
 
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		{0.0f ,0.0f ,0.4f}, { -30.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Right * -1.0f , DirectX::SimpleMath::Vector3::Forward * 25.0f , DirectX::SimpleMath::Vector3::One));
+		{ 1.0f ,0.0f ,0.5f }, {-30.0f ,0.0f ,26.0f}, DirectX::SimpleMath::Vector3::One));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Left * -1.0f, DirectX::SimpleMath::Vector3::Backward * 25.0f, DirectX::SimpleMath::Vector3::One));
+		{ -1.0f ,0.0f ,0.5f }, { -30.0f ,0.0f ,-26.0f }, DirectX::SimpleMath::Vector3::One));
 
 
 	for (int i = 0; i < 3; i++)
@@ -204,6 +207,8 @@ void Player::Update(const float& elapsedTime)
 
 	if (m_isBalloon)
 	{
+		if (!this->HpReduction(0.001f)) m_isBalloon = false;
+
 		m_balloonScale += 2.0f * elapsedTime;
 
 		if (m_balloonScale >= 1.0f)
@@ -225,6 +230,11 @@ void Player::Update(const float& elapsedTime)
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI, {Message::MessageID::BALLOON_SCALE , 0,m_balloonScale,false});
 	// プレイヤーの高さをUIに渡す
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false});
+	// プレイヤーのHPをUIに渡す
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::HP_GAUGE_UI, { Message::MessageID::HP_GAUGE , 0,m_hp,false });
+
+
+	this->UpdateHP(elapsedTime);
 
 
 	Object::Update(elapsedTime);
@@ -432,6 +442,7 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 
 			if (type == KeyType::ON_KEY_DOWN)
 			{
+				if (m_hp <= 0.01f) break;
 				m_isBalloon = true;
 
 				if (m_balloonScale <= 0.0f)
@@ -445,6 +456,9 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 
 		case DirectX::Keyboard::Keys::Z:
 
+			if (!this->HpReduction(0.1f))
+				break;
+		
 			this->ChangeState(m_playerAttackState.get());
 
 			break;
@@ -452,7 +466,38 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 		default:
 			break;
 	}
+}
 
 
+void Player::UpdateHP(const float& elapsedTime)
+{
+	if (!m_isHpReducing) return;
 
+	// 徐々に減らす
+	float deltaHp = 0.3f * elapsedTime;
+	m_hp -= deltaHp;
+
+	// 下限に到達したら停止
+	if (m_hp <= m_targetHp)
+	{
+		m_hp = m_targetHp;
+		m_isHpReducing = false;
+	}
+
+
+}
+
+
+bool Player::HpReduction(const float& hp)
+{
+	// HPが０またはHPが足りない場合は処理なし
+	if (m_hp <= 0.0f || m_hp < hp)
+		return false;
+
+	m_isHpReducing = true;
+
+	// HPを減らす
+	m_targetHp = m_hp - hp;
+
+	return true;
 }

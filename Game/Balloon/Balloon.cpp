@@ -74,10 +74,10 @@ void Balloon::Initialize()
 
 	// •—‘D‚Ì–{‘Ì‚ð’Ç‰Á
 	this->Attach(BalloonFactory::CreateBalloonBody(this, m_objectID,
-		{ 0.0f , 14.0f , -7.0f }, DirectX::SimpleMath::Vector3::UnitX * -30.0f, DirectX::SimpleMath::Vector3::One * 0.04f));
+		{ 0.0f , 14.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.025f));
 	// •—‘D‚Ì‚Ð‚à‚ð’Ç‰Á
 	this->Attach(BalloonFactory::CreateBalloonRope(this, m_objectID,
-		{ 0.0f , 6.0f , -2.0f }, DirectX::SimpleMath::Vector3::UnitX * -30.0f, DirectX::SimpleMath::Vector3::One * 0.02f));
+		{ 0.0f , 6.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.02f));
 }
 
 /// <summary>

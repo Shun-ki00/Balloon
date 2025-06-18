@@ -44,7 +44,7 @@ void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 	auto it = m_boundingSphere.find(object->GetObjectNumber());
 
 	worldBoundingSphere.Center =
-		it->second.Center + object->GetTransform()->GetWorldPosition();
+		DirectX::SimpleMath::Vector3::Transform(it->second.Center, object->GetTransform()->GetWorldMatrix());
 
 	worldBoundingSphere.Radius = it->second.Radius;
 
@@ -52,7 +52,8 @@ void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 	it = m_boundingSphere.find(object1->GetObjectNumber());
 
 	worldBoundingSphere1.Center =
-		it->second.Center + object1->GetTransform()->GetWorldPosition();
+		DirectX::SimpleMath::Vector3::Transform(it->second.Center, object1->GetTransform()->GetWorldMatrix());
+
 
 	worldBoundingSphere1.Radius = it->second.Radius;
 

@@ -129,7 +129,7 @@ void BalloonBody::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 void BalloonBody::PrepareCollision(ICollisionVisitor* collision)
 {
 	// 今回プレイヤーのみの当たり判定なので再帰処理は行わない
-	collision->PrepareCollision(this, DirectX::SimpleMath::Vector3::Zero, 0.3f);
+	collision->PrepareCollision(this, {0.0f , 150.0f , 0.0f}, 0.4f);
 }
 
 // 衝突判定する
