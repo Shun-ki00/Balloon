@@ -264,15 +264,6 @@ void Game::Render()
         m_commonResources->GetProjectionMatrix()
     );
 
-
-    // スカイボックスを描画
-    m_skyBox->Render(m_context, m_commonStates.get());
-    // 海の描画
-    m_sea->Render();
-    // シーンの描画処理
-    m_sceneManager->Render();
-
- 
     //  新フレームの開始
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
@@ -282,7 +273,10 @@ void Game::Render()
     io.ConfigViewportsNoTaskBarIcon = false; // OSのタスクバーにアイコンを表示しない
     io.ConfigViewportsNoDecoration = false; // OSウィンドウの枠を消す
 
-    
+    // スカイボックスを描画
+    m_skyBox->Render(m_context, m_commonStates.get());
+    // 海の描画
+    m_sea->Render();
 
     // デバッグ描画
 #ifdef _DEBUG
@@ -339,6 +333,11 @@ void Game::Render()
     m_spriteFont->DrawString(m_spriteBatch.get(), stringBuffer, SimpleMath::Vector2(10, 40), Colors::White, 0.0f, SimpleMath::Vector2::Zero, 0.8f);
     m_spriteBatch->End();
 #endif
+
+   
+   
+    // シーンの描画処理
+    m_sceneManager->Render();
 
     m_parameters->ShowImGuiEditor();
 

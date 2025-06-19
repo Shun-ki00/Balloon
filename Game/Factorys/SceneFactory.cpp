@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Game/Factorys/SceneFactory.h"
+#include "Game/GameConfig/GameConfig.h"
 #include "Game/Factorys/UIFactory.h"
 #include "Game/Factorys/PlayerFactory.h"
 #include "Game/Factorys/BalloonFactory.h"
@@ -8,6 +9,10 @@
 #include "Game/Factorys/EffectFactory.h"
 #include "Game/Factorys/WoodBoxFactory.h"
 #include "Game/Node/Root.h"
+#include "Game/Parameters/ParameterBuffers.h"
+
+#include <iostream>
+#include <fstream>
 
 
 /// <summary>
@@ -16,9 +21,17 @@
 /// <param name="root">ルートオブジェクト</param>
 void SceneFactory::CreateTitleScene(Root* root)
 {
+	nlohmann::json data = GameConfig::GetInstance()->GetParameters("Title");
+
+	Player player;
+	data.get_to(player);
+
+	std::vector<UI> uis;
+	data.at("UI").get_to(uis);
+
 	// プレイヤー （固定）0
 	root->Attach(PlayerFactory::CreatePlayer(root,
-		{ 2.7f , -0.5f ,-1.5f }, { 0.0f ,-45.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, true));
+		player.position, player.rotation, player.scale, true));
 
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
@@ -27,30 +40,39 @@ void SceneFactory::CreateTitleScene(Root* root)
 		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Down, DirectX::XMConvertToRadians(30.0f)) *
 		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Right, DirectX::XMConvertToRadians(10.0f)))
 	);
-
 	// カメラシステムをアタッチする 1
 	root->Attach(CameraFactory::CreateCameraSystem(root, std::move(cameras)));
 
-	// タイトルロゴ 2
-	root->Attach(UIFactory::CreateTitleLogoUI(
-		root, IObject::ObjectID::TITLE_LOGO_UI,
-		DirectX::SimpleMath::Vector3{ 400.0f , -300.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One));
+	if (uis.size() >= 3)
+	{
+		// タイトルロゴ
+		root->Attach(UIFactory::CreateTitleLogoUI(
+			root, IObject::ObjectID::TITLE_LOGO_UI,
+			uis[0].position,
+			uis[0].rotation,
+			uis[0].scale));
 
-	// スタートテキスト 3
-	root->Attach(UIFactory::CreateStartTextUI(
-		root, IObject::ObjectID::START_TEXT_UI,
-		DirectX::SimpleMath::Vector3{ 400.0f , 400.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::Zero));
+		// スタートテキスト
+		root->Attach(UIFactory::CreateStartTextUI(
+			root, IObject::ObjectID::START_TEXT_UI,
+			uis[1].position,
+			uis[1].rotation,
+			uis[1].scale));
 
-	// フェードオブジェクト 4
-	root->Attach(UIFactory::CreateFade(
-		root, IObject::ObjectID::FADE,
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One));
+		// フェード
+		root->Attach(UIFactory::CreateFade(
+			root, IObject::ObjectID::FADE,
+			uis[2].position,
+			uis[2].rotation,
+			uis[2].scale));
+	}
+
+	//// バイナリへ変換（例: CBOR）
+	//std::vector<uint8_t> binary = json::to_msgpack(data);
+	//// 出力ファイル
+	//std::ofstream output("Resources/Json/TitleScene.msgpack", std::ios::binary);
+	//output.write(reinterpret_cast<const char*>(binary.data()), binary.size());
+
 }
 
 /// <summary>

@@ -197,6 +197,9 @@
     <Filter Include="Game\Status">
       <UniqueIdentifier>{d695a56d-04be-4ecb-bc8e-09189eaa13e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{769212ca-8041-4283-b77f-b4ce52a783b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -1008,6 +1011,9 @@
       <Filter>Shaders\Particle</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="Resources\Json\TitleScene.json">
+      <Filter>Json</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="imgui\LICENSE.txt">

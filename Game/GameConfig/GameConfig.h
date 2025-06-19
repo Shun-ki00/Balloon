@@ -29,6 +29,11 @@ public:
 		m_datas[key] = j;
 	}
 
+	json GetParameters(const std::string& key)
+	{
+		return m_datas[key];
+	}
+
 
 private:
 	//	コンストラクタ
@@ -50,7 +55,7 @@ public:
 
 	// データのロード
 	void LoadJsonFile(const std::string& key, const std::string& path);
-
+	void LoadBinaryJsonFile(const std::string& key, const std::string& path);
 	// データのセーブ
 	void SaveJosnFile(const std::string& key, const std::string& path);
 

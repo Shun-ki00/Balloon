@@ -15,7 +15,6 @@ struct Player
 	DirectX::SimpleMath::Vector3 scale;
 	bool fixed;
 	float balloonIndex;
-	//KnockbackBehaviorParams knockbackBehavior;
 };
 // “G
 struct Enemy
@@ -25,7 +24,6 @@ struct Enemy
 	DirectX::SimpleMath::Vector3 scale;
 	bool fixed;
 	float balloonIndex;
-	//KnockbackBehaviorParams knockbackBehavior;
 };
 // •—‘D
 struct Balloon
@@ -184,3 +182,57 @@ struct ParticleParameters
 	// Vector4
 	DirectX::SimpleMath::Vector4 startColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 };
+
+using json = nlohmann::json;
+
+inline DirectX::SimpleMath::Vector3 ParseVector3(const nlohmann::json& j)
+{
+	return {
+		j.at(0).get<float>(),
+		j.at(1).get<float>(),
+		j.at(2).get<float>()
+	};
+}
+
+inline void from_json(const nlohmann::json& j, Player& p)
+{
+	auto player = j.at("Player");
+
+	p.position = ParseVector3(player.at("position"));
+	p.rotation = ParseVector3(player.at("rotation"));
+	p.scale = ParseVector3(player.at("scale"));
+	p.fixed = player.at("fixed").get<bool>();
+	p.balloonIndex = player.at("balloonIndex").get<float>();
+}
+
+inline void from_json(const nlohmann::json& j, Enemy& e)
+{
+	auto enemy = j.at("Enemy");
+
+	e.position = ParseVector3(enemy.at("position"));
+	e.rotation = ParseVector3(enemy.at("rotation"));
+	e.scale = ParseVector3(enemy.at("scale"));
+	e.fixed = enemy.at("fixed").get<bool>();
+	e.balloonIndex = enemy.at("balloonIndex").get<float>();
+}
+
+inline void from_json(const nlohmann::json& j, Balloon& b)
+{
+	b.position = ParseVector3(j.at("position"));
+	b.rotation = ParseVector3(j.at("rotation"));
+	b.scale = ParseVector3(j.at("scale"));
+}
+
+inline void from_json(const nlohmann::json& j, WoodBox& w)
+{
+	w.position = ParseVector3(j.at("position"));
+	w.rotation = ParseVector3(j.at("rotation"));
+	w.scale = ParseVector3(j.at("scale"));
+}
+
+inline void from_json(const nlohmann::json& j, UI& u)
+{
+	u.position = ParseVector3(j.at("position"));
+	u.rotation = ParseVector3(j.at("rotation"));
+	u.scale = ParseVector3(j.at("scale"));
+}

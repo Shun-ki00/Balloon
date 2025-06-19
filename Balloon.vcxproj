@@ -478,6 +478,7 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
+    <None Include="Resources\Json\TitleScene.json" />
     <None Include="Resources\Shaders\hlsl\Common.hlsli" />
     <None Include="Resources\Shaders\hlsl\Particle.hlsli" />
     <None Include="Resources\Shaders\hlsl\PBRLit.hlsli" />

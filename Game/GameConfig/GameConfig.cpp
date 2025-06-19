@@ -9,7 +9,8 @@
 
 GameConfig::GameConfig()
 {
-
+	// タイトルシーンのデータをロード
+	this->LoadBinaryJsonFile("Title", "Resources/Json/TitleScene.msgpack");
 }
 
 /// <summary>
@@ -30,5 +31,29 @@ void GameConfig::LoadJsonFile(const std::string& key, const std::string& path)
 	file.close();
 
 	// データの格納
+	m_datas.insert({ key , j });
+}
+
+/// <summary>
+/// バイナリデータのJSONをロードする
+/// </summary>
+/// <param name="key"></param>
+/// <param name="path"></param>
+void GameConfig::LoadBinaryJsonFile(const std::string& key, const std::string& path)
+{
+	// バイナリとして開く
+	std::ifstream file(path, std::ios::binary);
+	if (!file)
+	{
+		throw std::runtime_error("ファイルが開けません: " + path);
+	}
+
+	// バイナリ内容を全読み込み
+	std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(file), {});
+
+	// MessagePack から JSON へ変換
+	nlohmann::json j = nlohmann::json::from_msgpack(buffer);
+
+	// データ格納
 	m_datas.insert({ key , j });
 }
