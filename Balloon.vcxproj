@@ -271,6 +271,8 @@
     <ClInclude Include="Game\States\SceneStates\FadeStates\FadeInState.h" />
     <ClInclude Include="Game\States\SceneStates\FadeStates\FadeOutState.h" />
     <ClInclude Include="Game\States\SceneStates\TitleMainState.h" />
+    <ClInclude Include="Game\Status\BalloonScaleController.h" />
+    <ClInclude Include="Game\Status\HpController.h" />
     <ClInclude Include="Game\SteeringBehavior\FloatBehavior.h" />
     <ClInclude Include="Game\SteeringBehavior\FloatForceBehavior.h" />
     <ClInclude Include="Game\SteeringBehavior\KnockbackBehavior.h" />
@@ -405,6 +407,8 @@
     <ClCompile Include="Game\States\SceneStates\FadeStates\FadeInState.cpp" />
     <ClCompile Include="Game\States\SceneStates\FadeStates\FadeOutState.cpp" />
     <ClCompile Include="Game\States\SceneStates\TitleMainState.cpp" />
+    <ClCompile Include="Game\Status\BalloonScaleController.cpp" />
+    <ClCompile Include="Game\Status\HpController.cpp" />
     <ClCompile Include="Game\SteeringBehavior\FloatBehavior.cpp" />
     <ClCompile Include="Game\SteeringBehavior\FloatForceBehavior.cpp" />
     <ClCompile Include="Game\SteeringBehavior\KnockbackBehavior.cpp" />

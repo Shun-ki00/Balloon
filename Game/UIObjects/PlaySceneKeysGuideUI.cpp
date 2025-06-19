@@ -74,7 +74,7 @@ void PlaySceneKeysGuideUI::Initialize()
 	UIVertexBuffer vertexBuffer =
 	{
 		{m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y ,0.0f ,0.0f},
-		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y , 0.0f},
+		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y ,0.0f},
 		{width * 0.3f , height * 0.3f},
 		{0.0f ,0.0f , 1.0f ,1.0f },
 		{1.0f ,1.0f ,1.0f ,1.0f },

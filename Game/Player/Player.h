@@ -24,6 +24,9 @@ class PushBackBehavior;
 class FloatBehavior;
 class FloatForceBehavior;
 
+class BalloonScaleController;
+class HpController;
+
 class CollisionVisitor;
 
 class Player : public Object ,public ICollision , public IComposite
@@ -94,13 +97,10 @@ public:
 
 private:
 
-	// HPの更新処理
-	void UpdateHP(const float& elapsedTime);
-	// HPを減らす処理
-	bool HpReduction(const float& hp);
+	// === 共通なもの ===
 
-
-private:
+	// ビジター
+	CollisionVisitor* m_collisionVisitor;
 
 	// アクティブ状態
 	bool m_isActive;
@@ -108,49 +108,20 @@ private:
 	int m_objectNumber;
 	// オブジェクトID
 	IObject::ObjectID m_objectID;
+	// メッセージID
+	Message::MessageID m_messageID;
+	// Transform
+	std::unique_ptr<Transform> m_transform;
 	// 親オブジェクト
 	IObject* m_parent;
-
-	// 固定設定
-	bool m_isFixed;
-
-	// ビジター
-	CollisionVisitor* m_collisionVisitor;
-
 	// 子オブジェクト
 	std::vector<std::unique_ptr<IObject>> m_childs;
 
 	// 風船オブジェクト
 	std::vector<IObject*> m_balloonObject;
 
-	// メッセージID
-	Message::MessageID m_messageID;
-	// Transform
-	std::unique_ptr<Transform> m_transform;
-	// 当たり判定
-	DirectX::BoundingSphere m_boundingSphere;
 
-	// ステアリングビヘイビア
-	ISteeringBehavior* m_steeringBehavior;
-	// ノックバック
-	std::unique_ptr<KnockbackBehavior> m_knockbackBehavior;
-	// 揺れる
-	std::unique_ptr<FloatBehavior> m_floatBehavior;
-
-	std::unique_ptr<FloatForceBehavior> m_floatForceBehavior;
-
-	std::unique_ptr<PushBackBehavior> m_pushBackBehavior;
-
-	// ステート
-	// アイドルステート
-	std::unique_ptr<PlayerIdleState> m_playerIdleState;
-	// ランステート
-	std::unique_ptr<PlayerRunState> m_playerRunState;
-	// アタックステート
-	std::unique_ptr<PlayerAttackState> m_playerAttackState;
-
-	// 座るステート
-	std::unique_ptr<PlayerSitState> m_playerSitState;
+	// === 物理挙動 ===
 
 	// プレイヤーの速度
 	DirectX::SimpleMath::Vector3 m_velocity;
@@ -161,15 +132,38 @@ private:
 	// プレイヤーの加速度
 	DirectX::SimpleMath::Vector3 m_acceralation;
 
-	// 風船の大きさ
-	float m_balloonScale;
-	// HP
-	float m_hp;
 
-	float m_targetHp;
+	// === ステアリングビヘイビア ===
 
-	bool m_isHpReducing;
+	ISteeringBehavior* m_steeringBehavior;
+	// ノックバック
+	std::unique_ptr<KnockbackBehavior> m_knockbackBehavior;
+	// 揺れる
+	std::unique_ptr<FloatBehavior> m_floatBehavior;
 
-	// 風船を膨らませているか
-	bool m_isBalloon;
+	std::unique_ptr<FloatForceBehavior> m_floatForceBehavior;
+
+	std::unique_ptr<PushBackBehavior> m_pushBackBehavior;
+
+
+	// === ステート ===
+
+	// アイドルステート
+	std::unique_ptr<PlayerIdleState> m_playerIdleState;
+	// ランステート
+	std::unique_ptr<PlayerRunState> m_playerRunState;
+	// アタックステート
+	std::unique_ptr<PlayerAttackState> m_playerAttackState;
+	// 座るステート
+	std::unique_ptr<PlayerSitState> m_playerSitState;
+
+
+	// 固定設定
+	bool m_isFixed;
+
+	// 風船の大きさをコントロール
+	std::unique_ptr<BalloonScaleController> m_balloonScaleController;
+	// HPをコントロール
+	std::unique_ptr<HpController> m_hpController;
+
 };

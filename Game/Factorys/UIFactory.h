@@ -11,8 +11,6 @@ public:
 
 	// ==== static UIオブジェクト ====
 
-	
-
 	// フェードオブジェクト
 	static std::unique_ptr<IObject> CreateFade(
 		IObject* parent, const IObject::ObjectID& objectID,

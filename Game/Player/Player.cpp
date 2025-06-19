@@ -39,6 +39,9 @@
 #include "Game/States/Player/PlayerAttackState.h"
 #include "Game/States/Player/PlayerSitState.h"
 
+#include "Game/Status/BalloonScaleController.h"
+#include "Game/Status/HpController.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -66,8 +69,7 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_parent(parent),
 	m_transform{},
 	m_childs {},
-	m_isFixed{},
-	m_hp{}
+	m_isFixed{}
 {
 	m_collisionVisitor = CollisionVisitor::GetInstance();
 
@@ -104,11 +106,6 @@ Player::~Player()
 /// </summary>
 void Player::Initialize()
 {
-	// 当たり判定の初期座標を設定
-	m_boundingSphere.Center = m_transform->GetLocalPosition();
-	// 当たり判定の大きさを設定
-	m_boundingSphere.Radius = 2.0f;
-
 	// ステートの作成
 	m_playerIdleState   = std::make_unique<PlayerIdleState>();
 	m_playerRunState    = std::make_unique<PlayerRunState>(this);
@@ -132,12 +129,13 @@ void Player::Initialize()
 
 	m_pushBackBehavior = std::make_unique<PushBackBehavior>(this);
 
-	m_isBalloon = false;
-	m_isFixed = false;
-	m_balloonScale = 0.0f;
-	m_hp = 1.0f;
-	m_isHpReducing = false;
-
+	// HPをコントロール
+	m_hpController = std::make_unique<HpController>();
+	m_hpController->Initialize();
+	// 風船の大きさをコントロール
+	m_balloonScaleController = std::make_unique<BalloonScaleController>(m_hpController.get(), m_floatForceBehavior.get());
+	m_balloonScaleController->Initialize();
+	
 	// 体を追加する
 	this->Attach(PlayerFactory::CreatePlayerBody(this,
 		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
@@ -168,6 +166,7 @@ void Player::Initialize()
 	// オブジェクトのカウントをリセット
 	Object::ResetNumber();
 
+	// 当たり判定を準備
 	m_collisionVisitor->GetInstance()->StartPrepareCollision(this);
 }
 
@@ -205,38 +204,15 @@ void Player::Update(const float& elapsedTime)
 	m_knockbackBehavior->SetTargetObject(
 		dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY,1)));
 
-	if (m_isBalloon)
-	{
-		if (!this->HpReduction(0.001f)) m_isBalloon = false;
+	// 風船の大きさを更新処理
+	m_balloonScaleController->Update(elapsedTime);
+	// HPの更新処理
+	m_hpController->Update(elapsedTime);
 
-		m_balloonScale += 2.0f * elapsedTime;
-
-		if (m_balloonScale >= 1.0f)
-			m_balloonScale = 1.0f;
-
-		m_floatForceBehavior->SetForceStrength(m_balloonScale * 3.0f);
-	}
-	else
-	{
-		m_balloonScale -= 2.0f * elapsedTime;
-
-		if (m_balloonScale <= 0.0f)
-			m_balloonScale = 0.0f;
-
-		m_floatForceBehavior->SetForceStrength(m_balloonScale  - 3.0f);
-	}
-
-	// 風船の大きさをUIに渡す
-	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI, {Message::MessageID::BALLOON_SCALE , 0,m_balloonScale,false});
 	// プレイヤーの高さをUIに渡す
-	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false});
-	// プレイヤーのHPをUIに渡す
-	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::HP_GAUGE_UI, { Message::MessageID::HP_GAUGE , 0,m_hp,false });
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false });
 
-
-	this->UpdateHP(elapsedTime);
-
-
+	// オブジェクトの更新処理
 	Object::Update(elapsedTime);
 
 	// 操舵力から加速度を計算する
@@ -253,8 +229,6 @@ void Player::Update(const float& elapsedTime)
 
 	// Transformの更新処理
 	m_transform->Update();
-	// ワールド座標を当たり判定の座標に設定
-	m_boundingSphere.Center = m_transform->GetWorldPosition();
 
 	// 子オブジェクトの更新処理
 	for (const auto& child : m_childs)
@@ -442,21 +416,20 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 
 			if (type == KeyType::ON_KEY_DOWN)
 			{
-				if (m_hp <= 0.01f) break;
-				m_isBalloon = true;
-
-				if (m_balloonScale <= 0.0f)
-					m_balloonScale = 0.0f;
+				// HPがあるなら有効化
+				if (m_hpController->GetHp() <= 0.01f) break;
+				m_balloonScaleController->On();
 			}
 			if (type == KeyType::ON_KEY_UP)
 			{
-				m_isBalloon = false;
+				// 無効化
+				m_balloonScaleController->Off();
 			}
 			break;
 
 		case DirectX::Keyboard::Keys::Z:
 
-			if (!this->HpReduction(0.1f))
+			if (!m_hpController->HpReduction(0.1f))
 				break;
 		
 			this->ChangeState(m_playerAttackState.get());
@@ -466,38 +439,4 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 		default:
 			break;
 	}
-}
-
-
-void Player::UpdateHP(const float& elapsedTime)
-{
-	if (!m_isHpReducing) return;
-
-	// 徐々に減らす
-	float deltaHp = 0.3f * elapsedTime;
-	m_hp -= deltaHp;
-
-	// 下限に到達したら停止
-	if (m_hp <= m_targetHp)
-	{
-		m_hp = m_targetHp;
-		m_isHpReducing = false;
-	}
-
-
-}
-
-
-bool Player::HpReduction(const float& hp)
-{
-	// HPが０またはHPが足りない場合は処理なし
-	if (m_hp <= 0.0f || m_hp < hp)
-		return false;
-
-	m_isHpReducing = true;
-
-	// HPを減らす
-	m_targetHp = m_hp - hp;
-
-	return true;
 }
