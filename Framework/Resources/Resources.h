@@ -11,6 +11,7 @@
 #include "Framework/Resources/ModelResources.h"
 #include "Framework/Resources/ShaderResources.h"
 #include "Framework/Resources/TextureResources.h"
+#include "Game/GameConfig/GameConfig.h"
 
 class CommonResources;
 
@@ -68,6 +69,8 @@ private:
 	void LoadShader()  { m_shaderResources->LoadResource(m_data); }
 	// テクスチャのロード
 	void LoadTexture() { m_textureResources->LoadResource(m_data); }
+	// ゲームデータをロード
+	void LoadGameData() { GameConfig::GetInstance()->LoadJsonFile(); }
 
 private:
 	// モデルリソース

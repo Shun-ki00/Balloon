@@ -91,12 +91,7 @@ void Game::Initialize(HWND window, int width, int height)
     Resources::GetInstance()->LoadResource();
     // ゲームデータ
     m_gameConfig = GameConfig::GetInstance();
-    m_gameConfig->LoadJsonFile("Stage1", "Resources/Json/Stage1Data.json");
-   /* m_gameConfig->LoadJsonFile("Stage2", "Resources/Json/Stage2Data.josn");
-    m_gameConfig->LoadJsonFile("Stage3", "Resources/Json/Stage3Data.josn");
-    m_gameConfig->LoadJsonFile("Stage4", "Resources/Json/Stage4Data.josn");
-    m_gameConfig->LoadJsonFile("Stage5", "Resources/Json/Stage5Data.josn");
-    m_gameConfig->LoadJsonFile("Stage6", "Resources/Json/Stage6Data.josn");*/
+  
 
     // スカイボックスの作成
     m_skyBox = std::make_unique<SkyBox>();

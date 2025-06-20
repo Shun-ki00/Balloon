@@ -16,7 +16,7 @@
 #include "Framework/Resources/ShaderResources.h"
 #include "Framework/Resources/TextureResources.h"
 
-#include "Game/GameConfig/GameConfig.h"
+
 
 
 /// <summary>
@@ -54,11 +54,15 @@ void Resources::LoadResource()
 	std::thread shader(&Resources::LoadShader, this);
 	// テクスチャをロードする
 	std::thread texture(&Resources::LoadTexture, this);
+	// ゲームデータをロードする
+	std::thread gameData(&Resources::LoadGameData, this);
 
 	// ロードが終わるまで待つ
 	model.join();
 	texture.join();
 	shader.join();
+	gameData.join();
 
+	// 初期化処理以外必要ないのでデータを空にする
 	m_data = {};
 }

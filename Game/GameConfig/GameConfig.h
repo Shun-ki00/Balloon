@@ -7,6 +7,9 @@ class GameConfig
 
 public:
 
+	// Jsonファイルをロードする
+	void LoadJsonFile();
+
 	// データの取得する
 	template <typename T>
 	T GetParameters(const std::string& key) const
@@ -18,6 +21,7 @@ public:
 		// パラメータを返す
 		return parameters;
 	}
+
 	// データを設定する
 	template<typename T>
 	void SetParameters(const std::string& key, const T& parameters)
@@ -52,12 +56,6 @@ public:
 		static GameConfig instance;
 		return &instance;
 	}
-
-	// データのロード
-	void LoadJsonFile(const std::string& key, const std::string& path);
-	void LoadBinaryJsonFile(const std::string& key, const std::string& path);
-	// データのセーブ
-	void SaveJosnFile(const std::string& key, const std::string& path);
 
 private:
 

@@ -6,55 +6,23 @@
 #include <fstream>
 #include <WICTextureLoader.h>
 #include "Game/Parameters/ParameterBuffers.h"
+#include "Framework/Utilities/JsonUtilities.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 GameConfig::GameConfig()
 {
-	// タイトルシーンのデータをロード
-	this->LoadBinaryJsonFile("Title", "Resources/Json/TitleScene.msgpack");
-	this->LoadBinaryJsonFile("Clear", "Resources/Json/GameClearScene.msgpack");
 }
 
 /// <summary>
-/// データのロード
+/// 全てのデータをロードする
 /// </summary>
-/// <param name="key">キー</param>
-/// <param name="path">ファイルパス</param>
-void GameConfig::LoadJsonFile(const std::string& key, const std::string& path)
+void GameConfig::LoadJsonFile()
 {
-	// ファイルを読み込む
-	std::ifstream file(path);
-
-	// Jsonに変換
-	nlohmann::json j;
-	file >> j;
-
-	// ファイルを閉じる
-	file.close();
-
-	// データの格納
-	m_datas.insert({ key , j });
+	// タイトルシーンデータロード
+	m_datas.insert({ "Title" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/TitleScene.msgpack") });
+	// ゲームクリアシーンデータロード
+	m_datas.insert({ "Clear" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/GameClearScene.msgpack") });
 }
 
-/// <summary>
-/// バイナリデータのJSONをロードする
-/// </summary>
-/// <param name="key"></param>
-/// <param name="path"></param>
-void GameConfig::LoadBinaryJsonFile(const std::string& key, const std::string& path)
-{
-	// バイナリとして開く
-	std::ifstream file(path, std::ios::binary);
-	if (!file)
-	{
-		throw std::runtime_error("ファイルが開けません: " + path);
-	}
-
-	// バイナリ内容を全読み込み
-	std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(file), {});
-
-	// MessagePack から JSON へ変換
-	nlohmann::json j = nlohmann::json::from_msgpack(buffer);
-
-	// データ格納
-	m_datas.insert({ key , j });
-}
