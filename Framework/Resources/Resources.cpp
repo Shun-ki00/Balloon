@@ -16,6 +16,8 @@
 #include "Framework/Resources/ShaderResources.h"
 #include "Framework/Resources/TextureResources.h"
 
+#include "Game/GameConfig/GameConfig.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -34,19 +36,14 @@ Resources::Resources()
 /// </summary>
 void Resources::LoadResource()
 {
-	// JSONファイルを開く
-	std::ifstream file("Resources/Json/GameResourceData.json");
-	assert(file);
-	// JSON をロード
-	nlohmann::json data;
-	file >> data; 
+	// バイナリとして開く
+	std::ifstream file("Resources/Json/GameResourceData.msgpack", std::ios::binary);
+	
+	// バイナリ内容を全読み込み
+	std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(file), {});
 
-	// JSONファイルを開く
-	std::ifstream StageDatafile("Resources/Json/StageData.json");
-	assert(StageDatafile);
-	// JSON をロード
-	nlohmann::json StageData;
-	StageDatafile >> StageData;
+	// MessagePack から JSON へ変換
+	nlohmann::json data = nlohmann::json::from_msgpack(buffer);
 
 	// データを格納
 	m_data = data;
@@ -62,5 +59,6 @@ void Resources::LoadResource()
 	model.join();
 	texture.join();
 	shader.join();
-	
+
+	m_data = {};
 }

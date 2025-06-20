@@ -155,9 +155,18 @@ void SceneFactory::CreatePlayScene(Root* root)
 /// <param name="root">ルートオブジェクト</param>
 void SceneFactory::CreateGameClearScene(Root* root)
 {
+	nlohmann::json data = GameConfig::GetInstance()->GetParameters("Clear");
+
+	Player player;
+	data.get_to(player);
+
+	std::vector<UI> uis;
+	data.at("UI").get_to(uis);
+
+
 	// プレイヤー 0 
 	root->Attach(PlayerFactory::CreatePlayer(root,
-		{ 2.7f , -0.5f ,-1.5f }, { 0.0f ,-45.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, true));
+		player.position, player.rotation, player.scale, true));
 
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
@@ -171,34 +180,42 @@ void SceneFactory::CreateGameClearScene(Root* root)
 	root->Attach(CameraFactory::CreateCameraSystem(root, std::move(cameras)));
 
 
-	// ボタンUI 2
+	// ボタンUI（2）
 	root->Attach(UIFactory::CreateResultSceneButtons(
-		root, IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
-		{ 1280.0f / 2.0f - 200.0f , 300.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.7f));
+		root,
+		IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
+		uis[0].position,
+		uis[0].rotation,
+		uis[0].scale
+	));
 
-	// キーガイドUI 3
+	// キーガイドUI（3）
 	root->Attach(UIFactory::CreateResultSceneKeyGuideUI(
-		root, IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
-		{ 1280.0f / 2.0f - 50.0f , 720.0f - 50.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.7f));
+		root,
+		IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
+		uis[1].position,
+		uis[1].rotation,
+		uis[1].scale
+	));
 
-	// クリアテキスト 4
+	// クリアテキスト（4）
 	root->Attach(UIFactory::CreateResultTextUI(
-		root, IObject::ObjectID::RESULT_TEXT_UI,
-		{ 1280.0f / 2.0f - 200.0f , 150.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.7f,
-		ResultTextUI::TextID::CLEAR));
+		root,
+		IObject::ObjectID::RESULT_TEXT_UI,
+		uis[2].position,
+		uis[2].rotation,
+		uis[2].scale,
+		ResultTextUI::TextID::CLEAR
+	));
 
-	// フェードオブジェクト 5
+	// フェードUI（5）
 	root->Attach(UIFactory::CreateFade(
-		root, IObject::ObjectID::FADE,
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One));
+		root,
+		IObject::ObjectID::FADE,
+		uis[3].position,
+		uis[3].rotation,
+		uis[3].scale
+	));
 }
 
 

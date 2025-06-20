@@ -642,6 +642,9 @@
     <ClInclude Include="Game\Status\BalloonScaleController.h">
       <Filter>Game\Status</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Utilities\JsonUtilities.h">
+      <Filter>Framework\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -989,6 +992,9 @@
     <ClCompile Include="Game\Status\BalloonScaleController.cpp">
       <Filter>Game\Status</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Utilities\JsonUtilities.cpp">
+      <Filter>Framework\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1012,6 +1018,9 @@
     </None>
     <None Include="ClassDiagram.cd" />
     <None Include="Resources\Json\TitleScene.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\GameClearScene.json">
       <Filter>Json</Filter>
     </None>
   </ItemGroup>

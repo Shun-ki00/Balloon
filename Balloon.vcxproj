@@ -203,6 +203,7 @@
     <ClInclude Include="Framework\Tween\Tween.h" />
     <ClInclude Include="Framework\Tween\TweenManager.h" />
     <ClInclude Include="Framework\Utilities\FileDialogUtilities.h" />
+    <ClInclude Include="Framework\Utilities\JsonUtilities.h" />
     <ClInclude Include="Framework\Utilities\RandomUtilities.h" />
     <ClInclude Include="Game\AmbientLight\AmbientLight.h" />
     <ClInclude Include="Game\Balloon\Balloon.h" />
@@ -347,6 +348,7 @@
     <ClCompile Include="Framework\Tween\Tween.cpp" />
     <ClCompile Include="Framework\Tween\TweenManager.cpp" />
     <ClCompile Include="Framework\Utilities\FileDialogUtilities.cpp" />
+    <ClCompile Include="Framework\Utilities\JsonUtilities.cpp" />
     <ClCompile Include="Framework\Utilities\RandomUtilities.cpp" />
     <ClCompile Include="Game\AmbientLight\AmbientLight.cpp" />
     <ClCompile Include="Game\Balloon\Balloon.cpp" />
@@ -478,6 +480,7 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
+    <None Include="Resources\Json\GameClearScene.json" />
     <None Include="Resources\Json\TitleScene.json" />
     <None Include="Resources\Shaders\hlsl\Common.hlsli" />
     <None Include="Resources\Shaders\hlsl\Particle.hlsli" />

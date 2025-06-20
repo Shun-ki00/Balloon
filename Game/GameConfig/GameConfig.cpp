@@ -11,6 +11,7 @@ GameConfig::GameConfig()
 {
 	// タイトルシーンのデータをロード
 	this->LoadBinaryJsonFile("Title", "Resources/Json/TitleScene.msgpack");
+	this->LoadBinaryJsonFile("Clear", "Resources/Json/GameClearScene.msgpack");
 }
 
 /// <summary>
