@@ -1016,7 +1016,6 @@
     <None Include="Resources\Shaders\hlsl\Particle.hlsli">
       <Filter>Shaders\Particle</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
     <None Include="Resources\Json\TitleScene.json">
       <Filter>Json</Filter>
     </None>
