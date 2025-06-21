@@ -203,7 +203,7 @@ void Body::CreateObject()
 			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 		// プレイヤーの頭を追加
 		this->Attach(PlayerFactory::CreatePlayerLeftFoot(this,
-			DirectX::SimpleMath::Vector3::Zero, { 0.0f ,0.0f ,45.0f }, DirectX::SimpleMath::Vector3::One));
+			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 		// プレイヤーの頭を追加
 		this->Attach(PlayerFactory::CreatePlayerRightArm(this,
 			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));

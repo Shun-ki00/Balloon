@@ -37,7 +37,7 @@ Resources::Resources()
 void Resources::LoadResource()
 {
 	// バイナリとして開く
-	std::ifstream file("Resources/Json/GameResourceData.msgpack", std::ios::binary);
+	std::ifstream file("Resources/Json/Binary/GameResourceData.msgpack", std::ios::binary);
 	
 	// バイナリ内容を全読み込み
 	std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(file), {});

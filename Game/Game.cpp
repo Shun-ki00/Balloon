@@ -104,7 +104,7 @@ void Game::Initialize(HWND window, int width, int height)
 
     // パラメーターのインスタンスを取得する
     m_parameters = Parameters::GetInstance();
-    m_parameters->LoadFromJson("Resources/Json/Parameters.json");
+    m_parameters->LoadFromJson("Resources/Json/JSON/Parameters.json");
 
     // 環境光の初期化
     AmbientLight::GetInstance()->Initialize();

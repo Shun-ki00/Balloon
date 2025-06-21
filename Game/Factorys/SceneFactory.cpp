@@ -99,47 +99,84 @@ void SceneFactory::CreateStageSelectScene(Root* root)
 /// <param name="root">ルートオブジェクト</param>
 void SceneFactory::CreatePlayScene(Root* root)
 {
+	nlohmann::json data = GameConfig::GetInstance()->GetParameters("Play");
 
 	// プレイヤー （固定）0
-	root->Attach(PlayerFactory::CreatePlayer(root,
-		DirectX::SimpleMath::Vector3::Zero, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, false));
+	const auto& player = data.get<Player>();
+	root->Attach(PlayerFactory::CreatePlayer(
+		root,
+		player.position,
+		player.rotation,
+		player.scale,
+		player.fixed));
 
 	// 敵　複数
-	root->Attach(EnemyFactory::CreateEnemy(root,
-		{ 2.7f , -0.5f ,-1.5f }, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f));
-	root->Attach(EnemyFactory::CreateEnemy(root,
-		{ 2.7f , -0.5f ,-2.5f }, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f));
-	root->Attach(EnemyFactory::CreateEnemy(root,
-		{ 2.7f , -4.5f ,-1.5f }, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f));
-	root->Attach(EnemyFactory::CreateEnemy(root,
-		{ 2.7f , 3.5f ,-1.5f }, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f));
+	const auto& enemies = data.at("Enemy").get<std::vector<Enemy>>();
+	for (const auto& enemy : enemies)
+	{
+		root->Attach(EnemyFactory::CreateEnemy(
+			root,
+			enemy.position,
+			enemy.rotation,
+			enemy.scale));
+	}
 
 	// カウントダウンUI
-	root->Attach(UIFactory::CreateCountdownUI(root, IObject::ObjectID::COUNTDOWN_UI,
-		{ 1280.0f + 300.0f  , 720.0f / 2.0f,1.0f }, DirectX::SimpleMath::Vector3::Zero, {1.0f ,1.0f ,0.0f}));
+	const auto& uis = data.at("UI").get<std::vector<UI>>();
+	root->Attach(UIFactory::CreateCountdownUI(
+		root, IObject::ObjectID::COUNTDOWN_UI,
+		uis[0].position,
+		uis[0].rotation,
+		uis[0].scale));
+
 	// タイマーUI
-	root->Attach(UIFactory::CreateTimerFrameUI(root, IObject::ObjectID::TIME_FRAME_UI,
-		{ 1180.0f , 100.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.5f));
+	root->Attach(UIFactory::CreateTimerFrameUI(
+		root, IObject::ObjectID::TIME_FRAME_UI,
+		uis[1].position,
+		uis[1].rotation,
+		uis[1].scale));
+
 	// タイムナンバーUI
-	root->Attach(UIFactory::CreateTimeUI(root, IObject::ObjectID::TIME_NUMBER_UI,
-		{ 1180.0f , 100.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.35f));
+	root->Attach(UIFactory::CreateTimeUI(
+		root, IObject::ObjectID::TIME_NUMBER_UI,
+		uis[2].position,
+		uis[2].rotation,
+		uis[2].scale));
+
 	// プレイヤーの高さUI
-	root->Attach(UIFactory::CreateHeightMeterUI(root, IObject::ObjectID::HEIGHT_METER_UI,
-		{ 1280.0f - 70.0f , 720.0f / 2.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.5f));
+	root->Attach(UIFactory::CreateHeightMeterUI(
+		root, IObject::ObjectID::HEIGHT_METER_UI,
+		uis[3].position,
+		uis[3].rotation,
+		uis[3].scale));
+
 	// キー操作説明UI
-	root->Attach(UIFactory::CreatePlaySceneKeyGuideUI(root, IObject::ObjectID::HEIGHT_METER_UI,
-		{ 400.0f , 720.0f - 35.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, {2.0f , 2.0f,0.0f}));
+	root->Attach(UIFactory::CreatePlaySceneKeyGuideUI(
+		root, IObject::ObjectID::HEIGHT_METER_UI,
+		uis[4].position,
+		uis[4].rotation,
+		uis[4].scale));
 
 	// 風船の大きさゲージフレームUI
-	root->Attach(UIFactory::CreateBalloonFrameUI(root, IObject::ObjectID::BALLOON_HP_FRAME_UI,
-		DirectX::SimpleMath::Vector3(100.0f, 100.0f, 0.0f), DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.3f));
+	root->Attach(UIFactory::CreateBalloonFrameUI(
+		root, IObject::ObjectID::BALLOON_HP_FRAME_UI,
+		uis[5].position,
+		uis[5].rotation,
+		uis[5].scale));
+
 	// 風船の大きさゲージUI
-	root->Attach(UIFactory::CreateBalloonHPUI(root, IObject::ObjectID::BALLOON_HP_UI,
-		{ 100.0f , 141.0f  ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.6f));
+	root->Attach(UIFactory::CreateBalloonHPUI(
+		root, IObject::ObjectID::BALLOON_HP_UI,
+		uis[6].position,
+		uis[6].rotation,
+		uis[6].scale));
 
 	// 体力ゲージUI
-	root->Attach(UIFactory::CreateHPUI(root, IObject::ObjectID::HP_UI,
-		{ 260.0f , 120.0f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, {0.4f , 0.35f, 0.0f}));
+	root->Attach(UIFactory::CreateHPUI(
+		root, IObject::ObjectID::HP_UI,
+		uis[7].position,
+		uis[7].rotation,
+		uis[7].scale));
 
 	// フェード
 	//root->Attach(UIFactory::CreateFade(root, IObject::ObjectID::FADE,
@@ -225,13 +262,24 @@ void SceneFactory::CreateGameClearScene(Root* root)
 /// <param name="root">ルートオブジェクト</param>
 void SceneFactory::CreateGameOverScene(Root* root)
 {
+	nlohmann::json data = GameConfig::GetInstance()->GetParameters("GameOver");
+
+	Player player;
+	data.get_to(player);
+
+	WoodBox woodBox;
+	data.get_to(woodBox);
+
+	std::vector<UI> uis;
+	data.at("UI").get_to(uis);
+
 	// プレイヤー 0
 	root->Attach(PlayerFactory::CreatePlayer(root,
-		{ 4.7f , -20.0f ,-3.5f }, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.1f, true));
+		player.position, player.rotation, player.scale, true));
 
 	// 木箱 1
 	root->Attach(WoodBoxFactory::CreateWoodBox(root,
-		{ 4.7f , -20.9f ,-3.5f }, { 0.0f ,0.0f, 0.0f }, DirectX::SimpleMath::Vector3::One * 0.002f));
+		woodBox.position, woodBox.rotation, woodBox.scale));
 
 
 	// カメラの作成をする
@@ -248,29 +296,29 @@ void SceneFactory::CreateGameOverScene(Root* root)
 	// ボタンUI 3
 	root->Attach(UIFactory::CreateResultSceneButtons(
 		root, IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
-		{ 1280.0f / 2.0f - 200.0f , 300.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.7f));
+		uis[0].position,
+		uis[0].rotation,
+		uis[0].scale));
 
 	// キーガイドUI 4
 	root->Attach(UIFactory::CreateResultSceneKeyGuideUI(
 		root, IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
-		{ 1280.0f / 2.0f - 50.0f , 720.0f - 50.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.7f));
+		uis[1].position,
+		uis[1].rotation,
+		uis[1].scale));
 
 	// クリアテキスト 5
 	root->Attach(UIFactory::CreateResultTextUI(
 		root, IObject::ObjectID::RESULT_TEXT_UI,
-		{ 1280.0f / 2.0f - 200.0f , 150.0f ,0.0f },
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One * 0.7f,
+		uis[2].position,
+		uis[2].rotation,
+		uis[2].scale,
 		ResultTextUI::TextID::FAILED));
 
 	// フェードオブジェクト 6
 	root->Attach(UIFactory::CreateFade(
 		root, IObject::ObjectID::FADE,
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::Zero,
-		DirectX::SimpleMath::Vector3::One));
+		uis[3].position,
+		uis[3].rotation,
+		uis[3].scale));
 }

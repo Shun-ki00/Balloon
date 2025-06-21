@@ -65,8 +65,6 @@ void DebugScene::Initialize()
 		DirectX::SimpleMath::Vector3(1280.0f / 2.0f, 720.0f / 2.0f, 0.0f), DirectX::SimpleMath::Vector3::Zero, {0.6f , 0.6f ,0.0f}));
 
 
-
-
 	// ƒtƒŒ[ƒ€‚Ìì¬
 	m_root->Attach(UIFactory::CreateBalloonFrameUI(
 		m_root, IObject::ObjectID::BALLOON_HP_FRAME_UI,
@@ -79,12 +77,6 @@ void DebugScene::Initialize()
 	m_root->Attach(UIFactory::CreateHeightMeterUI(m_root, IObject::ObjectID::PLAYER_ICON_UI,
 		DirectX::SimpleMath::Vector3(1280.0f / 2.0f + 400.0f, 720.0f / 2.0f + 130, 0.0f), DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.4f)
 	);
-
-	
-
-
-
-
 
 	std::vector<std::unique_ptr<ICamera>> cameras;
 	cameras.emplace_back(CameraFactory::CreateFixedCaemra(

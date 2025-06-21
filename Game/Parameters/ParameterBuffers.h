@@ -207,13 +207,11 @@ inline void from_json(const nlohmann::json& j, Player& p)
 
 inline void from_json(const nlohmann::json& j, Enemy& e)
 {
-	auto enemy = j.at("Enemy");
-
-	e.position = ParseVector3(enemy.at("position"));
-	e.rotation = ParseVector3(enemy.at("rotation"));
-	e.scale = ParseVector3(enemy.at("scale"));
-	e.fixed = enemy.at("fixed").get<bool>();
-	e.balloonIndex = enemy.at("balloonIndex").get<float>();
+	e.position = ParseVector3(j.at("position"));
+	e.rotation = ParseVector3(j.at("rotation"));
+	e.scale = ParseVector3(j.at("scale"));
+	e.fixed = j.at("fixed").get<bool>();
+	e.balloonIndex = j.at("balloonIndex").get<float>();
 }
 
 inline void from_json(const nlohmann::json& j, Balloon& b)
@@ -225,9 +223,11 @@ inline void from_json(const nlohmann::json& j, Balloon& b)
 
 inline void from_json(const nlohmann::json& j, WoodBox& w)
 {
-	w.position = ParseVector3(j.at("position"));
-	w.rotation = ParseVector3(j.at("rotation"));
-	w.scale = ParseVector3(j.at("scale"));
+	auto woodBox = j.at("WoodBox");
+
+	w.position = ParseVector3(woodBox.at("position"));
+	w.rotation = ParseVector3(woodBox.at("rotation"));
+	w.scale = ParseVector3(woodBox.at("scale"));
 }
 
 inline void from_json(const nlohmann::json& j, UI& u)

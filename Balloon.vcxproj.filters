@@ -1016,10 +1016,28 @@
     <None Include="Resources\Shaders\hlsl\Particle.hlsli">
       <Filter>Shaders\Particle</Filter>
     </None>
-    <None Include="Resources\Json\TitleScene.json">
+    <None Include="Resources\Json\JSON\GameClearScene.json">
       <Filter>Json</Filter>
     </None>
-    <None Include="Resources\Json\GameClearScene.json">
+    <None Include="Resources\Json\JSON\GameResourceData.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\Parameters.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\Stage1Data.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\Stage1ObjectData.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\TitleScene.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\GameOverScene.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\PlayScene.json">
       <Filter>Json</Filter>
     </None>
   </ItemGroup>

@@ -21,8 +21,12 @@ GameConfig::GameConfig()
 void GameConfig::LoadJsonFile()
 {
 	// タイトルシーンデータロード
-	m_datas.insert({ "Title" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/TitleScene.msgpack") });
+	m_datas.insert({ "Title" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/TitleScene.msgpack") });
 	// ゲームクリアシーンデータロード
-	m_datas.insert({ "Clear" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/GameClearScene.msgpack") });
+	m_datas.insert({ "Clear" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/GameClearScene.msgpack") });
+	// ゲームオーバーシーンデータロード
+	m_datas.insert({ "GameOver" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/GameOverScene.msgpack") });
+	// プレイシーンデータロード
+	m_datas.insert({ "Play" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/PlayScene.msgpack") });
 }
 
