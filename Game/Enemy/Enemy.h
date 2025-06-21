@@ -14,6 +14,9 @@ class FloatBehavior;
 class FloatForceBehavior;
 class SeekBehavior;
 
+class BalloonScaleController;
+class HpController;
+
 class Enemy : public Object , public ICollision ,public IComposite
 {
 public:
@@ -26,9 +29,6 @@ public:
 	int GetObjectNumber() const  override { return m_objectNumber; }
 
 	std::vector<IObject*> GetBalloonObject() { return m_balloonObject; }
-
-	// 敵のHPを取得する
-	float GetHp() const { return m_hp; }
 
 	// オブジェクトIDを取得する
 	IObject::ObjectID GetObjectID() const override { return m_objectID; }
@@ -127,7 +127,9 @@ private:
 
 	float m_balloonIndex;
 
-	// Hp
-	float m_hp;
+	// 風船の大きさをコントロール
+	std::unique_ptr<BalloonScaleController> m_balloonScaleController;
+	// HPをコントロール
+	std::unique_ptr<HpController> m_hpController;
 
 };

@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: ResultButtonTextUI.h
+// 概要: ResultButtonTextUI.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
 
@@ -85,9 +93,7 @@ private:
 	IObject::ObjectID m_objectID;
 	// 親オブジェクト
 	IObject* m_parent;
-	// メッセージID
-	Message::MessageID m_messageID;
-
+	
 	// テキストID
 	TextID m_textId;
 

@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: BalloonGaugeUI.h
+// 概要: BalloonGaugeUI.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
 #include "Interface/IComposite.h"

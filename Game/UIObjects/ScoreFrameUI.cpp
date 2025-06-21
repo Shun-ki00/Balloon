@@ -36,12 +36,14 @@ ScoreFrameUI::ScoreFrameUI(IObject* root, IObject* parent, IObject::ObjectID obj
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_messageID(messageID),
 	m_parent(parent),
-	m_transform{}
+	m_transform{},
+	m_renderableObject{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

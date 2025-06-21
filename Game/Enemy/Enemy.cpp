@@ -20,6 +20,9 @@
 #include "Game/SteeringBehavior/PushBackBehavior.h"
 #include "Game/SteeringBehavior/SeekBehavior.h"
 
+#include "Game/Status/BalloonScaleController.h"
+#include "Game/Status/HpController.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -103,7 +106,6 @@ void Enemy::Initialize()
 
 	m_seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>( ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,0)));
 
-
 	// 体を追加する
 	this->Attach(EnemyFactory::CreateEnemyBody(this,
 		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
@@ -125,6 +127,13 @@ void Enemy::Initialize()
 		m_balloonObject.push_back(dynamic_cast<Balloon*>(m_childs[i + 1].get())->GetBody());
 	}
 
+	// HPをコントロール
+	m_hpController = std::make_unique<HpController>();
+	m_hpController->Initialize();
+	// 風船の大きさをコントロール
+	m_balloonScaleController = std::make_unique<BalloonScaleController>(m_hpController.get(), m_floatForceBehavior.get());
+	m_balloonScaleController->Initialize();
+
 	// オブジェクトのカウントをリセット
 	Object::ResetNumber();
 
@@ -143,14 +152,11 @@ void Enemy::Update(const float& elapsedTime)
 	m_knockbackBehavior->SetTargetObject(
 		dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, 0)));
 
-	// 操舵力から加速度を計算する
-	/*DirectX::SimpleMath::Vector3 acceleration =
-		m_steeringBehavior->Calculate() + m_knockbackBehavior->Calculate() +
-		m_floatBehavior->Calculate() + m_floatForceBehavior->Calculate() +
-		m_pushBackBehavior->Calculate() + m_seekBehavior->Calculate();*/
+	// ビヘイビアツリーの更新処理
 
-	// 速度に加速度を加算する
-	//m_velocity += acceleration * elapsedTime;
+	// ステアリングビヘイビアの更新処理
+
+
 	// 現在の位置を更新する
 	m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
 
@@ -159,8 +165,10 @@ void Enemy::Update(const float& elapsedTime)
 	// Transformの更新処理
 	m_transform->Update();
 
-	// ワールド座標を当たり判定の座標に設定
-	m_boundingSphere.Center = m_transform->GetWorldPosition();
+	// 風船の大きさを更新処理
+	m_balloonScaleController->Update(elapsedTime);
+	// HPの更新処理
+	m_hpController->Update(elapsedTime);
 
 	// 子オブジェクトの更新処理
 	for (const auto& child : m_childs)

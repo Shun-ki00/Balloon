@@ -1,7 +1,7 @@
 // ============================================
 // 
 // ファイル名: PlaySceneKeysGuideUI.cpp
-// 概要: プレイシーンキーガイドUIオブジェクト
+// 概要: プレイシーン操作説明UIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
@@ -36,11 +36,13 @@ PlaySceneKeysGuideUI::PlaySceneKeysGuideUI(
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(Root::GetInstance()->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_parent(parent),
-	m_transform{}
+	m_transform{},
+	m_renderableObject{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

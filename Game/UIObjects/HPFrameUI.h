@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: HPFrameUI.h
+// 概要: HPFrameUI.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
 #include "Interface/IComposite.h"

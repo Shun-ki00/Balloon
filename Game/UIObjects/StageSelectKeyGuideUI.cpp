@@ -1,7 +1,7 @@
 // ============================================
 // 
 // ファイル名: StageSelectKeyGuideUI.cpp
-// 概要: ステージセレクトシーンキーガイドUIオブジェクト
+// 概要: ステージセレクトシーン操作説明UIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
@@ -36,12 +36,14 @@ StageSelectKeyGuideUI::StageSelectKeyGuideUI(IObject* root, IObject* parent, IOb
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_messageID(messageID),
 	m_parent(parent),
-	m_transform{}
+	m_transform{},
+	m_renderableObject{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

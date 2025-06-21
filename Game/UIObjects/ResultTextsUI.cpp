@@ -37,12 +37,14 @@ ResultTextUI::ResultTextUI(IObject* root, IObject* parent, IObject::ObjectID obj
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_textId(textId),
 	m_parent(parent),
-	m_transform{}
+	m_transform{},
+	m_renderableObject{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

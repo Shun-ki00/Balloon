@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: ResultSceneButtons.h
+// 概要: ResultSceneButtons.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
 #include "Interface/IComposite.h"

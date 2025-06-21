@@ -44,12 +44,15 @@ ResultButtonTextUI::ResultButtonTextUI(IObject* root, IObject* parent, IObject::
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + UIObject::CountUpNumber()),
 	m_objectID(objectID),
 	m_textId(textId),
 	m_parent(parent),
-	m_transform{}
+	m_transform{},
+	m_renderableObject{},
+	m_isButton{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

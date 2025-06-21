@@ -1,7 +1,7 @@
 // ============================================
 // 
 // ファイル名: ResultSceneButtons.cpp
-// 概要: プレイヤーアイコンUIオブジェクト
+// 概要: リザルトシーンボタンUIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
@@ -35,11 +35,14 @@ ResultSceneButtons::ResultSceneButtons(IObject* parent, IObject::ObjectID object
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(Root::GetInstance()->GetObjectNumber() + UIObject::CountUpNumber()),
 	m_objectID(objectID),
 	m_parent(parent),
-	m_transform{}
+	m_childs{},
+	m_transform{},
+	m_buttonIndex{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: ResultSceneKeyGuideUI.h
+// 概要: ResultSceneKeyGuideUI.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
 

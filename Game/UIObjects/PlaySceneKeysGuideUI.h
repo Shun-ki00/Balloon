@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PlaySceneKeysGuideUI.h
+// 概要: PlaySceneKeysGuideUI.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
 

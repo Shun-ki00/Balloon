@@ -32,11 +32,15 @@ HPGaugeUI::HPGaugeUI(IObject* parent, IObject::ObjectID objectID,
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(Root::GetInstance()->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_parent(parent),
-	m_transform{}
+	m_childs{},
+	m_transform{},
+	m_renderableObject{},
+	m_hp{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();

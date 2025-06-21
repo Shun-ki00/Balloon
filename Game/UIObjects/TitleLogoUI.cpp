@@ -1,7 +1,7 @@
 // ============================================
 // 
 // ファイル名: Body.cpp
-// 概要: プレイヤー、敵の体オブジェクト
+// 概要: タイトルロゴUIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
@@ -35,11 +35,13 @@ TitleLogoUI::TitleLogoUI(IObject* root, IObject* parent, IObject::ObjectID objec
 	:
 	// 基底クラス
 	UIObject(),
+	m_commonResources{},
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_parent(parent),
-	m_transform{}
+	m_transform{},
+	m_renderableObject{}
 {
 	// 共有リソースのインスタンスを取得する
 	m_commonResources = CommonResources::GetInstance();
