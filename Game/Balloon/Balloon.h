@@ -70,6 +70,10 @@ public:
 
 	// è’ìÀîªíËÇ∑ÇÈ
 	void DetectCollision(ICollisionVisitor* collision, IObject* object) override;
+
+private:
+
+	void SetBalloonScale(float BalloonScale);
 	
 private:
 

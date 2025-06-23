@@ -15,16 +15,8 @@ void CollisionVisitor::StartPrepareCollision(IObject* object)
 }
 
 
-void CollisionVisitor::PrepareCollision(IObject* object,
-	const DirectX::SimpleMath::Vector3& position , const float& radius)
+void CollisionVisitor::PrepareCollision(IObject* object, DirectX::BoundingSphere& boundingSphere)
 {
-	DirectX::BoundingSphere boundingSphere;
-
-	// 初期座標を設定
-	boundingSphere.Center = position;
-	// 大きさを設定
-	boundingSphere.Radius = radius;
-
 	// オブジェクト番号と境界スフィアをマップに格納する
 	m_boundingSphere.insert({ object->GetObjectNumber() , boundingSphere });
 }

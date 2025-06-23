@@ -57,9 +57,6 @@ void BalloonScaleController::Update(const float& elapsedTime)
 		m_floatForceBehavior->SetForceStrength(m_balloonScale - 3.0f);
 	}
 
-	// •—‘D‚Ì‘å‚«‚³‚ðUI‚É“n‚·
-	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI, 
-		{ Message::MessageID::BALLOON_SCALE , 0,m_balloonScale,false });
 }
 
 /// <summary>

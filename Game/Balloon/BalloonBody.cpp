@@ -66,16 +66,16 @@ BalloonBody::~BalloonBody()
 void BalloonBody::Initialize()
 {
 	// 当たり判定の初期座標を設定
-	m_boundingSphere.Center = m_transform->GetLocalPosition();
+	m_boundingSphere.Center = { 0.0f , 130.0f , 0.0f };
 	// 当たり判定の大きさを設定
-	m_boundingSphere.Radius = 2.0f;
+	m_boundingSphere.Radius = 0.25f;
 
 	// 初期化処理
 	PBRLitConstantBuffer buffer{
 		DirectX::SimpleMath::Vector4::One,
-		0.2f,
+		0.0f,
 		1.0f,
-		5.0f,
+		1.0f,
 		0.0f
 	};
 
@@ -99,8 +99,6 @@ void BalloonBody::Update(const float& elapsedTime)
 
 	// Transformの更新処理
 	m_transform->Update();
-	// ワールド座標を当たり判定の座標に設定
-	m_boundingSphere.Center = m_transform->GetWorldPosition();
 	// 描画オブジェクト更新処理
 	m_renderableObject->Update(m_commonResources->GetDeviceResources()->GetD3DDeviceContext(), m_transform->GetWorldMatrix());
 }
@@ -129,7 +127,7 @@ void BalloonBody::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 void BalloonBody::PrepareCollision(ICollisionVisitor* collision)
 {
 	// 今回プレイヤーのみの当たり判定なので再帰処理は行わない
-	collision->PrepareCollision(this, {0.0f , 150.0f , 0.0f}, 0.4f);
+	collision->PrepareCollision(this, m_boundingSphere);
 }
 
 // 衝突判定する

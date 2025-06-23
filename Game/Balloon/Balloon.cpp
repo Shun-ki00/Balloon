@@ -2,12 +2,11 @@
 #include "Game/Balloon/Balloon.h"
 #include "Framework/CommonResources.h"
 #include "Game/Object/Object.h"
-#include "Game/RenderableObjects/PlayerRenderableObject.h"
-#include "Game/RenderableObjects/EnemyRenderableObject.h"
 #include "Framework/Resources/Resources.h"
 #include "Framework/Resources/ResourceKeys.h"
 #include "Game/Buffers.h"
 #include "Game/Factorys/BalloonFactory.h"
+#include "Game/Balloon/BalloonBody.h"
 
 /// <summary>
 /// コンストラクタ
@@ -74,7 +73,7 @@ void Balloon::Initialize()
 
 	// 風船の本体を追加
 	this->Attach(BalloonFactory::CreateBalloonBody(this, m_objectID,
-		{ 0.0f , 14.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.025f));
+		{ 0.0f , 14.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.055f));
 	// 風船のひもを追加
 	this->Attach(BalloonFactory::CreateBalloonRope(this, m_objectID,
 		{ 0.0f , 6.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.02f));
@@ -110,7 +109,15 @@ void Balloon::Finalize()
 
 void Balloon::OnMessegeAccepted(Message::MessageData messageData)
 {
-	(void)messageData;
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::BALLOON_SCALE:
+
+			this->SetBalloonScale(messageData.dataFloat);
+		
+		default:
+			break;
+	}
 }
 
 // 通知する
@@ -153,4 +160,23 @@ void Balloon::DetectCollision(ICollisionVisitor* collision, IObject* object)
 {
 	UNREFERENCED_PARAMETER(collision);
 	UNREFERENCED_PARAMETER(object);
+}
+
+void Balloon::SetBalloonScale(float BalloonScale)
+{
+	BalloonBody* body = dynamic_cast<BalloonBody*>(m_childs[0].get());
+	if (!body) return;
+
+	// 値を 0.025f ~ 0.055f にマッピング
+	const float t = std::clamp(BalloonScale, 0.0f, 1.0f);
+	const float scale = 0.025f + t * (0.055f - 0.025f);
+	const float radius = 0.25f + t * (0.65f - 0.25f);
+
+	// スケールを適用
+	body->GetTransform()->SetLocalScale({ scale, scale, scale });
+
+	// 当たり判定半径を適用
+	DirectX::BoundingSphere sphere = body->GetBoundingSphere();
+	sphere.Radius = radius;
+	body->SetBoundingSphere(sphere);
 }

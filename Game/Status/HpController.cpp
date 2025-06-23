@@ -55,12 +55,7 @@ void HpController::Update(const float& elapsedTime)
             m_hp -= delta;
         }
 
-        // HP‚ðUI‚Ö’Ê’m
-        ObjectMessenger::GetInstance()->Dispatch(
-            IObject::ObjectID::HP_GAUGE_UI,
-            { Message::MessageID::HP_GAUGE, 0, m_hp, false }
-        );
-
+      
         return; // Œ¸­’†‚Í‰ñ•œˆ—‚ðs‚í‚È‚¢
     }
 
@@ -91,12 +86,6 @@ void HpController::Update(const float& elapsedTime)
 
         m_targetHp = m_hp;
     }
-
-    // HP‚ðUI‚Ö’Ê’m
-    ObjectMessenger::GetInstance()->Dispatch(
-        IObject::ObjectID::HP_GAUGE_UI,
-        { Message::MessageID::HP_GAUGE, 0, m_hp, false }
-    );
 }
 
 

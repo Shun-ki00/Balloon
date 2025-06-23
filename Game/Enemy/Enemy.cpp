@@ -144,6 +144,11 @@ void Enemy::Initialize()
 
 	// ==== 当たり判定 ====
 
+	// 当たり判定
+	m_boundingSphere.Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
+	m_boundingSphere.Radius = 0.3f;
+
+
 	// 当たり判定を準備する
 	m_collisionVisitor->StartPrepareCollision(this);
 
@@ -164,7 +169,7 @@ void Enemy::Update(const float& elapsedTime)
 	m_actionSelection->GetRootNode()->Tick();
 
 	// ステートの更新処理
-	Object::Update(elapsedTime);
+	//Object::Update(elapsedTime);
 
 	// ==== ビヘイビアツリーの更新処理 ====
 
@@ -265,6 +270,9 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 				enemy->SetIsActive(false);
 			}
 
+		case Message::MessageID::BALLOON_SCALE:
+
+
 			break;
 		default:
 			break;
@@ -288,7 +296,7 @@ void Enemy::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 /// <param name="collision">当たり判定処理</param>
 void Enemy::PrepareCollision(ICollisionVisitor* collision)
 {
-	collision->PrepareCollision(this, DirectX::SimpleMath::Vector3::Up * 0.2f, 0.3f);
+	collision->PrepareCollision(this,m_boundingSphere);
 
 	for (const auto& child : m_childs)
 	{

@@ -70,6 +70,7 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_parent(parent),
 	m_transform{},
 	m_childs {},
+	m_boundingSphere{},
 	m_isFixed{}
 {
 	m_collisionVisitor = CollisionVisitor::GetInstance();
@@ -113,6 +114,10 @@ void Player::Initialize()
 	this->CreateSteeringBehavior();
 	// ステートを作成する
 	this->CreateState();
+
+	// 当たり判定を設定する
+	m_boundingSphere.Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
+	m_boundingSphere.Radius = 0.3f;
 	
 	// HPをコントロール
 	m_hpController = std::make_unique<HpController>();
@@ -140,6 +145,15 @@ void Player::Update(const float& elapsedTime)
 	// HPの更新処理
 	m_hpController->Update(elapsedTime);
 
+
+	// 風船の大きさをUIに渡す
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI,
+		{ Message::MessageID::BALLOON_SCALE , 0,m_balloonScaleController->GetBalloonScale(),false});
+	// HPをUIへ通知
+	ObjectMessenger::GetInstance()->Dispatch(
+		IObject::ObjectID::HP_GAUGE_UI,
+		{ Message::MessageID::HP_GAUGE, 0, m_hpController->GetHp(), false }
+	);
 	// プレイヤーの高さをUIに渡す
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false });
 
@@ -157,6 +171,12 @@ void Player::Update(const float& elapsedTime)
 
 	// Transformの更新処理
 	m_transform->Update();
+
+	// 風船の大きさを設定する
+	for (const auto& balloon : m_balloonObject)
+	{
+		balloon->GetParent()->OnMessegeAccepted({ Message::MessageID::BALLOON_SCALE ,0,m_balloonScaleController->GetBalloonScale(),false });
+	}
 
 	// 子オブジェクトの更新処理
 	for (const auto& child : m_childs)
@@ -225,7 +245,7 @@ std::vector<IObject*> Player::GetChilds() const
 void Player::PrepareCollision(ICollisionVisitor* collision)
 {
 	// 今回プレイヤーのみの当たり判定なので再帰処理は行わない
-	collision->PrepareCollision(this, DirectX::SimpleMath::Vector3::Up * 0.2f  , 0.3f);
+	collision->PrepareCollision(this, m_boundingSphere);
 
 	for (const auto& child : m_childs)
 	{
@@ -438,13 +458,13 @@ void Player::AttachObject()
 
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ 0.0f ,0.0f ,0.4f }, { -30.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One));
+		{ 0.0f ,10.0f ,0.2f }, { -20.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ 1.0f ,0.0f ,0.5f }, { -30.0f ,0.0f ,26.0f }, DirectX::SimpleMath::Vector3::One));
+		{ 0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,16.0f }, DirectX::SimpleMath::Vector3::One));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ -1.0f ,0.0f ,0.5f }, { -30.0f ,0.0f ,-26.0f }, DirectX::SimpleMath::Vector3::One));
+		{ -0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,-16.0f }, DirectX::SimpleMath::Vector3::One));
 
 
 	for (int i = 0; i < 3; i++)

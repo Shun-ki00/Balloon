@@ -15,6 +15,11 @@ public:
 	// オブジェクトのアクティブ状態を取得
 	bool GetIsActive() const { return m_isActive; }
 
+	// 当たり判定を取得する
+	DirectX::BoundingSphere GetBoundingSphere() const { return m_boundingSphere; }
+	// 当たり判定を設定する
+	void SetBoundingSphere(const DirectX::BoundingSphere& boundingSphere) { m_boundingSphere = boundingSphere; }
+
 	// オブジェクト番号を取得する
 	int GetObjectNumber() const  override { return m_objectNumber; }
 

@@ -10,8 +10,7 @@ public:
 	// 衝突準備ビジターを開始する
 	virtual void StartPrepareCollision(IObject* component) = 0;
 	// 再帰的に衝突準備ビジターを呼び出す
-	virtual void PrepareCollision(IObject* object,
-		const DirectX::SimpleMath::Vector3& position, const float& radius) = 0;
+	virtual void PrepareCollision(IObject* object, DirectX::BoundingSphere& boundingSphere) = 0;
 	// 再帰的にDetectCollision関数を呼び出す
 	virtual void DetectCollision(IObject* component, IObject* bullets) = 0;
 
