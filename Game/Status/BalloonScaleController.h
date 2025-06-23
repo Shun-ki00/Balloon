@@ -5,6 +5,10 @@ class HpController;
 
 class BalloonScaleController
 {
+public:
+
+	// •—‘D‚Ì‘å‚«‚³‚ðŽæ“¾‚·‚é
+	float GetBalloonScale() const { return m_balloonScale; }
 
 public:
 

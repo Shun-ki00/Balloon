@@ -8,6 +8,10 @@ class Enemy;
 
 class ActionSelection
 {
+public:
+
+	// ルートノードを取得する
+	SelectorNode* GetRootNode() const { return m_root.get(); }
 
 public:
 

@@ -67,12 +67,6 @@ void SceneFactory::CreateTitleScene(Root* root)
 			uis[2].scale));
 	}
 
-	//// バイナリへ変換（例: CBOR）
-	//std::vector<uint8_t> binary = json::to_msgpack(data);
-	//// 出力ファイル
-	//std::ofstream output("Resources/Json/TitleScene.msgpack", std::ios::binary);
-	//output.write(reinterpret_cast<const char*>(binary.data()), binary.size());
-
 }
 
 /// <summary>

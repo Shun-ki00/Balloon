@@ -2,6 +2,8 @@
 #include "Interface/IComposite.h"
 #include "Game/Object/Object.h"
 #include "Interface/ICollision.h"
+#include "Game/Status/HpController.h"
+#include "Game/Status/BalloonScaleController.h"
 
 class Transform;
 class PlayerRenderableObject;
@@ -17,6 +19,8 @@ class SeekBehavior;
 class BalloonScaleController;
 class HpController;
 
+class ActionSelection;
+
 class Enemy : public Object , public ICollision ,public IComposite
 {
 public:
@@ -24,6 +28,11 @@ public:
 	void SetIsActive(const bool& isActive) { m_isActive = isActive; }
 	// オブジェクトのアクティブ状態を取得
 	bool GetIsActive() const { return m_isActive; }
+
+	// HPを取得する
+	float GetHp() const { return m_hpController->GetHp(); }
+	// 風船の大きさを取得する
+	float GetBalloonScale() const { return m_balloonScaleController->GetBalloonScale(); }
 
 	// オブジェクト番号を取得する
 	int GetObjectNumber() const  override { return m_objectNumber; }
@@ -80,6 +89,8 @@ public:
 	void DetectCollision(ICollisionVisitor* collision, IObject* object) override;
 
 private:
+
+	// ビジター
 	CollisionVisitor* m_collisionVisitor;
 
 	// アクティブ状態
@@ -90,18 +101,19 @@ private:
 	IObject::ObjectID m_objectID;
 	// 親オブジェクト
 	IObject* m_parent;
-
 	// 子オブジェクト
 	std::vector<std::unique_ptr<IObject>> m_childs;
-
 	// 風船オブジェクト
 	std::vector<IObject*> m_balloonObject;
+	
 	// メッセージID
 	Message::MessageID m_messageID;
 	// Transform
 	std::unique_ptr<Transform> m_transform;
-	// 当たり判定
-	DirectX::BoundingSphere m_boundingSphere;
+
+
+	// アクションセレクター
+	std::unique_ptr<ActionSelection> m_actionSelection;
 
 	// ステアリングビヘイビア
 	ISteeringBehavior* m_steeringBehavior;
@@ -113,6 +125,7 @@ private:
 	std::unique_ptr<FloatForceBehavior> m_floatForceBehavior;
 
 	std::unique_ptr<PushBackBehavior> m_pushBackBehavior;
+
 
 	std::unique_ptr<SeekBehavior> m_seekBehavior;
 

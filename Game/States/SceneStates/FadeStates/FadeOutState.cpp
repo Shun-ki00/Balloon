@@ -29,7 +29,7 @@ void FadeOutState::Initialize()
 void FadeOutState::PreUpdate()
 {
 	// フェードアウトを行う
-	m_objectMessenger->Dispatch(IObject::ObjectID::FADE, m_fadeObjectNumber, m_messageData);
+	m_objectMessenger->Dispatch(IObject::ObjectID::FADE, m_messageData);
 }
 
 

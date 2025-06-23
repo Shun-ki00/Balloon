@@ -68,6 +68,7 @@ void ActionSelection::Initialize(Enemy* enemy)
 
 	// Žq‚ð’Ç‰Á‚·‚é
 	m_root->AddChild(m_hpSelectorNode.get());
-
+	m_root->Tick();
+	
 
 }

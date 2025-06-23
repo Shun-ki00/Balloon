@@ -79,11 +79,9 @@ void TitleScene::Initialize()
 void TitleScene::Start()
 {
 	// タイトルロゴのアニメーションを行う
-	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::TITLE_LOGO_UI,
-		TITLE_LOGO_UI_OBJECT_NUMBER, Message::MessageID::TITLE_LOGO_ANIMATION);
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::TITLE_LOGO_UI, { Message::MessageID::TITLE_LOGO_ANIMATION });
 	// スタートテキストのアニメーションを行う
-	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::START_TEXT_UI,
-		START_TEXT_UI_OBJECT_NUMBER, Message::MessageID::START_TEXT_ANIMATION);
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::START_TEXT_UI, { Message::MessageID::START_TEXT_ANIMATION });
 
 	// ステートスタート処理
 	m_currentState->PreUpdate();

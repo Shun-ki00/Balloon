@@ -19,10 +19,7 @@ class PlayerAttackState;
 class PlayerSitState;
 
 class ISteeringBehavior;
-class KnockbackBehavior;
-class PushBackBehavior;
-class FloatBehavior;
-class FloatForceBehavior;
+class SteeringBehavior;
 
 class BalloonScaleController;
 class HpController;
@@ -97,6 +94,17 @@ public:
 
 private:
 
+	// オブジェクトを追加する
+	void AttachObject();
+
+	// ステートを作成する
+	void CreateState();
+
+	// ステアリングビヘイビアを作成する
+	void CreateSteeringBehavior();
+
+private:
+
 	// === 共通なもの ===
 
 	// ビジター
@@ -135,16 +143,8 @@ private:
 
 	// === ステアリングビヘイビア ===
 
-	ISteeringBehavior* m_steeringBehavior;
-	// ノックバック
-	std::unique_ptr<KnockbackBehavior> m_knockbackBehavior;
-	// 揺れる
-	std::unique_ptr<FloatBehavior> m_floatBehavior;
-
-	std::unique_ptr<FloatForceBehavior> m_floatForceBehavior;
-
-	std::unique_ptr<PushBackBehavior> m_pushBackBehavior;
-
+	std::unique_ptr<SteeringBehavior> m_steeringBehavior;
+	
 
 	// === ステート ===
 

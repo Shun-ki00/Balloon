@@ -23,6 +23,9 @@
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
 
+#include "Game/Enemy/ActionSelection.h"
+#include "Game/BehaviorTree/SelectorNode.h"
+
 
 /// <summary>
 /// コンストラクタ
@@ -86,10 +89,7 @@ Enemy::~Enemy()
 /// </summary>
 void Enemy::Initialize()
 {
-	// 当たり判定の初期座標を設定
-	m_boundingSphere.Center = m_transform->GetLocalPosition();
-	// 当たり判定の大きさを設定
-	m_boundingSphere.Radius = 2.0f;
+	// ==== ステアリングビヘイビアの初期化処理 ====
 
 	// ノックバック
 	m_knockbackBehavior = std::make_unique<KnockbackBehavior>(this);
@@ -106,6 +106,18 @@ void Enemy::Initialize()
 
 	m_seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>( ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,0)));
 
+	// ==== ステータスの作成と初期化処理 ====
+
+	// HPをコントロール
+	m_hpController = std::make_unique<HpController>();
+	m_hpController->Initialize();
+	// 風船の大きさをコントロール
+	m_balloonScaleController = std::make_unique<BalloonScaleController>(m_hpController.get(), m_floatForceBehavior.get());
+	m_balloonScaleController->Initialize();
+
+
+	// ==== オブジェクトの追加 ====
+
 	// 体を追加する
 	this->Attach(EnemyFactory::CreateEnemyBody(this,
 		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
@@ -120,25 +132,26 @@ void Enemy::Initialize()
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
 		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 	
-
+	// 風船のボディを取得
 	for (int i = 0; i < 3; i++)
-	{
-		// 風船のボディを取得
 		m_balloonObject.push_back(dynamic_cast<Balloon*>(m_childs[i + 1].get())->GetBody());
-	}
 
-	// HPをコントロール
-	m_hpController = std::make_unique<HpController>();
-	m_hpController->Initialize();
-	// 風船の大きさをコントロール
-	m_balloonScaleController = std::make_unique<BalloonScaleController>(m_hpController.get(), m_floatForceBehavior.get());
-	m_balloonScaleController->Initialize();
+	// ==== アクションセレクター ====
 
-	// オブジェクトのカウントをリセット
-	Object::ResetNumber();
+	m_actionSelection = std::make_unique<ActionSelection>();
+	m_actionSelection->Initialize(this);
+
+
+	// ==== 当たり判定 ====
 
 	// 当たり判定を準備する
 	m_collisionVisitor->StartPrepareCollision(this);
+
+
+	// ==== リセット処理 ====
+
+	// オブジェクトのカウントをリセット
+	Object::ResetNumber();
 }
 
 /// <summary>
@@ -147,15 +160,24 @@ void Enemy::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Enemy::Update(const float& elapsedTime)
 {
-	(void)elapsedTime;
+	// アクションを決定する
+	m_actionSelection->GetRootNode()->Tick();
+
+	// ステートの更新処理
+	Object::Update(elapsedTime);
+
+	// ==== ビヘイビアツリーの更新処理 ====
 
 	m_knockbackBehavior->SetTargetObject(
 		dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, 0)));
 
-	// ビヘイビアツリーの更新処理
 
-	// ステアリングビヘイビアの更新処理
+	// ==== ステアリングビヘイビアの更新処理 ====
 
+	// 各ステアリングをビットで制御
+
+
+	// ==== 物理処理の更新処理 ====
 
 	// 現在の位置を更新する
 	m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
@@ -165,16 +187,24 @@ void Enemy::Update(const float& elapsedTime)
 	// Transformの更新処理
 	m_transform->Update();
 
+	// ==== ステータスの更新処理 ====
+
 	// 風船の大きさを更新処理
 	m_balloonScaleController->Update(elapsedTime);
 	// HPの更新処理
 	m_hpController->Update(elapsedTime);
+
+
+	// ==== 子オブジェクトの更新処理 ====
 
 	// 子オブジェクトの更新処理
 	for (const auto& child : m_childs)
 	{
 		child->Update(elapsedTime);
 	}
+
+
+	// ==== 衝突判定の更新 ====
 
 	// 当たり判定を行う
 	auto player = dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,0));
@@ -241,14 +271,21 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 	}
 }
 
-// 通知する
+/// <summary>
+/// キーボードの通知を受け取る
+/// </summary>
+/// <param name="type">キーボードタイプ</param>
+/// <param name="key">キー</param>
 void Enemy::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(type);
 	UNREFERENCED_PARAMETER(key);
 }
 
-// 衝突判定を準備する
+/// <summary>
+/// 衝突判定を準備する
+/// </summary>
+/// <param name="collision">当たり判定処理</param>
 void Enemy::PrepareCollision(ICollisionVisitor* collision)
 {
 	collision->PrepareCollision(this, DirectX::SimpleMath::Vector3::Up * 0.2f, 0.3f);
@@ -261,7 +298,11 @@ void Enemy::PrepareCollision(ICollisionVisitor* collision)
 
 }
 
-// 衝突判定する
+/// <summary>
+/// 衝突判定する
+/// </summary>
+/// <param name="collision">当たり判定処理</param>
+/// <param name="object">対象のオブジェクト</param>
 void Enemy::DetectCollision(ICollisionVisitor* collision, IObject* object)
 {
 	// 判定を行う

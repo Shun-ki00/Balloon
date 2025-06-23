@@ -645,6 +645,9 @@
     <ClInclude Include="Framework\Utilities\JsonUtilities.h">
       <Filter>Framework\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\SteeringBehavior.h">
+      <Filter>Game\SteeringBehavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -994,6 +997,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Utilities\JsonUtilities.cpp">
       <Filter>Framework\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringBehavior.cpp">
+      <Filter>Game\SteeringBehavior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
