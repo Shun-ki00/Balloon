@@ -13,12 +13,18 @@
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Player/Player.h"
 
+#include "Interface/ISteeringBehavior.h"
 #include "Game/SteeringBehavior/WindBehavior.h"
 #include "Game/SteeringBehavior/KnockbackBehavior.h"
 #include "Game/SteeringBehavior/FloatBehavior.h"
 #include "Game/SteeringBehavior/FloatForceBehavior.h"
 #include "Game/SteeringBehavior/PushBackBehavior.h"
 #include "Game/SteeringBehavior/SeekBehavior.h"
+#include "Game/SteeringBehavior/SteeringBehavior.h"
+
+#include "Game/States/Enemy/EnemyIdleState.h"
+#include "Game/States/Enemy/EnemyRunState.h"
+#include "Game/States/Enemy/EnemyAttackState.h"
 
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
@@ -57,9 +63,6 @@ Enemy::Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
 
 	m_collisionVisitor = CollisionVisitor::GetInstance();
 
-	// ステアリングビヘイビアのインスタンスを取得
-	m_steeringBehavior = WindBehavior::GetInstance();
-
 	// Transformを作成
 	m_transform = std::make_unique<Transform>();
 	
@@ -89,22 +92,13 @@ Enemy::~Enemy()
 /// </summary>
 void Enemy::Initialize()
 {
-	// ==== ステアリングビヘイビアの初期化処理 ====
-
-	// ノックバック
-	m_knockbackBehavior = std::make_unique<KnockbackBehavior>(this);
-	// 揺れる処理
-	m_floatBehavior = std::make_unique<FloatBehavior>();
-	m_floatBehavior->On();
-
-	m_floatBehavior->Off();
-
-	m_floatForceBehavior = std::make_unique<FloatForceBehavior>();
-	m_floatForceBehavior->SetForceStrength(0.0f);
-
-	m_pushBackBehavior = std::make_unique<PushBackBehavior>(this);
-
-	m_seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>( ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,0)));
+	
+	// オブジェクトを追加する
+	this->AttachObject();
+	// ステアリングビヘイビアを作成する
+	this->CreateSteeringBehavior();
+	// ステートを作成する
+	this->CreateState();
 
 	// ==== ステータスの作成と初期化処理 ====
 
@@ -112,29 +106,10 @@ void Enemy::Initialize()
 	m_hpController = std::make_unique<HpController>();
 	m_hpController->Initialize();
 	// 風船の大きさをコントロール
-	m_balloonScaleController = std::make_unique<BalloonScaleController>(m_hpController.get(), m_floatForceBehavior.get());
+	m_balloonScaleController = std::make_unique<BalloonScaleController>(
+		m_hpController.get(),dynamic_cast<FloatForceBehavior*>( m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::FLOAT_FORCE)));
 	m_balloonScaleController->Initialize();
 
-
-	// ==== オブジェクトの追加 ====
-
-	// 体を追加する
-	this->Attach(EnemyFactory::CreateEnemyBody(this,
-		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-
-	// 風船を追加する
-	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Left * -1.0f, DirectX::SimpleMath::Vector3::Backward * 25.0f, DirectX::SimpleMath::Vector3::One));
-	// 風船を追加する
-	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Right * -1.0f, DirectX::SimpleMath::Vector3::Forward * 25.0f, DirectX::SimpleMath::Vector3::One));
-	// 風船を追加する
-	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-	
-	// 風船のボディを取得
-	for (int i = 0; i < 3; i++)
-		m_balloonObject.push_back(dynamic_cast<Balloon*>(m_childs[i + 1].get())->GetBody());
 
 	// ==== アクションセレクター ====
 
@@ -148,15 +123,9 @@ void Enemy::Initialize()
 	m_boundingSphere.Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
 	m_boundingSphere.Radius = 0.3f;
 
-
 	// 当たり判定を準備する
 	m_collisionVisitor->StartPrepareCollision(this);
 
-
-	// ==== リセット処理 ====
-
-	// オブジェクトのカウントをリセット
-	Object::ResetNumber();
 }
 
 /// <summary>
@@ -168,22 +137,13 @@ void Enemy::Update(const float& elapsedTime)
 	// アクションを決定する
 	m_actionSelection->GetRootNode()->Tick();
 
-	// ステートの更新処理
-	//Object::Update(elapsedTime);
+	// オブジェクトの更新処理
+	Object::Update(elapsedTime);
 
-	// ==== ビヘイビアツリーの更新処理 ====
-
-	m_knockbackBehavior->SetTargetObject(
-		dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, 0)));
-
-
-	// ==== ステアリングビヘイビアの更新処理 ====
-
-	// 各ステアリングをビットで制御
-
-
-	// ==== 物理処理の更新処理 ====
-
+	// 操舵力から加速度を計算する
+	DirectX::SimpleMath::Vector3 acceleration = m_steeringBehavior->Calculate(elapsedTime);
+	// 速度に加速度を加算する
+	m_velocity += acceleration * elapsedTime;
 	// 現在の位置を更新する
 	m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
 
@@ -315,4 +275,83 @@ void Enemy::DetectCollision(ICollisionVisitor* collision, IObject* object)
 {
 	// 判定を行う
 	collision->DetectCollision(this, object);
+}
+
+
+/// <summary>
+/// ステートを作成する
+/// </summary>
+void Enemy::CreateState()
+{
+	// ステートの作成
+	m_enemyIdleState = std::make_unique<EnemyIdleState>();
+	m_enemyRunState = std::make_unique<EnemyRunState>(this);
+	m_enemyAttackState = std::make_unique<EnemyAttackState>(this);
+
+	// ステートの初期化処理
+	m_enemyIdleState->Initialize();
+	m_enemyRunState->Initialize();
+	m_enemyAttackState->Initialize();
+
+	// 初期ステートにアイドル状態を設定
+	Object::SetState(m_enemyIdleState.get());
+}
+
+
+/// <summary>
+/// ステアリングビヘイビアを作成する
+/// </summary>
+void Enemy::CreateSteeringBehavior()
+{
+	// ステアリングビヘイビアの追加
+	m_steeringBehavior = std::make_unique<SteeringBehavior>();
+	m_steeringBehavior->Initialize();
+
+	// ノックバックビヘイビア
+	std::unique_ptr<KnockbackBehavior> knockback = std::make_unique<KnockbackBehavior>(this);
+	m_steeringBehavior->Attach(BEHAVIOR_TYPE::KNOCK_BACK, std::move(knockback));
+
+	// 揺れるビヘイビア
+	std::unique_ptr<FloatBehavior> floatBehavior = std::make_unique<FloatBehavior>();
+	m_steeringBehavior->Attach(BEHAVIOR_TYPE::FLOATING, std::move(floatBehavior));
+
+	// 力を加えるビヘイビア
+	std::unique_ptr<FloatForceBehavior> floatForce = std::make_unique<FloatForceBehavior>();
+	floatForce->SetForceStrength(0.0f);
+	m_steeringBehavior->Attach(BEHAVIOR_TYPE::FLOAT_FORCE, std::move(floatForce));
+
+	// ステージ内に押し戻すビヘイビア
+	std::unique_ptr<PushBackBehavior> pushBack = std::make_unique<PushBackBehavior>(this);
+	m_steeringBehavior->Attach(BEHAVIOR_TYPE::PUSH_BACK, std::move(pushBack));
+
+	std::unique_ptr<SeekBehavior> seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, 0)));
+	//m_steeringBehavior->Attach(BEHAVIOR_TYPE::SEEK, std::move(seekBehavior));
+
+}
+
+/// <summary>
+/// オブジェクトをアタッチする
+/// </summary>
+void Enemy::AttachObject()
+{
+	// 体を追加する
+	this->Attach(EnemyFactory::CreateEnemyBody(this,
+		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+
+	// 風船を追加する
+	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
+		DirectX::SimpleMath::Vector3::Left * -1.0f, DirectX::SimpleMath::Vector3::Backward * 25.0f, DirectX::SimpleMath::Vector3::One));
+	// 風船を追加する
+	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
+		DirectX::SimpleMath::Vector3::Right * -1.0f, DirectX::SimpleMath::Vector3::Forward * 25.0f, DirectX::SimpleMath::Vector3::One));
+	// 風船を追加する
+	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
+		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+
+	// 風船のボディを取得
+	for (int i = 0; i < 3; i++)
+		m_balloonObject.push_back(dynamic_cast<Balloon*>(m_childs[i + 1].get())->GetBody());
+
+	// オブジェクトのカウントをリセット
+	Object::ResetNumber();
 }

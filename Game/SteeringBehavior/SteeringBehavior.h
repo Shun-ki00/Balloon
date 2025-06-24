@@ -22,9 +22,9 @@ public:
 	DirectX::SimpleMath::Vector3 Calculate(const float& elapsedTime);
 
 	// ステアリングビヘイビアをオンにする
-	void On(BEHAVIOR_TYPE flags);
+	void On(BEHAVIOR_TYPE flag);
 	// ステアリングビヘイビアをオフにする
-	void Off(BEHAVIOR_TYPE flags);
+	void Off(BEHAVIOR_TYPE flag);
 
 	// 追加する
 	void Attach(BEHAVIOR_TYPE flags , std::unique_ptr<ISteeringBehavior> steeringBehavior);

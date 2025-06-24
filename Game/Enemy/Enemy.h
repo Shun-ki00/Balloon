@@ -9,17 +9,15 @@ class Transform;
 class PlayerRenderableObject;
 class CollisionVisitor;
 
-class ISteeringBehavior;
-class KnockbackBehavior;
-class PushBackBehavior;
-class FloatBehavior;
-class FloatForceBehavior;
-class SeekBehavior;
+class EnemyIdleState;
+class EnemyRunState;
+class EnemyAttackState;
 
 class BalloonScaleController;
 class HpController;
 
 class ActionSelection;
+class SteeringBehavior;
 
 class Enemy : public Object , public ICollision ,public IComposite
 {
@@ -90,6 +88,17 @@ public:
 
 private:
 
+	// オブジェクトを追加する
+	void AttachObject();
+
+	// ステートを作成する
+	void CreateState();
+
+	// ステアリングビヘイビアを作成する
+	void CreateSteeringBehavior();
+
+private:
+
 	// ビジター
 	CollisionVisitor* m_collisionVisitor;
 
@@ -116,19 +125,19 @@ private:
 	// アクションセレクター
 	std::unique_ptr<ActionSelection> m_actionSelection;
 
-	// ステアリングビヘイビア
-	ISteeringBehavior* m_steeringBehavior;
-	// ノックバック
-	std::unique_ptr<KnockbackBehavior> m_knockbackBehavior;
-	// 揺れる
-	std::unique_ptr<FloatBehavior> m_floatBehavior;
+	// === ステアリングビヘイビア ===
 
-	std::unique_ptr<FloatForceBehavior> m_floatForceBehavior;
+	std::unique_ptr<SteeringBehavior> m_steeringBehavior;
 
-	std::unique_ptr<PushBackBehavior> m_pushBackBehavior;
+	// === ステート ===
 
+	// アイドルステート
+	std::unique_ptr<EnemyIdleState> m_enemyIdleState;
+	// ランステート
+	std::unique_ptr<EnemyRunState> m_enemyRunState;
+	// アタックステート
+	std::unique_ptr<EnemyAttackState> m_enemyAttackState;
 
-	std::unique_ptr<SeekBehavior> m_seekBehavior;
 
 	// プレイヤーの速度
 	DirectX::SimpleMath::Vector3 m_velocity;

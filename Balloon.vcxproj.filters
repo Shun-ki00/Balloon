@@ -648,6 +648,15 @@
     <ClInclude Include="Game\SteeringBehavior\SteeringBehavior.h">
       <Filter>Game\SteeringBehavior</Filter>
     </ClInclude>
+    <ClInclude Include="Game\States\Enemy\EnemyAttackState.h">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\Enemy\EnemyIdleState.h">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\Enemy\EnemyRunState.h">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -1000,6 +1009,15 @@
     </ClCompile>
     <ClCompile Include="SteeringBehavior.cpp">
       <Filter>Game\SteeringBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Enemy\EnemyAttackState.cpp">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Enemy\EnemyIdleState.cpp">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Enemy\EnemyRunState.cpp">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

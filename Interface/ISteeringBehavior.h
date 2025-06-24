@@ -9,6 +9,7 @@ enum BEHAVIOR_TYPE
     FLOATING    = 0x0002,
 	FLOAT_FORCE = 0x0004,
 	PUSH_BACK   = 0x00010,
+    SEEK        = 0x00011
 };
 
 

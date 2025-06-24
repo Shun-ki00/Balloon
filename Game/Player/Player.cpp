@@ -152,7 +152,7 @@ void Player::Update(const float& elapsedTime)
 	// HPをUIへ通知
 	ObjectMessenger::GetInstance()->Dispatch(
 		IObject::ObjectID::HP_GAUGE_UI,
-		{ Message::MessageID::HP_GAUGE, 0, m_hpController->GetHp(), false }
+		{ Message::MessageID::HP_GAUGE, 0, m_hpController->GetHp(), false } 
 	);
 	// プレイヤーの高さをUIに渡す
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false });

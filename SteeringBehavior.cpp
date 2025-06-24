@@ -73,3 +73,23 @@ ISteeringBehavior* SteeringBehavior::GetSteeringBehavior(BEHAVIOR_TYPE flags)
 	// 見つからない場合はnullptrを返す
 	return nullptr;
 }
+
+/// <summary>
+/// ステアリングビヘイビアを有効にする
+/// </summary>
+/// <param name="flags">フラグ</param>
+void SteeringBehavior::On(BEHAVIOR_TYPE flag)
+{
+	// ビットを立てる
+	m_flags |= flag;
+}
+
+/// <summary>
+/// ステアリングビヘイビアを無効にする
+/// </summary>
+/// <param name="flags">フラグ</param>
+void SteeringBehavior::Off(BEHAVIOR_TYPE flag)
+{
+	// ビットを落とす
+	m_flags ^= flag;
+}
