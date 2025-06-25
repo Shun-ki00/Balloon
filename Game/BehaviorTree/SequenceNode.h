@@ -17,10 +17,10 @@ public:
 	}
 
 	// 子ノードを追加する
-	void AddChild(std::unique_ptr<IBehaviorNode> child)
+	void AddChild(IBehaviorNode* child)
 	{
 		// ノードを追加する
-		m_behaviorNodes.push_back(std::move(child));
+		m_behaviorNodes.push_back(child);
 	}
 
 	// 実行する
@@ -45,6 +45,6 @@ private:
 	// 名前
 	std::string m_name;
 	// ビヘイビアノード配列
-	std::vector<std::unique_ptr<IBehaviorNode>> m_behaviorNodes;
+	std::vector<IBehaviorNode*> m_behaviorNodes;
 
 };

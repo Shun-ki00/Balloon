@@ -1,9 +1,12 @@
 #pragma once
 #include "Interface/IBehaviorNode.h"
 #include "Game/BehaviorTree/ActionNode.h"
+#include "Game/BehaviorTree/SequenceNode.h"
 
 class AIConditions;
 class SelectorNode;
+class SequenceNode;
+class ActionNode;
 class Enemy;
 
 class ActionSelection
@@ -23,6 +26,11 @@ public:
 
 private:
 
+	// アクションノードを作成する
+	void CreateActionNode();
+
+private:
+
 	// 敵オブジェクト
 	Enemy* m_enemy;
 
@@ -34,16 +42,42 @@ private:
 	// ルートノード
 	std::unique_ptr<SelectorNode> m_root;
 
-	// プレイヤーより上にいるかどうかチェック
-	std::unique_ptr<IBehaviorNode> m_isAboveCheck;
-	// プレイヤーより下にいるかどうかチェック
-	std::unique_ptr<IBehaviorNode> m_isBelowCheck;
-	// プレイヤーの一定範囲にいるかどうか
-	std::unique_ptr<IBehaviorNode> m_isInRangeCheck;
+	// ==== シーケンスノード ====
+
+	// プレイヤーの範囲外にいるかどうか
+	std::unique_ptr<SequenceNode> m_outOfRange;
+	// プレイヤーの範囲内にいるかどうか
+	std::unique_ptr<SequenceNode> m_inOfRange;
+
+
+	// ==== セレクターノード ====
 
 	// 体力のセレクターノード
 	std::unique_ptr<SelectorNode> m_hpSelectorNode;
 
+
+	// ==== アクションノード ====
+
+	// プレイヤーより上にいるかどうかチェック
+	std::unique_ptr<ActionNode> m_isAboveCheck;
+	// プレイヤーより下にいるかどうかチェック
+	std::unique_ptr<ActionNode> m_isBelowCheck;
+
+	// プレイヤーの一定範囲内にいるかどうか
+	std::unique_ptr<ActionNode> m_isInRangeCheck;
+	// プレイヤーの一定範囲外にいるかどうか
+	std::unique_ptr<ActionNode> m_isOutRangeCheck;
+
+	// === ステート変更ノード ===
+
+	// 敵をアイドル状態に変更（徘徊）
+	std::unique_ptr<ActionNode> m_ChangeIdlingState;
+
+	// 敵を移動状態に変更
+
+	// 敵をアタック状態に変更
+
+	
 	// 体力のチェックノード
 	std::unique_ptr<IBehaviorNode> m_hightHpCheck;
 	std::unique_ptr<IBehaviorNode> m_mediumHpCheck;

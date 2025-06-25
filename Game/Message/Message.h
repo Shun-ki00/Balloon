@@ -18,6 +18,9 @@ public:
 		PLAYER_SKILL,
 		EFFECT_NUMBER,
 
+		// 敵
+		ENEMY_IDLING,
+
 		// エフェクト
 		EXPLOSION,
 		ATTACK,

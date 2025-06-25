@@ -7,7 +7,7 @@ class AIConditions
 {
 public:
 	// 対象のオブジェクトを設定する
-	void SetTargetObject(Player* enemy) { m_player = enemy; }
+	void SetTargetObject(Player* player) { m_player = player; }
 
 	// AIConditionsクラスのインスタンスを取得する
 	static AIConditions* GetInstance();

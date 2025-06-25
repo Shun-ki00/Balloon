@@ -240,6 +240,10 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 
 		case Message::MessageID::BALLOON_SCALE:
 
+		case Message::MessageID::ENEMY_IDLING:
+
+			Object::ChangeState(m_enemyIdleState.get());
+
 
 			break;
 		default:
