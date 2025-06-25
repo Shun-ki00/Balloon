@@ -189,16 +189,22 @@ void Player::Update(const float& elapsedTime)
 		child->Update(elapsedTime);
 	}
 
-	// 当たり判定を行う
-	/*for (int i = 0; i < 3 ; i++)
-	{
-		auto enemy = dynamic_cast<Enemy*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY, i * 1000 + 1000));
 
-		for (const auto& balloon : enemy->GetBalloonObject())
+
+	// 当たり判定を行う
+
+	// 敵を取得する
+	auto enemys =
+		ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY);
+	for (const auto& enemy : enemys)
+	{	
+		// プレイヤーと敵の風船の当たり判定を行う
+		for (const auto& balloon : dynamic_cast<Enemy*>(enemy)->GetBalloonObject())
 		{
 			m_collisionVisitor->DetectCollision(this, balloon);
 		}
-	}*/
+	}
+
 }
 
 /// <summary>

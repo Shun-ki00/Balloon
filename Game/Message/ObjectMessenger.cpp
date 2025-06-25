@@ -86,7 +86,12 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const Message:
 }
 
 
-// オブジェクトを取得する
+/// <summary>
+/// オブジェクトを取得する
+/// </summary>
+/// <param name="objectId">オブジェクトID</param>
+/// <param name="objectNumber">オブジェクト番号</param>
+/// <returns>オブジェクト</returns>
 IObject* ObjectMessenger::FindObject(const IObject::ObjectID& objectId, const int& objectNumber)
 {
 	// 種類ごとのオブジェクトマップを検索
@@ -108,6 +113,30 @@ IObject* ObjectMessenger::FindObject(const IObject::ObjectID& objectId, const in
 	// 見つからなかった場合は nullptr を返す
 	return nullptr;
 }
+
+/// <summary>
+/// オブジェクトを取得する
+/// </summary>
+/// <param name="objectId">オブジェクトID</param>
+/// <returns>オブジェクト</returns>
+std::vector<IObject*> ObjectMessenger::FindObject(const IObject::ObjectID& objectId)
+{
+	std::vector<IObject*> objects;
+
+	// オブジェクトIDに対応するマップが存在するか確認
+	auto typeIt = m_objects.find(objectId);
+	if (typeIt != m_objects.end());
+
+	// 対象のオブジェクトを配列に詰めて返す
+	for (const auto& [objectNumber, object] : typeIt->second)
+	{
+		if (object->GetObjectID() == objectId)
+			objects.push_back(object);
+	}
+
+	return objects;
+}
+
 
 void ObjectMessenger::Begin()
 {

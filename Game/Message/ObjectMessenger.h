@@ -8,6 +8,10 @@ public:
 
 	// オブジェクトを検索、取得する
 	IObject* FindObject(const IObject::ObjectID& objectId, const int& objectNumber);
+	// オブジェクト取得
+	std::vector<IObject*> FindObject(const IObject::ObjectID& objectId);
+
+
 	// オブジェクトを登録する
 	void Register(const IObject::ObjectID& objectId ,const int& objectNumber, IObject* object);
 
