@@ -26,7 +26,7 @@ public:
 	int GetObjectNumber() const override { return NodeBase::GetNodeCount(); }
 
 	// 現状のノードの数を設定
-	void SetNodeNumber() { m_nodeNumber = NodeBase::GetNodeCount(); }
+	void SetNodeNumber() { m_nodeNumber = NodeBase::GetNodeCount() / 1000; }
 	// ノード番号をリセット
 	void ResetNodeNumber() { NodeBase::ResetNodeCount(); }
 

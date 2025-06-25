@@ -119,9 +119,11 @@ void Enemy::Initialize()
 
 	// ==== 当たり判定 ====
 
-	// 当たり判定
-	m_boundingSphere.Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
-	m_boundingSphere.Radius = 0.3f;
+	// 当たり判定の作成
+	m_boundingSphere = std::make_unique<DirectX::BoundingSphere>();
+	// 初期化
+	m_boundingSphere->Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
+	m_boundingSphere->Radius = 0.3f;
 
 	// 当たり判定を準備する
 	m_collisionVisitor->StartPrepareCollision(this);
@@ -168,11 +170,17 @@ void Enemy::Update(const float& elapsedTime)
 		child->Update(elapsedTime);
 	}
 
+	// 風船の大きさを設定する
+	for (const auto& balloon : m_balloonObject)
+	{
+		balloon->GetParent()->OnMessegeAccepted({ Message::MessageID::BALLOON_SCALE ,0,m_balloonScaleController->GetBalloonScale(),false });
+	}
+
 
 	// ==== 衝突判定の更新 ====
 
 	// 当たり判定を行う
-	auto player = dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,0));
+	auto player = dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,1000));
 	for (const auto& balloon : player->GetBalloonObject())
 	{
 		m_collisionVisitor->DetectCollision(this, balloon);
@@ -256,7 +264,7 @@ void Enemy::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 /// <param name="collision">当たり判定処理</param>
 void Enemy::PrepareCollision(ICollisionVisitor* collision)
 {
-	collision->PrepareCollision(this,m_boundingSphere);
+	collision->PrepareCollision(this,m_boundingSphere.get());
 
 	for (const auto& child : m_childs)
 	{
@@ -340,13 +348,13 @@ void Enemy::AttachObject()
 
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Left * -1.0f, DirectX::SimpleMath::Vector3::Backward * 25.0f, DirectX::SimpleMath::Vector3::One));
+		{ 0.0f ,10.0f ,0.2f }, { -20.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Right * -1.0f, DirectX::SimpleMath::Vector3::Forward * 25.0f, DirectX::SimpleMath::Vector3::One));
+		{ 0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,16.0f }, DirectX::SimpleMath::Vector3::One));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		{ -0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,-16.0f }, DirectX::SimpleMath::Vector3::One));
 
 	// 風船のボディを取得
 	for (int i = 0; i < 3; i++)

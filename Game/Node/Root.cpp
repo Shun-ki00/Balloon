@@ -85,7 +85,7 @@ void Root::End()
 	m_isAttach = false;
 
 	// 保存したノードの数削除
-	NodeBase::ResetSceneNode(m_nodeNumber);
+	NodeBase::ResetSceneNode(m_nodeNumber - 1);
 
 	// ノードの数をリセット
 	m_nodeNumber = 0;

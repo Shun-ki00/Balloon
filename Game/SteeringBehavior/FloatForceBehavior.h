@@ -9,6 +9,8 @@ class FloatForceBehavior : public ISteeringBehavior
 public:
     // 強さを設定する
     void SetForceStrength(const float& strength) { m_forcePower = strength; }
+    // 力の向きを設定
+    void SetForceDirection(const DirectX::SimpleMath::Vector3& direction) { m_direction = direction; }
 
     // ビヘイビアを有効にする
     void On() override;

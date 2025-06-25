@@ -8,7 +8,7 @@ public:
 	// 衝突準備ビジターを開始する
 	void StartPrepareCollision(IObject* object) override;
 	// 再帰的に衝突準備ビジターを呼び出す
-	void PrepareCollision(IObject* object,DirectX::BoundingSphere& boundingSphere) override;
+	void PrepareCollision(IObject* object,DirectX::BoundingSphere* boundingSphere) override;
 	// 再帰的にDetectCollision関数を呼び出す
 	void DetectCollision(IObject* object, IObject* object1) override;
 
@@ -37,7 +37,7 @@ public:
 private:
 
 	// 「砲塔」配列バウンディングボックス
-	std::unordered_map<int, DirectX::BoundingSphere&> m_boundingSphere;
+	std::unordered_map<int, DirectX::BoundingSphere*> m_boundingSphere;
 
 	std::unordered_map<IObject* ,std::unordered_map<bool,  DirectX::BoundingSphere>> m_worldBoundingSpheres;
 };

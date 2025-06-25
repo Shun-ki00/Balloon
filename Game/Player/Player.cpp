@@ -115,9 +115,11 @@ void Player::Initialize()
 	// ステートを作成する
 	this->CreateState();
 
-	// 当たり判定を設定する
-	m_boundingSphere.Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
-	m_boundingSphere.Radius = 0.3f;
+	// 当たり判定の作成
+	m_boundingSphere = std::make_unique<DirectX::BoundingSphere>();
+	// 初期化
+	m_boundingSphere->Center = DirectX::SimpleMath::Vector3::Up * 0.2f;
+	m_boundingSphere->Radius = 0.3f;
 	
 	// HPをコントロール
 	m_hpController = std::make_unique<HpController>();
@@ -157,6 +159,9 @@ void Player::Update(const float& elapsedTime)
 	// プレイヤーの高さをUIに渡す
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAYER_HEIGHT , 0,m_transform->GetLocalPosition().y,false });
 
+	float result = m_balloonScaleController->GetBalloonScale() * 6.0f - 3.0f;
+	dynamic_cast<FloatForceBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::FLOAT_FORCE))->SetForceStrength(result);
+
 	// オブジェクトの更新処理
 	Object::Update(elapsedTime);
 
@@ -185,9 +190,9 @@ void Player::Update(const float& elapsedTime)
 	}
 
 	// 当たり判定を行う
-	/*for (int i = 0; i < Parameters::GetInstance()->GetParameter(ParametersID::ENEMY, ParameterKeysI::Number); i++)
+	/*for (int i = 0; i < 3 ; i++)
 	{
-		auto enemy = dynamic_cast<Enemy*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY, i + 1));
+		auto enemy = dynamic_cast<Enemy*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY, i * 1000 + 1000));
 
 		for (const auto& balloon : enemy->GetBalloonObject())
 		{
@@ -231,7 +236,7 @@ std::vector<IObject*> Player::GetChilds() const
 	std::vector<IObject*> result;
 	result.reserve(m_childs.size());
 	for (const auto& child : m_childs)
-	{
+	{ 
 		result.push_back(child.get());
 	}
 	return result;
@@ -245,7 +250,7 @@ std::vector<IObject*> Player::GetChilds() const
 void Player::PrepareCollision(ICollisionVisitor* collision)
 {
 	// 今回プレイヤーのみの当たり判定なので再帰処理は行わない
-	collision->PrepareCollision(this, m_boundingSphere);
+	collision->PrepareCollision(this, m_boundingSphere.get());
 
 	for (const auto& child : m_childs)
 	{
@@ -440,11 +445,14 @@ void Player::CreateSteeringBehavior()
 	// 力を加えるビヘイビア
 	std::unique_ptr<FloatForceBehavior> floatForce = std::make_unique<FloatForceBehavior>();
 	floatForce->SetForceStrength(0.0f);
+	floatForce->SetForceDirection(DirectX::SimpleMath::Vector3::Up);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::FLOAT_FORCE, std::move(floatForce));
 
 	// ステージ内に押し戻すビヘイビア
 	std::unique_ptr<PushBackBehavior> pushBack = std::make_unique<PushBackBehavior>(this);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::PUSH_BACK, std::move(pushBack));
+
+	m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOATING);
 }
 
 /// <summary>

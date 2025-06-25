@@ -65,10 +65,12 @@ BalloonBody::~BalloonBody()
 /// </summary>
 void BalloonBody::Initialize()
 {
+	// 当たり判定の作成
+	m_boundingSphere = std::make_unique<DirectX::BoundingSphere>();
 	// 当たり判定の初期座標を設定
-	m_boundingSphere.Center = { 0.0f , 130.0f , 0.0f };
+	m_boundingSphere->Center = { 0.0f , 130.0f , 0.0f };
 	// 当たり判定の大きさを設定
-	m_boundingSphere.Radius = 0.25f;
+	m_boundingSphere->Radius = 0.25f;
 
 	// 初期化処理
 	PBRLitConstantBuffer buffer{
@@ -127,7 +129,7 @@ void BalloonBody::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 void BalloonBody::PrepareCollision(ICollisionVisitor* collision)
 {
 	// 今回プレイヤーのみの当たり判定なので再帰処理は行わない
-	collision->PrepareCollision(this, m_boundingSphere);
+	collision->PrepareCollision(this, m_boundingSphere.get());
 }
 
 // 衝突判定する

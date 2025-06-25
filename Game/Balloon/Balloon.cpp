@@ -176,7 +176,6 @@ void Balloon::SetBalloonScale(float BalloonScale)
 	body->GetTransform()->SetLocalScale({ scale, scale, scale });
 
 	// “–‚½‚è”»’è”¼Œa‚ð“K—p
-	DirectX::BoundingSphere sphere = body->GetBoundingSphere();
-	sphere.Radius = radius;
-	body->SetBoundingSphere(sphere);
+	body->SetBoundingSphereRadius(radius);
+
 }

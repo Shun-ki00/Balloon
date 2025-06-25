@@ -125,7 +125,7 @@ private:
 	// 子オブジェクト
 	std::vector<std::unique_ptr<IObject>> m_childs;
 	// 当たり判定
-	DirectX::BoundingSphere m_boundingSphere;
+	std::unique_ptr<DirectX::BoundingSphere> m_boundingSphere;
 
 	// 風船オブジェクト
 	std::vector<IObject*> m_balloonObject;

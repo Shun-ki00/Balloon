@@ -9,13 +9,22 @@ CollisionVisitor::CollisionVisitor()
 
 }
 
+/// <summary>
+/// 衝突判定の準備処理
+/// </summary>
+/// <param name="object">オブジェクト</param>
 void CollisionVisitor::StartPrepareCollision(IObject* object)
 {
 	dynamic_cast<ICollision*>(object)->PrepareCollision(this);
 }
 
 
-void CollisionVisitor::PrepareCollision(IObject* object, DirectX::BoundingSphere& boundingSphere)
+/// <summary>
+///	境界球を登録する
+/// </summary>
+/// <param name="object">オブジェクト</param>
+/// <param name="boundingSphere">スフィア</param>
+void CollisionVisitor::PrepareCollision(IObject* object, DirectX::BoundingSphere* boundingSphere)
 {
 	// オブジェクト番号と境界スフィアをマップに格納する
 	m_boundingSphere.insert({ object->GetObjectNumber() , boundingSphere });
@@ -36,18 +45,18 @@ void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 	auto it = m_boundingSphere.find(object->GetObjectNumber());
 
 	worldBoundingSphere.Center =
-		DirectX::SimpleMath::Vector3::Transform(it->second.Center, object->GetTransform()->GetWorldMatrix());
+		DirectX::SimpleMath::Vector3::Transform(it->second->Center, object->GetTransform()->GetWorldMatrix());
 
-	worldBoundingSphere.Radius = it->second.Radius;
+	worldBoundingSphere.Radius = it->second->Radius;
 
 	// 部品番号から境界ボックスを検索する
 	it = m_boundingSphere.find(object1->GetObjectNumber());
 
 	worldBoundingSphere1.Center =
-		DirectX::SimpleMath::Vector3::Transform(it->second.Center, object1->GetTransform()->GetWorldMatrix());
+		DirectX::SimpleMath::Vector3::Transform(it->second->Center, object1->GetTransform()->GetWorldMatrix());
 
-
-	worldBoundingSphere1.Radius = it->second.Radius;
+	      
+	worldBoundingSphere1.Radius = it->second->Radius;
 
 	// 当たり判定を行う
 	if (worldBoundingSphere.Intersects(worldBoundingSphere1))
@@ -56,12 +65,8 @@ void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 		ObjectMessenger::GetInstance()->Dispatch(object->GetObjectID(), object->GetObjectNumber(),
 			{ Message::MessageID::ON_COLLISION , object1->GetObjectNumber() });
 
-		// 衝突した場合,メッセージを送る 衝突相手の番号も一緒に送る
-	/*	ObjectMessenger::GetInstance()->Dispatch(object1->GetObjectNumber(),
-			{ Message::MessageID::ON_COLLISION , object->GetObjectNumber() });*/
-
 		// object 側の更新
-		m_worldBoundingSpheres[object][true] = worldBoundingSphere;
+  		m_worldBoundingSpheres[object][true] = worldBoundingSphere;
 		m_worldBoundingSpheres[object].erase(false);
 
 		// object1 側の更新
@@ -80,6 +85,10 @@ void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 
 }
 
+/// <summary>
+/// 境界球の描画
+/// </summary>
+/// <param name="primitiveBatch"></param>
 void CollisionVisitor::DebugDraw(DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* primitiveBatch)
 {
 	for (const auto& [object, result] : m_worldBoundingSpheres)

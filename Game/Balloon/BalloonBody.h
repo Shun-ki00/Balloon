@@ -16,9 +16,12 @@ public:
 	bool GetIsActive() const { return m_isActive; }
 
 	// 当たり判定を取得する
-	DirectX::BoundingSphere GetBoundingSphere() const { return m_boundingSphere; }
-	// 当たり判定を設定する
-	void SetBoundingSphere(const DirectX::BoundingSphere& boundingSphere) { m_boundingSphere = boundingSphere; }
+	DirectX::BoundingSphere* GetBoundingSphere() const { return m_boundingSphere.get(); }
+
+	// 当たり判定の座標を設定
+	void SetBoundingSphereCenter(const DirectX::SimpleMath::Vector3& center) { m_boundingSphere->Center = center; }
+	// 当たり判定の半径を設定
+	void SetBoundingSphereRadius(const float& radius) { m_boundingSphere->Radius = radius; }
 
 	// オブジェクト番号を取得する
 	int GetObjectNumber() const  override { return m_objectNumber; }
@@ -87,7 +90,7 @@ private:
 	// 描画オブジェクト
 	std::unique_ptr<IRenderableObject> m_renderableObject;
 	// 当たり判定
-	DirectX::BoundingSphere m_boundingSphere;
+	std::unique_ptr<DirectX::BoundingSphere> m_boundingSphere;
 
 	// プレイヤーの速度
 	DirectX::SimpleMath::Vector3 m_velocity;

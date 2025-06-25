@@ -120,7 +120,7 @@ private:
 	// Transform
 	std::unique_ptr<Transform> m_transform;
 	// 当たり判定
-	DirectX::BoundingSphere m_boundingSphere;
+	std::unique_ptr<DirectX::BoundingSphere> m_boundingSphere;
 
 	// アクションセレクター
 	std::unique_ptr<ActionSelection> m_actionSelection;

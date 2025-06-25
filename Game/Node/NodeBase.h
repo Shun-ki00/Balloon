@@ -42,11 +42,14 @@ public:
 
 public:
 	// ノードカウントのカウントアップ後ノードカウントを取得する(1から開始する)
-	static int GetNodeCountAfterCountUp() { return ++s_nodeCount; }
+	static int GetNodeCountAfterCountUp() 
+	{
+		return s_nodeCount + 1000;
+	}
 	// ノードカウントを取得する
 	static int GetNodeCount() { return s_nodeCount; }
 	// ノードカウントをリセットする
-	static void ResetNodeCount() { s_nodeCount = 0; }
+	static void ResetNodeCount() { s_nodeCount = 1000; }
 
 private:
 	// ノードカウント

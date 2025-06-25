@@ -2,7 +2,7 @@
 #include "Game/Node/NodeBase.h"
 
 // オブジェクト番号
-int NodeBase::s_nodeCount = 0;
+int NodeBase::s_nodeCount = 1000;
 
 
 // コンストラクタ
