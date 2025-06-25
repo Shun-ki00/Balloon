@@ -657,6 +657,9 @@
     <ClInclude Include="Game\States\Enemy\EnemyRunState.h">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Game\States\Enemy\EnemyWanderState.h">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -1017,6 +1020,9 @@
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Game\States\Enemy\EnemyRunState.cpp">
+      <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\Enemy\EnemyWanderState.cpp">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClCompile>
   </ItemGroup>

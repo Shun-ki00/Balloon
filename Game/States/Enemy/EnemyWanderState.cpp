@@ -33,7 +33,40 @@ void EnemyWanderState::PreUpdate()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void EnemyWanderState::Update(const float& elapsedTime)
 {
-	
+	switch (m_phase)
+	{
+		case WanderPhase::WAIT:
+			m_timer += elapsedTime;
+			if (m_timer >= m_waitTime)
+			{
+				// ROTATE ‚ÖˆÚs
+				m_targetAngle = RandomAngle();
+				m_phase = WanderPhase::ROTATE;
+			}
+			break;
+
+		case WanderPhase::ROTATE:
+			// current ¨ target ‚É•âŠÔ‰ñ“]
+			if (RotateTowards(elapsedTime))
+			{
+				// MOVE ‚ÖˆÚs
+				m_moved = 0.0f;
+				m_phase = WanderPhase::MOVE;
+			}
+			break;
+
+		case WanderPhase::MOVE:
+			// Œü‚¢‚Ä‚é•ûŒü‚ÖˆÚ“®
+			MoveForward(elapsedTime);
+			if (m_moved >= m_moveDistance)
+			{
+				// WAIT ‚Ö–ß‚·
+				m_timer = 0.0f;
+				m_waitTime = RandomTime();
+				m_phase = WanderPhase::WAIT;
+			}
+			break;
+	}
 }
 
 /// <summary>
