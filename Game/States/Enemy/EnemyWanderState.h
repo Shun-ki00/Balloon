@@ -24,6 +24,20 @@ public:
 	// 後処理を行う
 	void Finalize() override;
 
+private:
+
+	// 回転角
+	static const float MIN_ROTATION_ANGLE;
+	static const float MAX_ROTATION_ANGLE;
+	// 回転速度
+	static const float ROTATION_DURATION;
+	// 移動距離
+	static const float MIN_MOVE_DISTANCE;
+	static const float MAX_MOVE_DISTANCE;
+	// 移動速度
+	static const float MIN_MOVE_SPEED;
+	static const float MAX_MOVE_SPEED;
+
 public:
 
 	// 敵オブジェクト

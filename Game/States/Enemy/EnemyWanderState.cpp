@@ -3,6 +3,17 @@
 #include "Game/Object/Object.h"
 #include "Framework/Utilities/RandomUtilities.h"
 
+const float EnemyWanderState::MIN_ROTATION_ANGLE = 0.0f;
+const float EnemyWanderState::MAX_ROTATION_ANGLE = 360.0f;
+
+const float EnemyWanderState::ROTATION_DURATION = 1.5f;
+
+const float EnemyWanderState::MIN_MOVE_DISTANCE = 2.0f;
+const float EnemyWanderState::MAX_MOVE_DISTANCE = 5.0f;
+
+const float EnemyWanderState::MIN_MOVE_SPEED = 1.0f;
+const float EnemyWanderState::MAX_MOVE_SPEED = 3.0f;
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -47,12 +58,13 @@ void EnemyWanderState::Update(const float& elapsedTime)
 			// 待ち時間終了
 			m_isWait = false;
 			// 回転Tweenを開始
-			m_object->GetTransform()->GetTween()->DORotationY(RandomUtilities::RandomFloat(0.0f, 360.0f), 1.5f);
+			m_object->GetTransform()->GetTween()->DORotationY(
+				RandomUtilities::RandomFloat(MIN_ROTATION_ANGLE, MAX_ROTATION_ANGLE), ROTATION_DURATION);
 
 			// 移動距離をランダム決定
-			m_moveDistance = RandomUtilities::RandomFloat(2.0f, 5.0f);
+			m_moveDistance = RandomUtilities::RandomFloat(MIN_MOVE_DISTANCE, MAX_MOVE_DISTANCE);
 			// 移動スピードランダム決定
-			m_moveSpeed = RandomUtilities::RandomFloat(1.0f, 3.0f);
+			m_moveSpeed = RandomUtilities::RandomFloat(MIN_MOVE_SPEED, MAX_MOVE_SPEED);
 		}
 
 		return;
@@ -60,7 +72,7 @@ void EnemyWanderState::Update(const float& elapsedTime)
 
 	// 移動開始
 	m_object->SetVelocity(m_object->GetVelocity() +
-		DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3(0.0f, 0.0f,m_moveSpeed * elapsedTime),
+		DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3::Backward * m_moveSpeed * elapsedTime,
 			m_object->GetTransform()->GetLocalRotation()));
 
 	// 移動距離を減算
