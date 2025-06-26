@@ -72,6 +72,8 @@ private:
 
 	// 敵をアイドル状態に変更（徘徊）
 	std::unique_ptr<ActionNode> m_ChangeIdlingState;
+	// 敵の追いかける処理
+	std::unique_ptr<ActionNode> m_ChangeChaseState;
 
 	// 敵を移動状態に変更
 

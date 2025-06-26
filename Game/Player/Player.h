@@ -130,7 +130,6 @@ private:
 	// 風船オブジェクト
 	std::vector<IObject*> m_balloonObject;
 
-
 	// === 物理挙動 ===
 
 	// プレイヤーの速度
@@ -147,7 +146,6 @@ private:
 
 	std::unique_ptr<SteeringBehavior> m_steeringBehavior;
 	
-
 	// === ステート ===
 
 	// アイドルステート

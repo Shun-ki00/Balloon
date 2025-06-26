@@ -10,6 +10,9 @@ public:
     // 0～1の強さ設定
     void SetForceStrength(const float& strength) { m_forceStrength = strength; }
 
+    // ベクトルの向きを取得する
+    DirectX::SimpleMath::Vector3 GetDirection() const { return m_direction; }
+
     // ビヘイビアを有効にする
     void On() override;
     // ビヘイビアを無効にする
@@ -37,6 +40,9 @@ private:
     float m_predictionMultiplier;
     // 移動速度
     float m_seekSpeed;
+
+    // ベクトルの向き
+    DirectX::SimpleMath::Vector3 m_direction;
 
 
     float m_forceStrength;

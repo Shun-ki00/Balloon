@@ -12,6 +12,7 @@ SeekBehavior::SeekBehavior(Object* object, Object* target)
 {
     m_object = object;
     m_target = target;
+    m_seekSpeed = 0.5f;
 }
 
 /// <summary>
@@ -20,6 +21,8 @@ SeekBehavior::SeekBehavior(Object* object, Object* target)
 /// <returns>ŒvZŒ‹‰Ê</returns>
 DirectX::SimpleMath::Vector3 SeekBehavior::Calculate()
 {
+    if (!m_isActive) return DirectX::SimpleMath::Vector3::Zero;
+
     // ‘Šè‚ÌÀ•W
     const DirectX::SimpleMath::Vector3 targetPosition = m_target->GetTransform()->GetLocalPosition();
     // ‘Šè‚Ì‘¬“x
@@ -51,6 +54,9 @@ DirectX::SimpleMath::Vector3 SeekBehavior::Calculate()
 
     // ³‹K‰»‚µ‚ÄŒü‚«‚¾‚¯‚ğæ“¾
     desiredVelocity.Normalize();
+
+    // Œü‚«‚ğİ’è
+    m_direction = desiredVelocity;
 
     // ˆÚ“®‘¬“x‚ğæZ
     desiredVelocity *= m_seekSpeed;

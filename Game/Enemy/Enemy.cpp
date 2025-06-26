@@ -26,6 +26,7 @@
 #include "Game/States/Enemy/EnemyRunState.h"
 #include "Game/States/Enemy/EnemyAttackState.h"
 #include "Game/States/Enemy/EnemyWanderState.h"
+#include "Game/States/Enemy/EnemyChaseState.h"
 
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
@@ -260,6 +261,9 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 		case Message::MessageID::ENEMY_WANDER:
 			Object::ChangeState(m_enemyWanderState.get());
 			break;
+		case Message::MessageID::ENEMY_CHASE:
+			Object::ChangeState(m_enemyChaseState.get());
+			break;
 		default:
 			break;
 	}
@@ -314,12 +318,17 @@ void Enemy::CreateState()
 	m_enemyRunState = std::make_unique<EnemyRunState>(this);
 	m_enemyAttackState = std::make_unique<EnemyAttackState>(this);
 	m_enemyWanderState = std::make_unique<EnemyWanderState>(this);
+	m_enemyChaseState = std::make_unique<EnemyChaseState>(
+		dynamic_cast<Object*>(this), dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]),
+		m_steeringBehavior.get(), dynamic_cast<SeekBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::SEEK))
+	);
 
 	// ステートの初期化処理
 	m_enemyIdleState->Initialize();
 	m_enemyRunState->Initialize();
 	m_enemyAttackState->Initialize();
 	m_enemyWanderState->Initialize();
+	m_enemyChaseState->Initialize();
 
 	// 初期ステートにアイドル状態を設定
 	Object::SetState(m_enemyIdleState.get());
@@ -353,8 +362,8 @@ void Enemy::CreateSteeringBehavior()
 	std::unique_ptr<PushBackBehavior> pushBack = std::make_unique<PushBackBehavior>(this);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::PUSH_BACK, std::move(pushBack));
 
-	std::unique_ptr<SeekBehavior> seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER, 0)));
-	//m_steeringBehavior->Attach(BEHAVIOR_TYPE::SEEK, std::move(seekBehavior));
+	std::unique_ptr<SeekBehavior> seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]));
+	m_steeringBehavior->Attach(BEHAVIOR_TYPE::SEEK, std::move(seekBehavior));
 
 }
 

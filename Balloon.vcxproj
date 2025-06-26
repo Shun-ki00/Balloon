@@ -272,6 +272,7 @@
     <ClInclude Include="Game\Sea\Sea.h" />
     <ClInclude Include="Game\SkyBox\SkyBox.h" />
     <ClInclude Include="Game\States\Enemy\EnemyAttackState.h" />
+    <ClInclude Include="Game\States\Enemy\EnemyChaseState.h" />
     <ClInclude Include="Game\States\Enemy\EnemyIdleState.h" />
     <ClInclude Include="Game\States\Enemy\EnemyRunState.h" />
     <ClInclude Include="Game\States\Enemy\EnemyWanderState.h" />
@@ -414,6 +415,7 @@
     <ClCompile Include="Game\Sea\Sea.cpp" />
     <ClCompile Include="Game\SkyBox\SkyBox.cpp" />
     <ClCompile Include="Game\States\Enemy\EnemyAttackState.cpp" />
+    <ClCompile Include="Game\States\Enemy\EnemyChaseState.cpp" />
     <ClCompile Include="Game\States\Enemy\EnemyIdleState.cpp" />
     <ClCompile Include="Game\States\Enemy\EnemyRunState.cpp" />
     <ClCompile Include="Game\States\Enemy\EnemyWanderState.cpp" />

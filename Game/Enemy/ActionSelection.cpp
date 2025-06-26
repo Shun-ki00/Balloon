@@ -37,6 +37,7 @@ void ActionSelection::Initialize(Enemy* enemy)
 	
 	// チェックするアクションノードを追加
 	m_inOfRange->AddChild(m_isInRangeCheck.get());
+	m_inOfRange->AddChild(m_ChangeChaseState.get());
 
 	// HPをで判定するアクションノードを追加
 	/*m_hpSelectorNode = std::make_unique<SelectorNode>("HpSelector");
@@ -71,10 +72,19 @@ void ActionSelection::CreateActionNode()
 		});
 
 	// 敵のステートを変更
-	m_ChangeIdlingState = std::make_unique<ActionNode>("OutRange", [&]()
+	m_ChangeIdlingState = std::make_unique<ActionNode>("IdlingState", [&]()
 		{
 			// ステート変更通知を送る
 			m_enemy->OnMessegeAccepted({ Message::MessageID::ENEMY_WANDER });
+
+			return Result::SUCCESS;
+		});
+
+	// 敵のステートを変更
+	m_ChangeChaseState = std::make_unique<ActionNode>("ChaseState", [&]()
+		{
+			// ステート変更通知を送る
+			m_enemy->OnMessegeAccepted({ Message::MessageID::ENEMY_CHASE });
 
 			return Result::SUCCESS;
 		});
