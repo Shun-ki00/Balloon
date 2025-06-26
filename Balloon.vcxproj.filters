@@ -645,9 +645,6 @@
     <ClInclude Include="Framework\Utilities\JsonUtilities.h">
       <Filter>Framework\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="Game\SteeringBehavior\SteeringBehavior.h">
-      <Filter>Game\SteeringBehavior</Filter>
-    </ClInclude>
     <ClInclude Include="Game\States\Enemy\EnemyAttackState.h">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClInclude>
@@ -659,6 +656,9 @@
     </ClInclude>
     <ClInclude Include="Game\States\Enemy\EnemyWanderState.h">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\SteeringBehavior\SteeringBehavior.h">
+      <Filter>Game\SteeringBehavior\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1010,9 +1010,6 @@
     <ClCompile Include="Framework\Utilities\JsonUtilities.cpp">
       <Filter>Framework\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="SteeringBehavior.cpp">
-      <Filter>Game\SteeringBehavior</Filter>
-    </ClCompile>
     <ClCompile Include="Game\States\Enemy\EnemyAttackState.cpp">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClCompile>
@@ -1024,6 +1021,9 @@
     </ClCompile>
     <ClCompile Include="Game\States\Enemy\EnemyWanderState.cpp">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\SteeringBehavior\SteeringBehavior.cpp">
+      <Filter>Game\SteeringBehavior\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
