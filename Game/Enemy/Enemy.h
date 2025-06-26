@@ -12,6 +12,7 @@ class CollisionVisitor;
 class EnemyIdleState;
 class EnemyRunState;
 class EnemyAttackState;
+class EnemyWanderState;
 
 class BalloonScaleController;
 class HpController;
@@ -137,6 +138,8 @@ private:
 	std::unique_ptr<EnemyRunState> m_enemyRunState;
 	// アタックステート
 	std::unique_ptr<EnemyAttackState> m_enemyAttackState;
+	// 徘徊ステート
+	std::unique_ptr<EnemyWanderState> m_enemyWanderState;
 
 
 	// プレイヤーの速度

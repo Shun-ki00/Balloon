@@ -25,6 +25,7 @@
 #include "Game/States/Enemy/EnemyIdleState.h"
 #include "Game/States/Enemy/EnemyRunState.h"
 #include "Game/States/Enemy/EnemyAttackState.h"
+#include "Game/States/Enemy/EnemyWanderState.h"
 
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
@@ -242,7 +243,7 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 
 		case Message::MessageID::ENEMY_IDLING:
 
-			Object::ChangeState(m_enemyIdleState.get());
+			Object::ChangeState(m_enemyWanderState.get());
 
 
 			break;
@@ -299,11 +300,13 @@ void Enemy::CreateState()
 	m_enemyIdleState = std::make_unique<EnemyIdleState>();
 	m_enemyRunState = std::make_unique<EnemyRunState>(this);
 	m_enemyAttackState = std::make_unique<EnemyAttackState>(this);
+	m_enemyWanderState = std::make_unique<EnemyWanderState>(this);
 
 	// ステートの初期化処理
 	m_enemyIdleState->Initialize();
 	m_enemyRunState->Initialize();
 	m_enemyAttackState->Initialize();
+	m_enemyWanderState->Initialize();
 
 	// 初期ステートにアイドル状態を設定
 	Object::SetState(m_enemyIdleState.get());

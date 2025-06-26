@@ -29,8 +29,8 @@ public:
 	// 敵オブジェクト
 	Object* m_object;
 
-	enum class WanderPhase { WAIT, ROTATE, MOVE };
-	WanderPhase m_phase = WanderPhase::WAIT;
+	// 待ち時間の状態
+	bool m_isWait;
 
 	// 経過時間
 	float m_timer;
@@ -49,6 +49,4 @@ public:
 	float m_moveDistance;
 	// 進んだ距離
 	float m_moved;
-
-
 };

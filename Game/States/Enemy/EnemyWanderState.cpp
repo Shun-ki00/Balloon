@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game/States/Enemy/EnemyWanderState.h"
 #include "Game/Object/Object.h"
+#include "Framework/Utilities/RandomUtilities.h"
 
 /// <summary>
 /// コンストラクタ
@@ -16,7 +17,9 @@ EnemyWanderState::EnemyWanderState(Object* object)
 /// </summary>
 void EnemyWanderState::Initialize()
 {
-	
+	m_isWait = true;
+	m_timer = 0.0f;
+	m_waitTime = 1.0f;
 }
 
 /// <summary>
@@ -24,7 +27,7 @@ void EnemyWanderState::Initialize()
 /// </summary>
 void EnemyWanderState::PreUpdate()
 {
-
+	
 }
 
 /// <summary>
@@ -33,40 +36,42 @@ void EnemyWanderState::PreUpdate()
 /// <param name="elapsedTime">経過時間</param>
 void EnemyWanderState::Update(const float& elapsedTime)
 {
-	switch (m_phase)
+	// 待ち時間処理
+	if (m_isWait)
 	{
-		case WanderPhase::WAIT:
-			m_timer += elapsedTime;
-			if (m_timer >= m_waitTime)
-			{
-				// ROTATE へ移行
-				m_targetAngle = RandomAngle();
-				m_phase = WanderPhase::ROTATE;
-			}
-			break;
+		// 待ち時間
+		m_timer += elapsedTime;
+		// 待ち時間が終了したら
+		if (m_timer >= m_waitTime)
+		{
+			// 待ち時間終了
+			m_isWait = false;
+			// 回転Tweenを開始
+			m_object->GetTransform()->GetTween()->DORotationY(RandomUtilities::RandomFloat(0.0f, 360.0f), 1.5f);
 
-		case WanderPhase::ROTATE:
-			// current → target に補間回転
-			if (RotateTowards(elapsedTime))
-			{
-				// MOVE へ移行
-				m_moved = 0.0f;
-				m_phase = WanderPhase::MOVE;
-			}
-			break;
+			// 移動距離をランダム決定
+			m_moveDistance = RandomUtilities::RandomFloat(2.0f, 5.0f);
+			// 移動スピードランダム決定
+			m_moveSpeed = RandomUtilities::RandomFloat(1.0f, 3.0f);
+		}
 
-		case WanderPhase::MOVE:
-			// 向いてる方向へ移動
-			MoveForward(elapsedTime);
-			if (m_moved >= m_moveDistance)
-			{
-				// WAIT へ戻す
-				m_timer = 0.0f;
-				m_waitTime = RandomTime();
-				m_phase = WanderPhase::WAIT;
-			}
-			break;
+		return;
 	}
+
+	// 移動開始
+	m_object->SetVelocity(m_object->GetVelocity() +
+		DirectX::SimpleMath::Vector3::Transform(DirectX::SimpleMath::Vector3(0.0f, 0.0f,m_moveSpeed * elapsedTime),
+			m_object->GetTransform()->GetLocalRotation()));
+
+	// 移動距離を減算
+	m_moveDistance -= elapsedTime * m_moveSpeed;
+
+	// 移動距離に達したら待ち時間に戻る
+	if (m_moveDistance <= 0.0f)
+	{
+		m_isWait = true;
+	}
+
 }
 
 /// <summary>
