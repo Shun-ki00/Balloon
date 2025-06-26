@@ -7,6 +7,7 @@ public:
 
 	// ランダム生成
 	static float RandomFloat(float min, float max);
+	static int RandomInt(int min, int max);
 
 	// コーン状のランダム生成
 	static void GenerateConeEmissio

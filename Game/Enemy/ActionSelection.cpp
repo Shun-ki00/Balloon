@@ -74,7 +74,7 @@ void ActionSelection::CreateActionNode()
 	m_ChangeIdlingState = std::make_unique<ActionNode>("OutRange", [&]()
 		{
 			// ステート変更通知を送る
-			m_enemy->OnMessegeAccepted({ Message::MessageID::ENEMY_IDLING });
+			m_enemy->OnMessegeAccepted({ Message::MessageID::ENEMY_WANDER });
 
 			return Result::SUCCESS;
 		});

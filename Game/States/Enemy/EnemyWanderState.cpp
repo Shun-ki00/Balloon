@@ -19,6 +19,17 @@ const float EnemyWanderState::MAX_MOVE_SPEED = 3.0f;
 /// </summary>
 /// <param name="object">敵オブジェクト</param>
 EnemyWanderState::EnemyWanderState(Object* object)
+	:
+	m_object{},
+	m_isWait{},
+	m_isFlate{},
+	m_timer{},
+	m_waitTime{},
+	m_targetAngle{},
+	m_rotationSpeed{},
+	m_moveSpeed{},
+	m_moveDistance{},
+	m_moved{}
 {
 	m_object = object;
 }
@@ -57,6 +68,13 @@ void EnemyWanderState::Update(const float& elapsedTime)
 		{
 			// 待ち時間終了
 			m_isWait = false;
+
+			// 膨らませるかランダム決定
+			m_isFlate = static_cast<bool>(RandomUtilities::RandomInt(0, 1));
+			// trueの場合膨らませる
+			if (m_isFlate)
+				m_object->OnMessegeAccepted({ Message::MessageID::ENEMY_ON_BALLOON_SCALE });
+
 			// 回転Tweenを開始
 			m_object->GetTransform()->GetTween()->DORotationY(
 				RandomUtilities::RandomFloat(MIN_ROTATION_ANGLE, MAX_ROTATION_ANGLE), ROTATION_DURATION);
@@ -81,6 +99,9 @@ void EnemyWanderState::Update(const float& elapsedTime)
 	// 移動距離に達したら待ち時間に戻る
 	if (m_moveDistance <= 0.0f)
 	{
+		// 膨らませる処理を終了
+		m_object->OnMessegeAccepted({ Message::MessageID::ENEMY_OFF_BALLOON_SCALE });
+
 		m_isWait = true;
 	}
 

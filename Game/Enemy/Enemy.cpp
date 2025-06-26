@@ -143,6 +143,17 @@ void Enemy::Update(const float& elapsedTime)
 	// オブジェクトの更新処理
 	Object::Update(elapsedTime);
 
+	// ==== ステータスの更新処理 ====
+
+	// 風船の大きさを更新処理
+	m_balloonScaleController->Update(elapsedTime);
+	// HPの更新処理
+	m_hpController->Update(elapsedTime);
+
+	float result = m_balloonScaleController->GetBalloonScale() * 6.0f - 3.0f;
+	dynamic_cast<FloatForceBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::FLOAT_FORCE))->SetForceStrength(result);
+
+	
 	// 操舵力から加速度を計算する
 	DirectX::SimpleMath::Vector3 acceleration = m_steeringBehavior->Calculate(elapsedTime);
 	// 速度に加速度を加算する
@@ -155,13 +166,7 @@ void Enemy::Update(const float& elapsedTime)
 	// Transformの更新処理
 	m_transform->Update();
 
-	// ==== ステータスの更新処理 ====
-
-	// 風船の大きさを更新処理
-	m_balloonScaleController->Update(elapsedTime);
-	// HPの更新処理
-	m_hpController->Update(elapsedTime);
-
+	
 
 	// ==== 子オブジェクトの更新処理 ====
 
@@ -239,13 +244,21 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 				enemy->SetIsActive(false);
 			}
 
-		case Message::MessageID::BALLOON_SCALE:
+		case Message::MessageID::ENEMY_ON_BALLOON_SCALE:
+			// HPがあるなら有効化
+			if (m_hpController->GetHp() <= 0.01f) break;
+			m_balloonScaleController->On();
+			break;
+
+		case Message::MessageID::ENEMY_OFF_BALLOON_SCALE:
+			m_balloonScaleController->Off();
+			break;
 
 		case Message::MessageID::ENEMY_IDLING:
-
+			Object::ChangeState(m_enemyIdleState.get());
+			break;
+		case Message::MessageID::ENEMY_WANDER:
 			Object::ChangeState(m_enemyWanderState.get());
-
-
 			break;
 		default:
 			break;
@@ -333,6 +346,7 @@ void Enemy::CreateSteeringBehavior()
 	// 力を加えるビヘイビア
 	std::unique_ptr<FloatForceBehavior> floatForce = std::make_unique<FloatForceBehavior>();
 	floatForce->SetForceStrength(0.0f);
+	floatForce->SetForceDirection(DirectX::SimpleMath::Vector3::Up);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::FLOAT_FORCE, std::move(floatForce));
 
 	// ステージ内に押し戻すビヘイビア

@@ -46,6 +46,9 @@ public:
 	// ‘Ò‚¿ŠÔ‚Ìó‘Ô
 	bool m_isWait;
 
+	// •—‘D‚ğ–c‚ç‚Ü‚¹‚é‚©
+	bool m_isFlate;
+
 	// Œo‰ßŠÔ
 	float m_timer;
 	// ‘Ò‹@ŠÔ

@@ -20,6 +20,9 @@ public:
 
 		// 敵
 		ENEMY_IDLING,
+		ENEMY_WANDER,
+		ENEMY_ON_BALLOON_SCALE,
+		ENEMY_OFF_BALLOON_SCALE,
 
 		// エフェクト
 		EXPLOSION,
