@@ -37,12 +37,10 @@ private:
 	// 判定処理
 	AIConditions* m_aiConditions;
 
-	// アクションノード
-
 	// ルートノード
 	std::unique_ptr<SelectorNode> m_root;
 
-	// ==== シーケンスノード ====
+	// ==== シーケンスノード 失敗したら終了 ====
 
 	// プレイヤーの範囲外にいるかどうか
 	std::unique_ptr<SequenceNode> m_outOfRange;
@@ -61,10 +59,11 @@ private:
 	// HPが低い時
 	std::unique_ptr<SequenceNode> m_lowHpSequenceNode;
 
+	// 攻撃ノード
+	std::unique_ptr<SequenceNode> m_AttackSequenceNode;
 
 
-
-	// ==== セレクターノード ====
+	// ==== セレクターノード　一度成功したら終了 ====
 
 	// 体力のセレクターノード
 	std::unique_ptr<SelectorNode> m_hpSelectorNode;
@@ -85,6 +84,9 @@ private:
 	std::unique_ptr<ActionNode> m_isInRangeCheck;
 	// プレイヤーの一定範囲外にいるかどうか
 	std::unique_ptr<ActionNode> m_isOutRangeCheck;
+
+	// プレイヤーの攻撃範囲内にいるかどうか
+	std::unique_ptr<ActionNode> m_isAttackRangeCheck;
 
 	// === ステート変更ノード ===
 

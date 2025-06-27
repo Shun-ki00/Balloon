@@ -10,7 +10,7 @@ PushBackBehavior::PushBackBehavior(IObject* object)
     :
     m_object(object)
 {
-    m_pushBackStrength = 10.0f;
+    m_pushBackStrength = 20.0f;
     m_stageMinBounds = { -5.0f , -5.0f , -5.0f };
     m_stageMaxBounds = { 5.0f , 5.0f , 5.0f };
 }

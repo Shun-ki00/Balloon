@@ -38,6 +38,10 @@ void ActionSelection::Initialize(Enemy* enemy)
 	m_hightSelectorNode->AddChild(m_aboveSequenceNode.get());
 	m_hightSelectorNode->AddChild(m_belowSequenceNode.get());
 
+	m_AttackSequenceNode = std::make_unique<SequenceNode>("AttackSequenceNode");
+	m_AttackSequenceNode->AddChild(m_isAttackRangeCheck.get());
+	m_AttackSequenceNode->AddChild(m_ChangeAttackState.get());
+
 	// プレイヤーの範囲外にいるとき　ノード作成
 	m_outOfRange = std::make_unique<SequenceNode>("OutOfRangeSequence");
 	// 子ノードを追加
@@ -62,10 +66,12 @@ void ActionSelection::Initialize(Enemy* enemy)
 	m_lowHpSequenceNode = std::make_unique<SequenceNode>("LowHpSequence");
 
 	m_hightHpSequenceNode->AddChild(m_hightHpCheck.get());
+	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
 	m_hightHpSequenceNode->AddChild(m_ChangeChaseState.get());
 	m_hightHpSequenceNode->AddChild(m_hightSelectorNode.get());
 
 	m_mediumHpSequenceNode->AddChild(m_mediumHpCheck.get());
+	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
 	m_mediumHpSequenceNode->AddChild(m_ChangeChaseState.get());
 	m_mediumHpSequenceNode->AddChild(m_hightSelectorNode.get());
 
@@ -114,6 +120,10 @@ void ActionSelection::CreateActionNode()
 	m_isBelowCheck = std::make_unique<ActionNode>("Below", [&]()
 		{
 			return m_aiConditions->IsBelowPlayer(m_enemy) ? Result::SUCCESS : Result::FAILURE;
+		});
+
+	m_isAttackRangeCheck = std::make_unique<ActionNode>("AttackRangeCheck", [&]() {
+		return m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 3.0f , 0.0f }, 1.0f) ? Result::SUCCESS : Result::FAILURE;
 		});
 
 
@@ -176,7 +186,7 @@ void ActionSelection::CreateActionNode()
 			m_enemy->OnMessegeAccepted({ Message::MessageID::ENEMY_ATTACK });
 
 			return Result::SUCCESS;
-		});
+		}); 
 
 
 

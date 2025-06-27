@@ -167,7 +167,6 @@ void Enemy::Update(const float& elapsedTime)
 	// Transformの更新処理
 	m_transform->Update();
 
-	
 
 	// ==== 子オブジェクトの更新処理 ====
 
@@ -259,10 +258,17 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 			Object::ChangeState(m_enemyIdleState.get());
 			break;
 		case Message::MessageID::ENEMY_WANDER:
+			if (Object::GetState() != m_enemyAttackState.get())
 			Object::ChangeState(m_enemyWanderState.get());
 			break;
 		case Message::MessageID::ENEMY_CHASE:
+			if (Object::GetState() != m_enemyAttackState.get())
 			Object::ChangeState(m_enemyChaseState.get());
+		case Message::MessageID::ENEMY_ATTACK:
+			if(Object::GetState() != m_enemyAttackState.get())
+			Object::ChangeState(m_enemyAttackState.get());
+			break;
+
 			break;
 		default:
 			break;

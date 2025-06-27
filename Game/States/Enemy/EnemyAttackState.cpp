@@ -39,13 +39,12 @@ void EnemyAttackState::Update(const float& elapsedTime)
 
 	if (m_elapsedTime >= m_moveingTime)
 	{
-		ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER,0, Message::MessageID::PLAYER_IDLING);
+		m_player->OnMessegeAccepted({ Message::MessageID::ENEMY_IDLING });
 	}
 }
 
 void EnemyAttackState::PostUpdate()
 {
-
 }
 
 

@@ -117,9 +117,9 @@ bool AIConditions::IsPlayerInRange(Object* enemy, DirectX::SimpleMath::Vector3 o
 	if (!m_player || !enemy) return false;
 
 	// プレイヤー位置に補正オフセットを加算した座標
-	const DirectX::SimpleMath::Vector3& playerPosition = m_player->GetTransform()->GetLocalPosition() + offset;
+	const DirectX::SimpleMath::Vector3 playerPosition = m_player->GetTransform()->GetLocalPosition() + offset;
 	// 敵の現在位置
-	const DirectX::SimpleMath::Vector3& enemyPosition = enemy->GetTransform()->GetLocalPosition();
+	const DirectX::SimpleMath::Vector3 enemyPosition = enemy->GetTransform()->GetLocalPosition();
 
 	// プレイヤーと敵の距離の2乗（平方距離）を計算
 	float distanceSquared = (playerPosition - enemyPosition).LengthSquared();
