@@ -35,5 +35,4 @@ private:
 	std::string m_name;
 	// コンディション
 	ActionFunction m_condition;
-
 };

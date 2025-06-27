@@ -154,20 +154,19 @@ void Sea::CreateBuffer()
 	m_gerstnerWaveBuffer->Initialize(m_device, UpdateStrategy::UPDATE_SUB_RESOURCE);
 	
 
-	// 定数の更新
 	GerstnerWaveConstBuffer waveParams =
 	{
-		// 大波（うねり）
-		1.2f, -0.8f,  0.6f, 0.9f,
-		12.0f, 1.4f, 0.4f, 0.0f,
+		// 大波（うねり） - ゆったりだけど存在感あり
+	   0.8f, -0.5f, 0.4f, 0.6f,
+	   11.0f, 1.0f, 0.3f, 0.0f,
 
-		// 中波（反射干渉）
-		0.9f,  0.6f, -0.7f, 0.6f,
-		6.0f,  1.6f, 0.5f, 0.0f,
+	   // 中波（干渉）
+	   0.6f, 0.4f, -0.5f, 0.4f,
+	   6.5f, 1.0f, 0.35f, 0.0f,
 
-		// 小波（細かい風のさざ波）
-		0.6f, -0.3f, -1.1f, 0.3f,
-		2.5f, 2.0f,  0.65f, 0.0f
+	   // 小波（さざ波）
+	   0.4f, -0.25f, -0.6f, 0.25f,
+	   2.8f, 1.2f, 0.4f, 0.0f
 	};
 	SeaNoiseConstBuffer seaNoise =
 	{
