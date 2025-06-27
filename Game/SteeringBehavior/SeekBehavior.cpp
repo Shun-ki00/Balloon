@@ -12,7 +12,10 @@ SeekBehavior::SeekBehavior(Object* object, Object* target)
 {
     m_object = object;
     m_target = target;
-    m_seekSpeed = 3.5f;
+
+    m_predictionMultiplier = 2.0f;
+    m_seekSpeed = 3.0f;
+    m_distance = 2.0f;
 }
 
 /// <summary>
@@ -24,9 +27,16 @@ DirectX::SimpleMath::Vector3 SeekBehavior::Calculate()
     if (!m_isActive) return DirectX::SimpleMath::Vector3::Zero;
 
     // 相手の座標
-    const DirectX::SimpleMath::Vector3 targetPosition = m_target->GetTransform()->GetLocalPosition();
+    DirectX::SimpleMath::Vector3 targetPosition = m_target->GetTransform()->GetLocalPosition();
     // 相手の速度
-    const DirectX::SimpleMath::Vector3 targetVelocity = m_target->GetVelocity() * -1.0f;
+    const DirectX::SimpleMath::Vector3 targetVelocity = m_target->GetVelocity();
+
+    // 相手の座標にオフセット値を加算（オブジェクトの少し後ろ）
+    DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(
+        DirectX::SimpleMath::Vector3::Forward, m_target->GetTransform()->GetLocalRotation());
+    offset.Normalize();
+    offset *= m_distance;
+    targetPosition += offset;
 
     // 自分と相手の距離ベクトルを計算
     const DirectX::SimpleMath::Vector3 toTarget =

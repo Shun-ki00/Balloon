@@ -49,11 +49,29 @@ private:
 	// プレイヤーの範囲内にいるかどうか
 	std::unique_ptr<SequenceNode> m_inOfRange;
 
+	// プレイヤーより上にいるとき
+	std::unique_ptr<SequenceNode> m_aboveSequenceNode;
+	// プレイヤーより下にいるとき
+	std::unique_ptr<SequenceNode> m_belowSequenceNode;
+
+	// HPが高い時
+	std::unique_ptr<SequenceNode> m_hightHpSequenceNode;
+	// HPが中間の時
+	std::unique_ptr<SequenceNode> m_mediumHpSequenceNode;
+	// HPが低い時
+	std::unique_ptr<SequenceNode> m_lowHpSequenceNode;
+
+
+
 
 	// ==== セレクターノード ====
 
 	// 体力のセレクターノード
 	std::unique_ptr<SelectorNode> m_hpSelectorNode;
+
+	// 高さのセレクタ
+	std::unique_ptr<SelectorNode> m_hightSelectorNode;
+
 
 
 	// ==== アクションノード ====
@@ -78,11 +96,20 @@ private:
 	// 敵を移動状態に変更
 
 	// 敵をアタック状態に変更
+	std::unique_ptr<ActionNode> m_ChangeAttackState;
 
+	// === メッセンジャーを送信 === 
+
+	// メッセージ送信風船を膨らませるのをオフにする
+	std::unique_ptr<ActionNode> m_messageBalloonScaleOff;
+	// メッセージ送信風船を膨らませるのをオンにする
+	std::unique_ptr<ActionNode> m_messageBalloonScaleOn;
 	
+
 	// 体力のチェックノード
 	std::unique_ptr<IBehaviorNode> m_hightHpCheck;
 	std::unique_ptr<IBehaviorNode> m_mediumHpCheck;
 	std::unique_ptr<IBehaviorNode> m_lowHpCheck;
+	
 
 };
