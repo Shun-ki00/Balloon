@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: ObjectMessenger.h
+// 概要: ObjectMessenger.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IObject.h"
 #include "Game/Message/Message.h"
@@ -6,9 +14,9 @@ class ObjectMessenger
 {
 public:
 
-	// オブジェクトを検索、取得する
-	IObject* FindObject(const IObject::ObjectID& objectId, const int& objectNumber);
 	// オブジェクト取得
+	IObject* FindObject(const IObject::ObjectID& objectId, const int& objectNumber);
+	// オブジェクト取得 可変長配列
 	std::vector<IObject*> FindObject(const IObject::ObjectID& objectId);
 
 
@@ -16,11 +24,9 @@ public:
 	void Register(const IObject::ObjectID& objectId ,const int& objectNumber, IObject* object);
 
 	// メッセージを送信する
-	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
-		, Message::MessageData messageData);
+	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber , const Message::MessageData& messageData);
 	// メッセージを送信する IDのみ
-	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
-		, Message::MessageID messageID);
+	void Dispatch(const IObject::ObjectID& objectId, const int& objectNumber,const Message::MessageID& messageID);
 	// オブジェクトIDのみでメッセージを送信する
 	void Dispatch(const IObject::ObjectID& objectId,const Message::MessageData& messageData);
 
@@ -51,10 +57,10 @@ public:
 	void Clear();
 
 private:
-	
-	// オブジェクトIDをキーにオブジェクト番号とオブジェクトをマッピング
-	std::unordered_map<IObject::ObjectID, std::unordered_map<int, IObject*>> m_objects;
 
 	// アタッチ許可
 	bool m_isAttach;
+	
+	// オブジェクトIDをキーにオブジェクト番号とオブジェクトをマッピング
+	std::unordered_map<IObject::ObjectID, std::unordered_map<int, IObject*>> m_objects;
 };

@@ -4,8 +4,6 @@ class Message
 {
 public:
 
-	
-
 	// メッセージID
 	enum class MessageID : int
 	{
@@ -86,6 +84,7 @@ public:
 		SETTING,
 	};
 
+	// メッセージデータ
 	struct MessageData
 	{
 		Message::MessageID messageId;

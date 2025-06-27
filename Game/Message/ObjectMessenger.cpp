@@ -1,13 +1,32 @@
+// ============================================
+// 
+// ファイル名: ObjectMessenger.cpp
+// 概要: オブジェクトのメッセンジャー（シングルトン）
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/Message/ObjectMessenger.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 ObjectMessenger::ObjectMessenger()
+	:
+	m_objects{},
+	m_isAttach{}
 {
 	m_isAttach = false;
 }
 
 
-// オブジェクトを登録する
+/// <summary>
+/// オブジェクトを登録する
+/// </summary>
+/// <param name="objectId">オブジェクトID</param>
+/// <param name="objectNumber">オブジェクト番号</param>
+/// <param name="object">オブジェクト</param>
 void ObjectMessenger::Register(const IObject::ObjectID& objectId, const int& objectNumber, IObject* object)
 {
 	// アタッチが許可されてなければ登録を行わない
@@ -17,9 +36,15 @@ void ObjectMessenger::Register(const IObject::ObjectID& objectId, const int& obj
 	m_objects[objectId].emplace(objectNumber, object);
 }
 
-// オブジェクトにメッセージを送信する
-void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
-	, Message::MessageData messageData)
+
+
+/// <summary>
+/// オブジェクトにメッセージを送信する
+/// </summary>
+/// <param name="objectId">オブジェクトID</param>
+/// <param name="objectNumber">オブジェクト番号</param>
+/// <param name="messageData">メッセージデータ</param>
+void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& objectNumber, const Message::MessageData& messageData)
 {
 	// アタッチ中の場合メッセージの送信を行わない
 	if (m_isAttach) return;
@@ -41,10 +66,13 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& obj
 		}
 	}
 }
-
-// オブジェクトにメッセージを送信する
-void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& objectNumber
-	, Message::MessageID messageID)
+/// <summary>
+/// オブジェクトにメッセージを送信する
+/// </summary>
+/// <param name="objectId">オブジェクトID</param>
+/// <param name="objectNumber">オブジェクト番号</param>
+/// <param name="messageID">メッセージID</param>
+void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& objectNumber, const Message::MessageID& messageID)
 {
 	// アタッチ中の場合メッセージの送信を行わない
 	if (m_isAttach) return;
@@ -68,7 +96,11 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& obj
 		}
 	}
 }
-
+/// <summary>
+/// オブジェクトにメッセージを送信する
+/// </summary>
+/// <param name="objectId">オブジェクトID</param>
+/// <param name="messageData">メッセージデータ</param>
 void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const Message::MessageData& messageData)
 {
 	// メッセージを送信するオブジェクトを検索する
@@ -137,7 +169,9 @@ std::vector<IObject*> ObjectMessenger::FindObject(const IObject::ObjectID& objec
 	return objects;
 }
 
-
+/// <summary>
+/// アタッチを許可
+/// </summary>
 void ObjectMessenger::Begin()
 {
 	// アタッチを許可
@@ -147,12 +181,19 @@ void ObjectMessenger::Begin()
 
 }
 
+/// <summary>
+/// アタッチ終了
+/// </summary>
 void ObjectMessenger::End()
 {
 	// アタッチ終了
 	m_isAttach = false;
 }
 
+
+/// <summary>
+/// 登録してあるものを削除
+/// </summary>
 void ObjectMessenger::Clear()
 {
 	m_objects.clear();
