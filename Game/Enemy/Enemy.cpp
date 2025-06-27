@@ -363,8 +363,11 @@ void Enemy::CreateSteeringBehavior()
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::PUSH_BACK, std::move(pushBack));
 
 	std::unique_ptr<SeekBehavior> seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]));
+	
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::SEEK, std::move(seekBehavior));
 
+
+	m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOATING);
 }
 
 /// <summary>

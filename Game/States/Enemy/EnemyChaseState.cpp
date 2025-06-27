@@ -43,7 +43,7 @@ void EnemyChaseState::PreUpdate()
         float deg = DirectX::XMConvertToDegrees(yaw);
 
         // YŽ²‰ñ“]Tweeni—á: 0.3•b‚©‚¯‚Ä‰ñ“]j
-        m_enemy->GetTransform()->GetTween()->DORotationY(deg, 0.4f);
+        m_enemy->GetTransform()->GetTween()->DORotationY(-deg, 0.0f);
     }
 }
 
@@ -59,7 +59,6 @@ void EnemyChaseState::Update(const float& elapsedTime)
         float yaw = std::atan2(velocity.x, velocity.z);
     
         m_enemy->GetTransform()->SetLocalRotation(
-            m_enemy->GetTransform()->GetLocalRotation() *
             DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, yaw)
         );
     }
