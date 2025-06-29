@@ -144,6 +144,17 @@ void Fade::OnMessegeAccepted(Message::MessageData messageData)
 				SceneManager::GetInstance()->ChageScene();
 
 			});
+			break;
+
+		case Message::MessageID::FADE_OUT_EXIT_GAME:
+
+			// スケールのZ成分をルール画像の進行度を設定
+			m_transform->GetTween()->DOScaleZ(1.1f, 1.0f).OnComplete([this] {
+
+				// シーン切り替え
+				SceneManager::GetInstance()->SetIsGameExit();
+
+				});
 
 			break;
 		default:

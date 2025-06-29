@@ -172,7 +172,7 @@ void GameClearScene::CreateStates()
 	m_titleMainState->Initialize();
 
 	// フェードアウトステート作成　初期化処理
-	m_fadeOutState = std::make_unique<FadeOutState>(FADE_OBJECT_NUMBER);
+	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT_EXIT_GAME,0,1.0f ,false });
 	m_fadeOutState->Initialize();
 
 	// 初期ステートを設定

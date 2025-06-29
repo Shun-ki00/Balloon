@@ -16,7 +16,7 @@ class Parameters;
 class SceneManager;
 // ステート
 class FadeInState;
-class TitleMainState;
+class StageSelectMainState;
 class FadeOutState;
 
 class StageSelectScene : public IScene
@@ -69,8 +69,8 @@ private:
 
 	// フェードインステート
 	std::unique_ptr<FadeInState> m_fadeInState;
-	// タイトルシーンメインステート
-	std::unique_ptr<TitleMainState> m_titleMainState;
+	// ステージセレクトシーンメインステート
+	std::unique_ptr<StageSelectMainState> m_stageSelectMainState;
 	// フェードアウトステート
 	std::unique_ptr<FadeOutState> m_fadeOutState;
 

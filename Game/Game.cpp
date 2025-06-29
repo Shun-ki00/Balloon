@@ -234,6 +234,9 @@ void Game::Update(DX::StepTimer const& timer)
 
     // シーンの更新処理
     m_sceneManager->Update();
+
+    if (m_sceneManager->GetIsGameExit())
+        ExitGame();
 }
 #pragma endregion
 

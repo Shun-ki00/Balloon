@@ -26,7 +26,7 @@
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
-#include "Game/States/SceneStates/TitleMainState.h"
+#include "Game/States/SceneStates/StageSelectMainState.h"
 
 // フェードオブジェクト番号
 const int StageSelectScene::FADE_OBJECT_NUMBER = 5;
@@ -40,7 +40,7 @@ StageSelectScene::StageSelectScene()
 	m_commonResources{},
 	m_currentState{},
 	m_fadeInState{},
-	m_titleMainState{},
+	m_stageSelectMainState{},
 	m_fadeOutState{},
 	m_root{}
 {
@@ -138,14 +138,19 @@ void StageSelectScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 {
 	switch (messageID)
 	{
-		case Message::SceneMessageID::FADE_OUT:
+		case Message::SceneMessageID::FADE_OUT_CANGE_TITLE_SCENE:
+
+			// 次のシーンの準備を行う
+			SceneManager::GetInstance()->PrepareScene<TitleScene>();
+			// ステートを切り替える
+			this->ChangeState(m_fadeOutState.get());
 
 			break;
-		case Message::SceneMessageID::FADE_OUT_CANGE_MENU_SCENE:
+
+		case Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE:
 
 			// 次のシーンの準備を行う
 			SceneManager::GetInstance()->PrepareScene<PlayScene>();
-
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
 
@@ -153,7 +158,7 @@ void StageSelectScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 		case Message::SceneMessageID::MAIN:
 
 			// ステートを切り替える
-			this->ChangeState(m_titleMainState.get());
+			this->ChangeState(m_stageSelectMainState.get());
 
 			break;
 		default:
@@ -172,12 +177,12 @@ void StageSelectScene::CreateStates()
 	m_fadeInState = std::make_unique<FadeInState>(FADE_OBJECT_NUMBER);
 	m_fadeInState->Initialize();
 
-	// タイトルシーンメインステート作成　初期化処理
-	m_titleMainState = std::make_unique<TitleMainState>();
-	m_titleMainState->Initialize();
+	// ステージセレクトシーンメインステート作成　初期化処理
+	m_stageSelectMainState = std::make_unique<StageSelectMainState>();
+	m_stageSelectMainState->Initialize();
 
 	// フェードアウトステート作成　初期化処理
-	m_fadeOutState = std::make_unique<FadeOutState>(FADE_OBJECT_NUMBER);
+	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT,0,1.0f ,false });
 	m_fadeOutState->Initialize();
 
 	// 初期ステートを設定

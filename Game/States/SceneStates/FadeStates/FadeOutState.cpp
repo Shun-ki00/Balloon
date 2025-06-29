@@ -3,26 +3,20 @@
 #include "Game/Message/ObjectMessenger.h"
 
 
-FadeOutState::FadeOutState(int fadeObjectNumber)
+FadeOutState::FadeOutState(Message::MessageData data)
 {
 	// インスタンスを取得する
 	m_objectMessenger = ObjectMessenger::GetInstance();
 
-	// オブジェクト番号取得する
-	m_fadeObjectNumber = fadeObjectNumber;
+	// メッセージデータ設定
+	m_messageData = data;
+	
 }
 
 
 void FadeOutState::Initialize()
 {
-	// メッセージデータの作成
-	m_messageData =
-	{
-		Message::MessageID::FADE_OUT,
-		0,
-		1.0f,
-		false
-	};
+
 }
 
 

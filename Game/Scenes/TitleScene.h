@@ -64,6 +64,8 @@ private:
 	std::unique_ptr<TitleMainState> m_titleMainState;
 	// フェードアウトステート
 	std::unique_ptr<FadeOutState> m_fadeOutState;
+	// フェードアウトステート
+	std::unique_ptr<FadeOutState> m_gameExitFadeOutState;
 
 	// ルート
 	Root* m_root;

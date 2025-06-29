@@ -36,6 +36,9 @@ public:
 	// ゲーム終了フラグを設定
 	void SetIsGameExit() { m_isExitGame = true; }
 
+	// ゲーム終了フラグを取得する
+	bool GetIsGameExit() const { return m_isExitGame; }
+
 public:
 	
 	// シーンを非同期で準備

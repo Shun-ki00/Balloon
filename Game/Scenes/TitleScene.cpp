@@ -142,6 +142,12 @@ void TitleScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 			this->ChangeState(m_fadeOutState.get());
 
 			break;		
+		case Message::SceneMessageID::FADE_OUT_EXIT_GAME:
+			// ステートを切り替える
+			this->ChangeState(m_gameExitFadeOutState.get());
+
+			break;
+
 		case Message::SceneMessageID::MAIN:
 
 			// ステートを切り替える
@@ -167,8 +173,11 @@ void TitleScene::CreateStates()
 	m_titleMainState->Initialize();
 
 	// フェードアウトステート作成　初期化処理
-	m_fadeOutState = std::make_unique<FadeOutState>(0);
+	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{Message::MessageID::FADE_OUT,0,1.0f ,false});
 	m_fadeOutState->Initialize();
+
+	m_gameExitFadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT_EXIT_GAME,0,1.0f ,false });
+	m_gameExitFadeOutState->Initialize();
 
 	// 初期ステートを設定
 	m_currentState = m_fadeInState.get();

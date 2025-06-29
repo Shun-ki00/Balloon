@@ -672,6 +672,15 @@
     <ClInclude Include="Game\UIObjects\StageSelectTextUI.h">
       <Filter>Game\UIObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\GameClearMainState.h">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\GameOverMainState.h">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\StageSelectMainState.h">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -1048,6 +1057,15 @@
     </ClCompile>
     <ClCompile Include="Game\UIObjects\StageSelectTextUI.cpp">
       <Filter>Game\UIObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\GameClearMainState.cpp">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\GameOverMainState.cpp">
+      <Filter>Game\States\SceneStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\StageSelectMainState.cpp">
+      <Filter>Game\States\SceneStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

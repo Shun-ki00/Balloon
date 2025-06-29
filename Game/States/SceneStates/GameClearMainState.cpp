@@ -1,29 +1,29 @@
 #include "pch.h"
-#include "Game/States/SceneStates/TitleMainState.h"
+#include "Game/States/SceneStates/GameClearMainState.h"
 #include "Game/Message/Message.h"
 #include "Framework/InputManager.h"
 #include "Framework/SceneManager.h"
 
-TitleMainState::TitleMainState()
+GameClearMainState::GameClearMainState()
 {
 	// インスタンスを取得する
 	m_inputManager = InputManager::GetInstance();
 }
 
 
-void TitleMainState::Initialize()
+void GameClearMainState::Initialize()
 {
 
 }
 
 
-void TitleMainState::PreUpdate()
+void GameClearMainState::PreUpdate()
 {
 
 }
 
 
-void TitleMainState::Update(const float& elapsedTime)
+void GameClearMainState::Update(const float& elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
@@ -49,13 +49,13 @@ void TitleMainState::Update(const float& elapsedTime)
 	}
 }
 
-void TitleMainState::PostUpdate()
+void GameClearMainState::PostUpdate()
 {
 
 }
 
 
-void TitleMainState::Finalize()
+void GameClearMainState::Finalize()
 {
 
 }

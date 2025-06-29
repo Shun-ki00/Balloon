@@ -8,7 +8,7 @@ class FadeOutState : public IState
 {
 public:
 	// コンストラクタ
-	FadeOutState(int fadeObjectNumber);
+	FadeOutState(Message::MessageData data);
 	// デストラクタ
 	~FadeOutState() = default;
 	// 初期化する
