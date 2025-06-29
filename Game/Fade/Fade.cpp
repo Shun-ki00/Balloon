@@ -94,6 +94,8 @@ void Fade::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Fade::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// ルール画像進行度設定
 	m_renderableObject->SetRuleProgress(m_transform->GetLocalScale().z);
 

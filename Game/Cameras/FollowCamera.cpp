@@ -25,6 +25,8 @@ void FollowCamera::Initialize()
 
 void FollowCamera::Update(const float& elapsedTime)
 {
+    UNREFERENCED_PARAMETER(elapsedTime);
+
     DirectX::SimpleMath::Vector3 position = DirectX::SimpleMath::Vector3::Backward;
     DirectX::SimpleMath::Vector3 target = DirectX::SimpleMath::Vector3::Zero;
 

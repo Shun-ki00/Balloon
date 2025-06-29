@@ -14,6 +14,7 @@
 #include "Framework/Renderer.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Message/KeyboardMessenger.h"
+#include "Game/Visitor/CollisionVisitor.h"
 
 
 class IScene;
@@ -41,6 +42,8 @@ public:
 	template <typename T>
 	void PrepareScene()
 	{
+		CollisionVisitor::GetInstance()->Clear();
+
 		// 非同期タスクでシーンを準備
 		m_future = std::async(std::launch::async, [this]() 
 		{

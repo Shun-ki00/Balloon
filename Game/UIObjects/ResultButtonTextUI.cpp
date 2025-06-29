@@ -78,7 +78,7 @@ ResultButtonTextUI::ResultButtonTextUI(IObject* root, IObject* parent, IObject::
 void ResultButtonTextUI::Initialize()
 {
 	// テクスチャサイズ
-	float width, height;
+	float width = 0.0f, height = 0.0f;
 
 	// 横に1枚
 	float uvScaleX = 1.0f / 1.0f; 
@@ -137,6 +137,8 @@ void ResultButtonTextUI::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void ResultButtonTextUI::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// Transformの更新処理
 	m_transform->Update();
 	// 描画オブジェクト更新処理

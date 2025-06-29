@@ -157,7 +157,7 @@ std::vector<IObject*> ObjectMessenger::FindObject(const IObject::ObjectID& objec
 
 	// オブジェクトIDに対応するマップが存在するか確認
 	auto typeIt = m_objects.find(objectId);
-	if (typeIt != m_objects.end());
+	if (typeIt == m_objects.end()) return objects;
 
 	// 対象のオブジェクトを配列に詰めて返す
 	for (const auto& [objectNumber, object] : typeIt->second)

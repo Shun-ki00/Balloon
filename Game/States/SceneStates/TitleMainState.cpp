@@ -25,6 +25,8 @@ void TitleMainState::PreUpdate()
 
 void TitleMainState::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// スペースで次のシーンへ
 	if (m_inputManager->OnKeyDown(InputManager::Keys::Z))
 	{

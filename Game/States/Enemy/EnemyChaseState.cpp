@@ -50,6 +50,8 @@ void EnemyChaseState::PreUpdate()
 
 void EnemyChaseState::Update(const float& elapsedTime)
 {
+    UNREFERENCED_PARAMETER(elapsedTime);
+
     // SeekBehaviorによって算出されたベクトルの向きを取得する
     DirectX::SimpleMath::Vector3 velocity = m_seekBehavior->GetDirection();
 

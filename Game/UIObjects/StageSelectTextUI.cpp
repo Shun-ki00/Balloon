@@ -96,6 +96,9 @@ void StageSelectTextUI::Initialize()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void StageSelectTextUI::Update(const float& elapsedTime)
 {
+
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// Transform‚ÌXVˆ—
 	m_transform->Update();
 

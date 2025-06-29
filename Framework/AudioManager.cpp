@@ -273,6 +273,8 @@ int AudioManager::PlayLoopSE(XACT_WAVEBANK_SOUNDS_SE bgmName)
 		// インデックスを返す
 		return i;
 	}
+
+	return 0;
 }
 
 /// <summary>

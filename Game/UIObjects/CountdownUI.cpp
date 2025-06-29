@@ -106,6 +106,8 @@ void CountdownUI::Initialize()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void CountdownUI::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	static bool active = false;
 
 	if (!active)

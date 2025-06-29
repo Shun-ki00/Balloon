@@ -222,8 +222,6 @@ void Player::Update(const float& elapsedTime)
 		child->Update(elapsedTime);
 	}
 
-
-
 	// “–‚½‚è”»’è‚ğs‚¤
 
 	// “G‚ğæ“¾‚·‚é
@@ -363,6 +361,8 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 /// <param name="key">ƒL[</param>
 void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
+	if (m_isFixed) return;
+
 	switch (key)
 	{
 		case DirectX::Keyboard::Keys::Up:

@@ -22,7 +22,7 @@ void PlayerIdleState::PreUpdate()
 
 void PlayerIdleState::Update(const float& elapsedTime)
 {
-
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 void PlayerIdleState::PostUpdate()

@@ -8,7 +8,7 @@
 // === オブジェクト ===
 
 // プレイヤー
-struct Player
+struct PlayerParams
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;
@@ -17,7 +17,7 @@ struct Player
 	float balloonIndex;
 };
 // 敵
-struct Enemy
+struct EnemyParams
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;
@@ -26,7 +26,7 @@ struct Enemy
 	float balloonIndex;
 };
 // 風船
-struct Balloon
+struct BalloonParams
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;
@@ -34,7 +34,7 @@ struct Balloon
 };
 
 // 木箱
-struct WoodBox
+struct WoodBoxParams
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;
@@ -42,7 +42,7 @@ struct WoodBox
 };
 
 // UI
-struct UI
+struct UIParams
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;
@@ -55,13 +55,13 @@ struct UI
 // === カメラ ===
 
 // 固定カメラ
-struct FixedCamera
+struct FixedCameraParams
 {
 	DirectX::SimpleMath::Vector3 direction;
 	DirectX::SimpleMath::Vector3 rotation;
 };
 // 追跡カメラ
-struct FollowCamera
+struct FollowCameraParams
 {
 	std::string objectId;
 	int objectNumber;
@@ -183,6 +183,14 @@ struct ParticleParameters
 	DirectX::SimpleMath::Vector4 startColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 };
 
+
+// ゲームデータ
+struct SceneLinkParams
+{
+	int stageNumber = 0;                
+};
+
+
 using json = nlohmann::json;
 
 inline DirectX::SimpleMath::Vector3 ParseVector3(const nlohmann::json& j)
@@ -194,7 +202,22 @@ inline DirectX::SimpleMath::Vector3 ParseVector3(const nlohmann::json& j)
 	};
 }
 
-inline void from_json(const nlohmann::json& j, Player& p)
+inline void from_json(const nlohmann::json& j, SceneLinkParams& s)
+{
+	//auto stage = j.at("SceneLinkParams");
+
+	s.stageNumber = j.at("stageNumber").get<int>();
+}
+
+inline void to_json(nlohmann::json& j, const SceneLinkParams& p)
+{
+	j = {
+		  { "stageNumber", p.stageNumber },
+	};
+}
+
+
+inline void from_json(const nlohmann::json& j, PlayerParams& p)
 {
 	auto player = j.at("Player");
 
@@ -205,7 +228,7 @@ inline void from_json(const nlohmann::json& j, Player& p)
 	p.balloonIndex = player.at("balloonIndex").get<float>();
 }
 
-inline void from_json(const nlohmann::json& j, Enemy& e)
+inline void from_json(const nlohmann::json& j, EnemyParams& e)
 {
 	e.position = ParseVector3(j.at("position"));
 	e.rotation = ParseVector3(j.at("rotation"));
@@ -214,14 +237,14 @@ inline void from_json(const nlohmann::json& j, Enemy& e)
 	e.balloonIndex = j.at("balloonIndex").get<float>();
 }
 
-inline void from_json(const nlohmann::json& j, Balloon& b)
+inline void from_json(const nlohmann::json& j, BalloonParams& b)
 {
 	b.position = ParseVector3(j.at("position"));
 	b.rotation = ParseVector3(j.at("rotation"));
 	b.scale = ParseVector3(j.at("scale"));
 }
 
-inline void from_json(const nlohmann::json& j, WoodBox& w)
+inline void from_json(const nlohmann::json& j, WoodBoxParams& w)
 {
 	auto woodBox = j.at("WoodBox");
 
@@ -230,7 +253,7 @@ inline void from_json(const nlohmann::json& j, WoodBox& w)
 	w.scale = ParseVector3(woodBox.at("scale"));
 }
 
-inline void from_json(const nlohmann::json& j, UI& u)
+inline void from_json(const nlohmann::json& j, UIParams& u)
 {
 	u.position = ParseVector3(j.at("position"));
 	u.rotation = ParseVector3(j.at("rotation"));

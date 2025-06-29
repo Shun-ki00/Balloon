@@ -28,8 +28,6 @@ Sea::Sea()
 /// </summary>
 void Sea::Initialize()
 {
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-
 	// シェーダーを取得する
 	m_vertexShader = m_resources->GetShaderResources()->GetVertexShader(VS_ID::Sea_VS);
 	m_hullShader   = m_resources->GetShaderResources()->GetHullShader(HS_ID::Sea_HS);

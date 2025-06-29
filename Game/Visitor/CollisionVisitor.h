@@ -15,6 +15,8 @@ public:
 	// 境界ボックスを描画する
 	void DebugDraw(DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* primitiveBatch) override;
 
+	void Clear();
+
 private:
 	//	コンストラクタ
 	CollisionVisitor();

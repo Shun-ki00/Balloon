@@ -23,10 +23,10 @@ void SceneFactory::CreateTitleScene(Root* root)
 {
 	nlohmann::json data = GameConfig::GetInstance()->GetParameters("Title");
 
-	Player player;
+	PlayerParams player;
 	data.get_to(player);
 
-	std::vector<UI> uis;
+	std::vector<UIParams> uis;
 	data.at("UI").get_to(uis);
 
 	// プレイヤー （固定）0
@@ -78,10 +78,10 @@ void SceneFactory::CreateStageSelectScene(Root* root)
 
 	nlohmann::json data = GameConfig::GetInstance()->GetParameters("StageSelect");
 
-	std::vector<UI> uis;
+	std::vector<UIParams> uis;
 	data.at("UI").get_to(uis);
 
-	Player player;
+	PlayerParams player;
 	data.get_to(player);
 
 	// プレイヤー （固定）0
@@ -138,10 +138,16 @@ void SceneFactory::CreateStageSelectScene(Root* root)
 /// <param name="root">ルートオブジェクト</param>
 void SceneFactory::CreatePlayScene(Root* root)
 {
-	nlohmann::json data = GameConfig::GetInstance()->GetParameters("Play");
+	nlohmann::json SceneData = GameConfig::GetInstance()->GetParameters("SceneLinkParams");
+	const SceneLinkParams& stageNumber = SceneData.get<SceneLinkParams>();
+
+	auto key = "Play" + std::to_string(stageNumber.stageNumber);
+
+	nlohmann::json data = GameConfig::GetInstance()->GetParameters(key);
+	
 
 	// プレイヤー （固定）0
-	const auto& player = data.get<Player>();
+	const auto& player = data.get<PlayerParams>();
 	root->Attach(PlayerFactory::CreatePlayer(
 		root,
 		player.position,
@@ -149,8 +155,9 @@ void SceneFactory::CreatePlayScene(Root* root)
 		player.scale,
 		player.fixed));
 
+
 	// 敵　複数
-	const auto& enemies = data.at("Enemy").get<std::vector<Enemy>>();
+	const auto& enemies = data.at("Enemy").get<std::vector<EnemyParams>>();
 	for (const auto& enemy : enemies)
 	{
 		root->Attach(EnemyFactory::CreateEnemy(
@@ -161,7 +168,7 @@ void SceneFactory::CreatePlayScene(Root* root)
 	}
 
 	// カウントダウンUI
-	const auto& uis = data.at("UI").get<std::vector<UI>>();
+	const auto& uis = data.at("UI").get<std::vector<UIParams>>();
 	root->Attach(UIFactory::CreateCountdownUI(
 		root, IObject::ObjectID::COUNTDOWN_UI,
 		uis[0].position,
@@ -233,10 +240,10 @@ void SceneFactory::CreateGameClearScene(Root* root)
 {
 	nlohmann::json data = GameConfig::GetInstance()->GetParameters("Clear");
 
-	Player player;
+	PlayerParams player;
 	data.get_to(player);
 
-	std::vector<UI> uis;
+	std::vector<UIParams> uis;
 	data.at("UI").get_to(uis);
 
 
@@ -303,13 +310,13 @@ void SceneFactory::CreateGameOverScene(Root* root)
 {
 	nlohmann::json data = GameConfig::GetInstance()->GetParameters("GameOver");
 
-	Player player;
+	PlayerParams player;
 	data.get_to(player);
 
-	WoodBox woodBox;
+	WoodBoxParams woodBox;
 	data.get_to(woodBox);
 
-	std::vector<UI> uis;
+	std::vector<UIParams> uis;
 	data.at("UI").get_to(uis);
 
 	// プレイヤー 0

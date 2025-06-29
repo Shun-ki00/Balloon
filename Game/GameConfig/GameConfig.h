@@ -1,4 +1,5 @@
 #pragma once
+#include "Game/Parameters/ParameterBuffers.h"
 
 
 class GameConfig
@@ -26,11 +27,7 @@ public:
 	template<typename T>
 	void SetParameters(const std::string& key, const T& parameters)
 	{
-		// JSON‚É•ÏŠ·
-		json j = parameters;
-
-		// ƒf[ƒ^‚ğİ’è
-		m_datas[key] = j;
+		m_datas[key] = parameters;
 	}
 
 	json GetParameters(const std::string& key)

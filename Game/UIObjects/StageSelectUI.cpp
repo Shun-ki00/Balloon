@@ -14,6 +14,8 @@
 #include "Framework/Resources/ResourceKeys.h"
 #include "Game/Factorys/UIFactory.h"
 #include "Framework/Tween/TweenManager.h"
+#include "Game/GameConfig/GameConfig.h"
+#include "Game/Parameters/ParameterBuffers.h"
 
 
 /// <summary>
@@ -101,6 +103,8 @@ void StageSelectUI::Update(const float& elapsedTime)
 			
 	}
 
+	GameConfig::GetInstance()->SetParameters<SceneLinkParams>("SceneLinkParams", SceneLinkParams{ m_stageIndex });
+
 	// Transformの更新処理
 	m_transform->Update();
 
@@ -152,6 +156,8 @@ void StageSelectUI::OnMessegeAccepted(Message::MessageData messageData)
 /// <param name="key">キー</param>
 void StageSelectUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
+	UNREFERENCED_PARAMETER(type);
+
 	if (m_isCoolTime) return;
 
 	switch (key)

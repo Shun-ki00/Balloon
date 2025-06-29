@@ -61,7 +61,7 @@ public:
     ~UIRenderableObject() override = default;
 
     // 定数バッファを更新する
-    void UpdateConstantBufferIfNeeded(ID3D11DeviceContext* context) {}
+    void UpdateConstantBufferIfNeeded(ID3D11DeviceContext* context) { UNREFERENCED_PARAMETER(context); }
     // 定数バッファを取得する
     ID3D11Buffer* GetConstantBuffer() const { return nullptr; }
 

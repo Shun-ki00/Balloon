@@ -35,7 +35,7 @@ void FadeOutState::PreUpdate()
 
 void FadeOutState::Update(const float& elapsedTime)
 {
-
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 void FadeOutState::PostUpdate()

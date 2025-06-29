@@ -104,3 +104,12 @@ void CollisionVisitor::DebugDraw(DirectX::PrimitiveBatch<DirectX::VertexPosition
 
 	m_worldBoundingSpheres.clear();
 }
+
+/// <summary>
+/// データのクリア
+/// </summary>
+void CollisionVisitor::Clear()
+{
+	m_boundingSphere.clear();
+	m_worldBoundingSpheres.clear();
+}

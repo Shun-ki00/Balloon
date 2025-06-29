@@ -20,6 +20,9 @@ GameConfig::GameConfig()
 /// </summary>
 void GameConfig::LoadJsonFile()
 {
+	// シーン間のパラメータ
+	m_datas.insert({ "SceneLinkParams" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/SceneLinkParams.msgpack") });
+
 	// タイトルシーンデータロード
 	m_datas.insert({ "Title" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/TitleScene.msgpack") });
 	// ステージセレクトシーンデータロード
@@ -29,6 +32,10 @@ void GameConfig::LoadJsonFile()
 	// ゲームオーバーシーンデータロード
 	m_datas.insert({ "GameOver" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/GameOverScene.msgpack") });
 	// プレイシーンデータロード
-	m_datas.insert({ "Play" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/PlayScene.msgpack") });
+	m_datas.insert({ "Play0" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/PlayScene.msgpack") });
+	// プレイシーンデータロード
+	m_datas.insert({ "Play1" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/PlayScene1.msgpack") });
+	// プレイシーンデータロード
+	m_datas.insert({ "Play2" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/PlayScene2.msgpack") });
 }
 

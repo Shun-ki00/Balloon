@@ -96,6 +96,8 @@ void StartTextUI::Initialize()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void StartTextUI::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// Transform‚ÌXVˆ—
 	m_transform->Update();
 

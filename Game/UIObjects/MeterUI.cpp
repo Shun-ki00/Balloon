@@ -97,6 +97,8 @@ void MeterUI::Initialize()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void MeterUI::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// Transform‚ÌXVˆ—
 	m_transform->Update();
 

@@ -22,7 +22,7 @@ void EnemyIdleState::PreUpdate()
 
 void EnemyIdleState::Update(const float& elapsedTime)
 {
-
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 void EnemyIdleState::PostUpdate()

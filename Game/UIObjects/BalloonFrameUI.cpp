@@ -90,6 +90,8 @@ void BalloonFrameUI::Initialize()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void BalloonFrameUI::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// Transform‚ÌXVˆ—
 	m_transform->Update();
 

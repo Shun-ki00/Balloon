@@ -105,6 +105,8 @@ void StageSelectFrameUI::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void StageSelectFrameUI::Update(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// Transformの更新処理
 	m_transform->Update();
 
@@ -129,7 +131,7 @@ void StageSelectFrameUI::Finalize() {}
 /// <param name="messageData">メッセージデータ</param>
 void StageSelectFrameUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	
+	UNREFERENCED_PARAMETER(messageData);
 }
 
 /// <summary>

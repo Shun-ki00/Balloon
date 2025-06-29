@@ -159,7 +159,7 @@ void ResultSceneButtons::OnMessegeAccepted(Message::MessageData messageData)
 /// <param name="key">ÉLÅ[</param>
 void ResultSceneButtons::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
-	UNREFERENCED_PARAMETER(key);
+	UNREFERENCED_PARAMETER(type);
 
 	switch (key)
 	{

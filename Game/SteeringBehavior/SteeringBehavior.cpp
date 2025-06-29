@@ -25,6 +25,8 @@ void SteeringBehavior::Initialize()
 /// <returns>計算結果</returns>
 DirectX::SimpleMath::Vector3 SteeringBehavior::Calculate(const float& elapsedTime)
 {
+	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// 合成ステアリングベクトル
 	DirectX::SimpleMath::Vector3 steeringForce = DirectX::SimpleMath::Vector3::Zero;
 

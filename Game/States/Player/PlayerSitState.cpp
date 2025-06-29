@@ -25,7 +25,7 @@ void PlayerSitState::PreUpdate()
 
 void PlayerSitState::Update(const float& elapsedTime)
 {
-
+	UNREFERENCED_PARAMETER(elapsedTime);
 }
 
 void PlayerSitState::PostUpdate()
