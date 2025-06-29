@@ -41,7 +41,8 @@
         "ResultButtonText": "ResultButtonText.png",
         "Particle": "particle.png",
         "BalloonExplosion": "BalloonExplosion.png",
-        "WoodBox": "woodBox.png"
+        "WoodBox": "woodBox.png",
+        "StageSelectFrames": "StageSelectFrames.png"
 
     },
 

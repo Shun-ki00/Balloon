@@ -76,12 +76,57 @@ void SceneFactory::CreateTitleScene(Root* root)
 void SceneFactory::CreateStageSelectScene(Root* root)
 {
 
-	// ステージナンバー
+	nlohmann::json data = GameConfig::GetInstance()->GetParameters("StageSelect");
 
-	// ステージセレクト背景
+	std::vector<UI> uis;
+	data.at("UI").get_to(uis);
 
-	// ステージセレクト操作説明
+	Player player;
+	data.get_to(player);
 
+	// プレイヤー （固定）0
+	root->Attach(PlayerFactory::CreatePlayer(root,
+		player.position, player.rotation, player.scale, true));
+
+	// カメラの作成をする
+	std::vector<std::unique_ptr<ICamera>> cameras;
+	cameras.emplace_back(CameraFactory::CreateFixedCaemra(
+		{ 0.0, -0.4f, 5.0 },
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Down, DirectX::XMConvertToRadians(-10.0f)) *
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, DirectX::XMConvertToRadians(-30.0f)))
+	);
+	// カメラシステムをアタッチする 1
+	root->Attach(CameraFactory::CreateCameraSystem(root, std::move(cameras)));
+
+	root->Attach(UIFactory::CreateStageSelectUI(
+		root, IObject::ObjectID::STAGE_SELECT_UI,
+		uis[0].position,
+		uis[0].rotation,
+		uis[0].scale
+	));
+
+	root->Attach(UIFactory::CreateStageSelectTextUI(
+		root, IObject::ObjectID::STAGE_SELECT_TEXT_UI,
+		uis[1].position,
+		uis[1].rotation, 
+		uis[1].scale
+	));
+
+	root->Attach(UIFactory::CreateStageSelectKeyGuideUI(
+		root, IObject::ObjectID::STAGE_SELECT_KEYS_GUIDE_UI,
+		uis[2].position,
+		uis[2].rotation,
+		uis[2].scale
+	));
+
+
+	// フェード
+	root->Attach(UIFactory::CreateFade(
+		root, IObject::ObjectID::FADE,
+		uis[3].position,
+		uis[3].rotation,
+		uis[3].scale
+	));
 
 }
 
@@ -279,7 +324,7 @@ void SceneFactory::CreateGameOverScene(Root* root)
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
 	cameras.emplace_back(CameraFactory::CreateFixedCaemra(
-		DirectX::SimpleMath::Vector3::Backward + DirectX::SimpleMath::Vector3::Down * 18.0f,
+		DirectX::SimpleMath::Vector3::Right * 2.0f + DirectX::SimpleMath::Vector3::Backward * -1.0f + DirectX::SimpleMath::Vector3::Down * 19.0f,
 		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Down, DirectX::XMConvertToRadians(30.0f)) *
 		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Right, DirectX::XMConvertToRadians(5.0f)))
 	);

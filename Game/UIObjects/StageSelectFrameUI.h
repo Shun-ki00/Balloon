@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: StageSelectKeyGuideUI.h
-// 概要: StageSelectKeyGuideUI.cppのヘッダーファイル
+// ファイル名: StageSelectFrameUI.h
+// 概要: StageSelectFrameUI.cppのヘッダーファイル
 // 
 // 製作者 : 清水駿希
 // 
@@ -9,11 +9,12 @@
 #pragma once
 #include "Game/UIObject/UIObject.h"
 
+
 class Transform;
 class CommonResources;
 class UIRenderableObject;
 
-class StageSelectKeyGuideUI : public UIObject
+class StageSelectFrameUI : public UIObject
 {
 public:
 	// オブジェクトのアクティブ設定
@@ -35,13 +36,13 @@ public:
 public:
 
 	// コンストラクタ
-	StageSelectKeyGuideUI(IObject* parent, IObject::ObjectID objectID,
+	StageSelectFrameUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale);
+		const DirectX::SimpleMath::Vector3& scale,int stageIndex);
 
 	// デストラクタ
-	~StageSelectKeyGuideUI() override = default;
+	~StageSelectFrameUI() override = default;
 
 	// 初期化する
 	void Initialize() override;
@@ -73,4 +74,6 @@ private:
 	// 描画オブジェクト
 	std::unique_ptr<UIRenderableObject> m_renderableObject;
 
+	// 番号
+	int m_stageIndex;
 };

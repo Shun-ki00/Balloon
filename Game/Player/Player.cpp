@@ -154,6 +154,26 @@ void Player::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Player::Update(const float& elapsedTime)
 {
+	// プレイヤーが固定状態の場合
+	if (m_isFixed)
+	{
+		// Transformの更新処理
+		m_transform->Update();
+
+		// 風船の大きさを設定する
+		for (const auto& balloon : m_balloonObject)
+		{
+			balloon->GetParent()->OnMessegeAccepted({ Message::MessageID::BALLOON_SCALE ,0,m_balloonScaleController->GetBalloonScale(),false });
+		}
+
+		// 子オブジェクトの更新処理
+		for (const auto& child : m_childs)
+		{
+			child->Update(elapsedTime);
+		}
+
+		return;
+	}
 
 	// 風船の大きさを更新処理
 	m_balloonScaleController->Update(elapsedTime);
@@ -320,6 +340,14 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 				}
 
 			}
+			break;
+		case Message::MessageID::PLAYER_ANIMATION:
+
+			// 移動ループアニメーション
+			m_transform->GetTween()->DOMoveX(20.0f, 20.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
+			// 回転ループアニメーション
+			m_transform->GetTween()->DORotationY(-180.0f, 8.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
+
 			break;
 
 		default:

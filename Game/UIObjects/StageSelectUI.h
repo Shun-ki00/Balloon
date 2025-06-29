@@ -1,19 +1,20 @@
 // ============================================
 // 
-// ファイル名: StageSelectKeyGuideUI.h
-// 概要: StageSelectKeyGuideUI.cppのヘッダーファイル
+// ファイル名: StageSelectUI.h
+// 概要: StageSelectUI.cppのヘッダーファイル
 // 
 // 製作者 : 清水駿希
 // 
 // ============================================
 #pragma once
 #include "Game/UIObject/UIObject.h"
+#include "Interface/IComposite.h"
 
 class Transform;
 class CommonResources;
 class UIRenderableObject;
 
-class StageSelectKeyGuideUI : public UIObject
+class StageSelectUI : public UIObject , public IComposite
 {
 public:
 	// オブジェクトのアクティブ設定
@@ -35,13 +36,13 @@ public:
 public:
 
 	// コンストラクタ
-	StageSelectKeyGuideUI(IObject* parent, IObject::ObjectID objectID,
+	StageSelectUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
 		const DirectX::SimpleMath::Vector3& scale);
 
 	// デストラクタ
-	~StageSelectKeyGuideUI() override = default;
+	~StageSelectUI() override = default;
 
 	// 初期化する
 	void Initialize() override;
@@ -53,6 +54,11 @@ public:
 	void Update(const float& elapsedTime) override;
 	// 後処理を行う
 	void Finalize() override;
+
+	// オブジェクトをアタッチする
+	void Attach(std::unique_ptr<IObject> object) override;
+	// オブジェクトを削除する
+	void Detach(std::unique_ptr<IObject> object) override;
 
 private:
 
@@ -67,10 +73,17 @@ private:
 	IObject::ObjectID m_objectID;
 	// 親オブジェクト
 	IObject* m_parent;
+	// 子オブジェクト
+	std::vector<std::unique_ptr<IObject>> m_childs;
 
 	// Transform
 	std::unique_ptr<Transform> m_transform;
-	// 描画オブジェクト
-	std::unique_ptr<UIRenderableObject> m_renderableObject;
+
+	// ステージ番号
+	int m_stageIndex;
+	// クールタイム中かどうか
+	bool m_isCoolTime;
+	// クールタイム
+	float m_currentTime;
 
 };

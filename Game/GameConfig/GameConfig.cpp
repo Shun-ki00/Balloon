@@ -22,6 +22,8 @@ void GameConfig::LoadJsonFile()
 {
 	// タイトルシーンデータロード
 	m_datas.insert({ "Title" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/TitleScene.msgpack") });
+	// ステージセレクトシーンデータロード
+	m_datas.insert({ "StageSelect" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/StageSelectScene.msgpack") });
 	// ゲームクリアシーンデータロード
 	m_datas.insert({ "Clear" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/GameClearScene.msgpack") });
 	// ゲームオーバーシーンデータロード

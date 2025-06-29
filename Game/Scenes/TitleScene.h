@@ -50,15 +50,6 @@ private:
 
 private:
 
-	// タイトルロゴオブジェクト番号
-	static const int TITLE_LOGO_UI_OBJECT_NUMBER;
-	// スタートテキストオブジェクト番号
-	static const int START_TEXT_UI_OBJECT_NUMBER;
-	// フェードオブジェクト番号
-	static const int FADE_OBJECT_NUMBER;
-	
-private:
-
 	// パラメーター
 	Parameters* m_parameters;
 	// 共有リソース

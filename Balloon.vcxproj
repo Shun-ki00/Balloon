@@ -308,7 +308,10 @@
     <ClInclude Include="Game\UIObjects\ResultSceneKeyGuideUI.h" />
     <ClInclude Include="Game\UIObjects\ResultButtonTextUI.h" />
     <ClInclude Include="Game\UIObjects\ScoreFrameUI.h" />
+    <ClInclude Include="Game\UIObjects\StageSelectFrameUI.h" />
     <ClInclude Include="Game\UIObjects\StageSelectKeyGuideUI.h" />
+    <ClInclude Include="Game\UIObjects\StageSelectTextUI.h" />
+    <ClInclude Include="Game\UIObjects\StageSelectUI.h" />
     <ClInclude Include="Game\UIObjects\StartTextUI.h" />
     <ClInclude Include="Game\UIObjects\ResultTextUI.h" />
     <ClInclude Include="Game\UIObjects\TimeFrameUI.h" />
@@ -451,7 +454,10 @@
     <ClCompile Include="Game\UIObjects\ResultSceneKeyGuideUI.cpp" />
     <ClCompile Include="Game\UIObjects\ResultButtonTextUI.cpp" />
     <ClCompile Include="Game\UIObjects\ScoreFrameUI.cpp" />
+    <ClCompile Include="Game\UIObjects\StageSelectFrameUI.cpp" />
     <ClCompile Include="Game\UIObjects\StageSelectKeyGuideUI.cpp" />
+    <ClCompile Include="Game\UIObjects\StageSelectTextUI.cpp" />
+    <ClCompile Include="Game\UIObjects\StageSelectUI.cpp" />
     <ClCompile Include="Game\UIObjects\StartTextUI.cpp" />
     <ClCompile Include="Game\UIObjects\ResultTextsUI.cpp" />
     <ClCompile Include="Game\UIObjects\TimeFrameUI.cpp" />

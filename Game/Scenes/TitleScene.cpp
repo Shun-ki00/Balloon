@@ -18,20 +18,13 @@
 // ファクトリ
 #include "Game/Factorys/SceneFactory.h"
 // シーン
-#include "Game/Scenes/GameClearScene.h"
-#include "Game/Scenes/PlayScene.h"
+#include "Game/Scenes/StageSelectScene.h"
 // ステート
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
 #include "Game/States/SceneStates/TitleMainState.h"
 
-// タイトルロゴオブジェクト番号
-const int TitleScene::TITLE_LOGO_UI_OBJECT_NUMBER = 2;
-// スタートテキストオブジェクト番号
-const int TitleScene::START_TEXT_UI_OBJECT_NUMBER = 3;
-// フェードオブジェクト番号
-const int TitleScene::FADE_OBJECT_NUMBER = 4;
 
 /// <summary>
 /// コンストラクタ
@@ -87,10 +80,10 @@ void TitleScene::Start()
 	m_currentState->PreUpdate();
 }
 
-/// <summary>
+/// <summary> 
 /// 更新処理する
 /// </summary>
-void TitleScene::Update()
+void TitleScene::Update()  
 {
 	// 経過時間を取得する
 	float elapsedTime = (float)m_commonResources->GetStepTimer()->GetElapsedSeconds();
@@ -143,7 +136,7 @@ void TitleScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 		case Message::SceneMessageID::FADE_OUT_CANGE_MENU_SCENE:
 
 			// 次のシーンの準備を行う
-			SceneManager::GetInstance()->PrepareScene<GameClearScene>();
+			SceneManager::GetInstance()->PrepareScene<StageSelectScene>();
 
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
@@ -166,7 +159,7 @@ void TitleScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 void TitleScene::CreateStates()
 {
 	// フェードインステート作成 初期化処理
-	m_fadeInState = std::make_unique<FadeInState>(FADE_OBJECT_NUMBER);
+	m_fadeInState = std::make_unique<FadeInState>(0);
 	m_fadeInState->Initialize();
 
 	// タイトルシーンメインステート作成　初期化処理
@@ -174,7 +167,7 @@ void TitleScene::CreateStates()
 	m_titleMainState->Initialize();
 
 	// フェードアウトステート作成　初期化処理
-	m_fadeOutState = std::make_unique<FadeOutState>(FADE_OBJECT_NUMBER);
+	m_fadeOutState = std::make_unique<FadeOutState>(0);
 	m_fadeOutState->Initialize();
 
 	// 初期ステートを設定

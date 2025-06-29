@@ -79,6 +79,10 @@ void StageSelectScene::Start()
 {
 	// ステートスタート処理
 	m_currentState->PreUpdate();
+
+	// アニメーション開始
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_ANIMATION });
+
 }
 
 /// <summary>
@@ -140,7 +144,7 @@ void StageSelectScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 		case Message::SceneMessageID::FADE_OUT_CANGE_MENU_SCENE:
 
 			// 次のシーンの準備を行う
-			SceneManager::GetInstance()->PrepareScene<GameOverScene>();
+			SceneManager::GetInstance()->PrepareScene<PlayScene>();
 
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());

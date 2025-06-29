@@ -194,11 +194,11 @@
     <Filter Include="Game\Objects\WoodBox">
       <UniqueIdentifier>{563e5690-5f1d-4698-93ed-38a275df5243}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Status">
-      <UniqueIdentifier>{d695a56d-04be-4ecb-bc8e-09189eaa13e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Json">
       <UniqueIdentifier>{769212ca-8041-4283-b77f-b4ce52a783b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Status">
+      <UniqueIdentifier>{d695a56d-04be-4ecb-bc8e-09189eaa13e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -663,6 +663,15 @@
     <ClInclude Include="Game\States\Enemy\EnemyChaseState.h">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Game\UIObjects\StageSelectUI.h">
+      <Filter>Game\UIObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\StageSelectFrameUI.h">
+      <Filter>Game\UIObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\StageSelectTextUI.h">
+      <Filter>Game\UIObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -1030,6 +1039,15 @@
     </ClCompile>
     <ClCompile Include="Game\States\Enemy\EnemyChaseState.cpp">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\StageSelectUI.cpp">
+      <Filter>Game\UIObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\StageSelectFrameUI.cpp">
+      <Filter>Game\UIObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\StageSelectTextUI.cpp">
+      <Filter>Game\UIObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

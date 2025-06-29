@@ -26,6 +26,10 @@
 #include "Game/UIObjects/TimeFrameUI.h"
 #include "Game/UIObjects/CountdownUI.h"
 #include "Game/UIObjects/TimeUI.h"
+#include "Game/UIObjects/StageSelectFrameUI.h"
+#include "Game/UIObjects/StageSelectUI.h"
+#include "Game/UIObjects/StageSelectTextUI.h"
+#include "Game/UIObjects/StageSelectKeyGuideUI.h"
 
 
 /// <summary>
@@ -125,6 +129,144 @@ std::unique_ptr<IObject> UIFactory::CreateStartTextUI(
 	// インスタンスを返す
 	return std::move(startText);
 }
+
+
+// ===== ステージセレクトシーン =====
+
+/// <summary>
+/// ステージセレクトフレームUIオブジェクトの作成
+/// </summary>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="initialPosition">初期座標</param>
+/// <param name="initialRotation">初期回転角</param>
+/// <param name="initialScale">初期スケール</param>
+/// <param name="stageIndex">ステージ番号</param>
+/// <returns>ステージセレクトフレームUIオブジェクト</returns>
+std::unique_ptr<IObject> UIFactory::CreateStageSelectFrameUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale,int stageIndex)
+{
+	std::unique_ptr<StageSelectFrameUI> stageSelectFrame = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	stageSelectFrame.reset(new StageSelectFrameUI(parent, objectID, initialPosition, rotation, initialScale, stageIndex));
+	// 初期化処理
+	stageSelectFrame->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, stageSelectFrame->GetObjectNumber(), stageSelectFrame.get());
+	// インスタンスを返す
+	return std::move(stageSelectFrame);
+}
+
+/// <summary>
+/// ステージセレクトUIテキストオブジェクトの作成
+/// </summary>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+/// <returns>ステージセレクトテキストUI</returns>
+std::unique_ptr<IObject> UIFactory::CreateStageSelectTextUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<StageSelectTextUI> stageSelectText = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	stageSelectText.reset(new StageSelectTextUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	stageSelectText->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, stageSelectText->GetObjectNumber(), stageSelectText.get());
+	// インスタンスを返す
+	return std::move(stageSelectText);
+}
+
+
+/// <summary>
+/// ステージセレクトUIオブジェクトの作成
+/// </summary>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+/// <returns>ステージセレクトUI</returns>
+std::unique_ptr<IObject> UIFactory::CreateStageSelectUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<StageSelectUI> stageSelect = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	stageSelect.reset(new StageSelectUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	stageSelect->Initialize();
+	// メッセンジャーに登録
+	ObjectMessenger::GetInstance()->Register(objectID, stageSelect->GetObjectNumber(), stageSelect.get());
+
+	// キーボードメッセンジャーに登録
+	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Left, stageSelect.get());
+	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Right, stageSelect.get());
+
+	// インスタンスを返す
+	return std::move(stageSelect);
+}
+
+/// <summary>
+/// ステージセレクト操作説明UIオブジェクトの作成
+/// </summary>
+/// <param name="parent">親オブジェクト</param>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="position">座標</param>
+/// <param name="rotation">回転</param>
+/// <param name="scale">スケール</param>
+/// <returns>ステージセレクト操作説明UI</returns>
+std::unique_ptr<IObject> UIFactory::CreateStageSelectKeyGuideUI(
+	IObject* parent,
+	const IObject::ObjectID& objectID,
+	const DirectX::SimpleMath::Vector3& initialPosition,
+	const DirectX::SimpleMath::Vector3& initialRotation,
+	const DirectX::SimpleMath::Vector3& initialScale)
+{
+	std::unique_ptr<StageSelectKeyGuideUI> stageSelectKeyGuide = nullptr;
+
+	// 回転をクォータニオンに変換
+	DirectX::SimpleMath::Quaternion rotation =
+		UIFactory::ConvertToYawPitchRoll(initialRotation);
+
+	// インスタンス生成
+	stageSelectKeyGuide.reset(new StageSelectKeyGuideUI(parent, objectID, initialPosition, rotation, initialScale));
+	// 初期化処理
+	stageSelectKeyGuide->Initialize();
+
+	// インスタンスを返す
+	return std::move(stageSelectKeyGuide);
+}
+
 
 // ===== プレイシーン =====
 

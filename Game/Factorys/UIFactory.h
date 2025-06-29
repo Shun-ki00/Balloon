@@ -35,6 +35,36 @@ public:
 		const DirectX::SimpleMath::Vector3& initialRotation,
 		const DirectX::SimpleMath::Vector3& initialScale);
 
+	// ==== ステージセレクトシーン ====
+
+	// ステージセレクトのフレームUI
+	static std::unique_ptr<IObject> CreateStageSelectFrameUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale,int stageIndex);
+
+	// ステージセレクトテキストUI
+	static std::unique_ptr<IObject> CreateStageSelectTextUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// ステージセレクトUI
+	static std::unique_ptr<IObject> CreateStageSelectUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
+	// ステージセレクト操作説明UI
+	static std::unique_ptr<IObject> CreateStageSelectKeyGuideUI(
+		IObject* parent, const IObject::ObjectID& objectID,
+		const DirectX::SimpleMath::Vector3& initialPosition,
+		const DirectX::SimpleMath::Vector3& initialRotation,
+		const DirectX::SimpleMath::Vector3& initialScale);
+
 
 	// ==== プレイシーン ====
 

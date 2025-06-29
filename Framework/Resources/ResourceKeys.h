@@ -40,6 +40,7 @@ enum class TextureKeyID : int
     ResultButtonText,
     BalloonExplosion,
     WoodBox,
+    StageSelectFrames,
 
     Meat,
     Wood,

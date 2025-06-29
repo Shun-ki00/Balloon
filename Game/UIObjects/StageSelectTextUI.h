@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: StageSelectKeyGuideUI.h
-// 概要: StageSelectKeyGuideUI.cppのヘッダーファイル
+// ファイル名: StageSelectTextUI.h
+// 概要: StageSelectTextUI.cppのヘッダーファイル
 // 
 // 製作者 : 清水駿希
 // 
@@ -13,7 +13,7 @@ class Transform;
 class CommonResources;
 class UIRenderableObject;
 
-class StageSelectKeyGuideUI : public UIObject
+class StageSelectTextUI : public UIObject
 {
 public:
 	// オブジェクトのアクティブ設定
@@ -35,13 +35,13 @@ public:
 public:
 
 	// コンストラクタ
-	StageSelectKeyGuideUI(IObject* parent, IObject::ObjectID objectID,
+	StageSelectTextUI(IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
 		const DirectX::SimpleMath::Vector3& scale);
 
 	// デストラクタ
-	~StageSelectKeyGuideUI() override = default;
+	~StageSelectTextUI() override = default;
 
 	// 初期化する
 	void Initialize() override;
@@ -72,5 +72,4 @@ private:
 	std::unique_ptr<Transform> m_transform;
 	// 描画オブジェクト
 	std::unique_ptr<UIRenderableObject> m_renderableObject;
-
 };

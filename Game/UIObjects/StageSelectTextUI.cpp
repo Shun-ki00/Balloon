@@ -1,13 +1,13 @@
 // ============================================
 // 
-// ファイル名: StageSelectKeyGuideUI.cpp
-// 概要: ステージセレクトシーン操作説明UIオブジェクト
+// ファイル名: StageSelectTextUI.cpp
+// 概要: スタート説明テキストUIオブジェクト
 // 
 // 製作者 : 清水駿希
 // 
 // ============================================
 #include "pch.h"
-#include "Game/UIObjects/StageSelectKeyGuideUI.h"
+#include "Game/UIObjects/StageSelectTextUI.h"
 #include "Framework/CommonResources.h"
 // リソース
 #include "Framework/Resources/Resources.h"
@@ -28,8 +28,7 @@
 /// <param name="rotation">回転</param>
 /// <param name="scale">スケール</param>
 /// <param name="messageID">メッセージID</param>
-StageSelectKeyGuideUI::StageSelectKeyGuideUI(
-	IObject* parent, IObject::ObjectID objectID,
+StageSelectTextUI::StageSelectTextUI(IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
 	const DirectX::SimpleMath::Vector3& scale)
@@ -65,16 +64,16 @@ StageSelectKeyGuideUI::StageSelectKeyGuideUI(
 /// <summary>
 /// 初期化処理
 /// </summary>
-void StageSelectKeyGuideUI::Initialize()
+void StageSelectTextUI::Initialize()
 {
 	// テクスチャサイズを取得する
 	float width, height;
-	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::StageSelectKeyGuide, width, height);
+	Resources::GetInstance()->GetTextureResources()->GetTextureSize(TextureKeyID::StageSelectTexts, width, height);
 
 	// 初期頂点バッファデータ作成
 	UIVertexBuffer vertexBuffer =
 	{
-		{m_transform->GetLocalPosition().x ,m_transform->GetLocalPosition().y,m_transform->GetLocalPosition().z,0.0f},
+		{1280.0f / 2.0f , 720.0f / 2.0f ,0.0f ,0.0f},
 		{m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y , 0.0f},
 		{width , height},
 		{0.0f ,0.0f , 1.0f ,1.0f },
@@ -85,7 +84,7 @@ void StageSelectKeyGuideUI::Initialize()
 	// 描画オブジェクト作成
 	m_renderableObject = std::make_unique<UIRenderableObject>();
 	// 初期化
-	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::StageSelectKeyGuide, TextureKeyID::Rule, PS_ID::UI_PS);
+	m_renderableObject->Initialize(vertexBuffer, TextureKeyID::StageSelectTexts, TextureKeyID::Rule,PS_ID::UI_PS);
 
 	// 描画管理者に渡す
 	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
@@ -95,10 +94,15 @@ void StageSelectKeyGuideUI::Initialize()
 /// 更新処理
 /// </summary>
 /// <param name="elapsedTime">経過時間</param>
-void StageSelectKeyGuideUI::Update(const float& elapsedTime)
+void StageSelectTextUI::Update(const float& elapsedTime)
 {
 	// Transformの更新処理
 	m_transform->Update();
+
+	// 頂点バッファの更新
+	m_renderableObject->SetPosition(m_transform->GetLocalPosition());
+	m_renderableObject->SetScale({ m_transform->GetLocalScale().x ,m_transform->GetLocalScale().y });
+
 	// 描画オブジェクト更新処理
 	m_renderableObject->Update(
 		m_commonResources->GetDeviceResources()->GetD3DDeviceContext(),
@@ -108,16 +112,25 @@ void StageSelectKeyGuideUI::Update(const float& elapsedTime)
 /// <summary>
 /// 終了処理
 /// </summary>
-void StageSelectKeyGuideUI::Finalize() {}
+void StageSelectTextUI::Finalize() {}
 
 
 /// <summary>
 /// メッセンジャーを通知する
 /// </summary>
 /// <param name="messageData">メッセージデータ</param>
-void StageSelectKeyGuideUI::OnMessegeAccepted(Message::MessageData messageData)
+void StageSelectTextUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::START_TEXT_ANIMATION:
+
+			// アニメーションの設定と実行
+			m_transform->GetTween()->DOScale(DirectX::SimpleMath::Vector3::One * 0.6f, 0.5f).SetEase(Tween::EasingType::EaseInOutSine).SetDelay(4.0f);
+
+		default:
+			break;
+	}
 }
 
 /// <summary>
@@ -125,7 +138,7 @@ void StageSelectKeyGuideUI::OnMessegeAccepted(Message::MessageData messageData)
 /// </summary>
 /// <param name="type">キータイプ</param>
 /// <param name="key">キー</param>
-void StageSelectKeyGuideUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
+void StageSelectTextUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 {
 	UNREFERENCED_PARAMETER(type);
 	UNREFERENCED_PARAMETER(key);
