@@ -13,6 +13,7 @@
 #include "Game/Node/Root.h"
 #include "Game/Message/KeyboardMessenger.h"
 #include "Game/Message/ObjectMessenger.h"
+#include "Framework/Tween/TweenManager.h"
 
 // 各シーン
 #include "Game/Scenes/DebugScene.h"
@@ -118,6 +119,8 @@ bool SceneManager::CheckChageScene()
 		CommonResources::GetInstance()->GetRenderer()->End();
 		ObjectMessenger::GetInstance()->End();
 		KeyboardMessenger::GetInstance()->End();
+
+		TweenManager::GetInstance()->Stop();
 		
 		// 前のシーンを削除する
 		m_currentScene.reset();

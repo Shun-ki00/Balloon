@@ -218,7 +218,7 @@ void Enemy::Update(const float& elapsedTime)
 	// ==== Õ“Ë”»’è‚ÌXV ====
 
 	// “–‚½‚è”»’è‚ğs‚¤
-	auto player = dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,1000));
+	auto player = dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]);
 	for (const auto& balloon : player->GetBalloonObject())
 	{
 		m_collisionVisitor->DetectCollision(this, balloon);

@@ -160,6 +160,12 @@ void Player::Update(const float& elapsedTime)
 		// Transformの更新処理
 		m_transform->Update();
 
+		// 風船の大きさを更新処理
+		m_balloonScaleController->Update(elapsedTime);
+		// HPの更新処理
+		m_hpController->Update(elapsedTime);
+
+
 		// 風船の大きさを設定する
 		for (const auto& balloon : m_balloonObject)
 		{

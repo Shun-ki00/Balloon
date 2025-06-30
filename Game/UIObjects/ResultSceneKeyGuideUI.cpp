@@ -37,7 +37,7 @@ ResultSceneKeyGuideUI::ResultSceneKeyGuideUI(IObject* parent, IObject::ObjectID 
 	UIObject(),
 	m_commonResources{},
 	m_isActive(true),
-	m_objectNumber(Root::GetInstance()->GetObjectNumber() + UIObject::CountUpNumber()),
+	m_objectNumber(Root::GetInstance()->GetObjectNumber() + UIObject::GetNumber()),
 	m_objectID(objectID),
 	m_parent(parent),
 	m_transform{},

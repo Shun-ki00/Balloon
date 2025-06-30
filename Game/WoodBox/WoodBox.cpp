@@ -58,6 +58,9 @@ WoodBox::WoodBox(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	// 親がいる場合親を設定
 	if (parent != nullptr)
 		m_transform->SetParent(parent->GetTransform());
+
+	// オブジェクトのカウントをリセット
+	Object::ResetNumber();
 }
 
 /// <summary>
