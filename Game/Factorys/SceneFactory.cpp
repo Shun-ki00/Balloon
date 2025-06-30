@@ -81,12 +81,6 @@ void SceneFactory::CreateStageSelectScene(Root* root)
 	std::vector<UIParams> uis;
 	data.at("UI").get_to(uis);
 
-	PlayerParams player;
-	data.get_to(player);
-
-	// プレイヤー （固定）0
-	root->Attach(PlayerFactory::CreatePlayer(root,
-		player.position, player.rotation, player.scale, true));
 
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
@@ -164,7 +158,7 @@ void SceneFactory::CreatePlayScene(Root* root)
 			root,
 			enemy.position,
 			enemy.rotation,
-			enemy.scale));
+			enemy.scale,enemy.fixed));
 	}
 
 	// カウントダウンUI
@@ -225,8 +219,8 @@ void SceneFactory::CreatePlayScene(Root* root)
 		uis[7].scale));
 
 	// フェード
-	//root->Attach(UIFactory::CreateFade(root, IObject::ObjectID::FADE,
-	//	DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::One));
+	root->Attach(UIFactory::CreateFade(root, IObject::ObjectID::FADE,
+		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::One));
 
 }
 
@@ -266,7 +260,7 @@ void SceneFactory::CreateGameClearScene(Root* root)
 	// ボタンUI（2）
 	root->Attach(UIFactory::CreateResultSceneButtons(
 		root,
-		IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
+		IObject::ObjectID::RESULT_BUTTON_SYSTEM,
 		uis[0].position,
 		uis[0].rotation,
 		uis[0].scale
@@ -341,7 +335,7 @@ void SceneFactory::CreateGameOverScene(Root* root)
 
 	// ボタンUI 3
 	root->Attach(UIFactory::CreateResultSceneButtons(
-		root, IObject::ObjectID::RESULT_SCENE_KEYS_GUIDE_UI,
+		root, IObject::ObjectID::RESULT_BUTTON_SYSTEM,
 		uis[0].position,
 		uis[0].rotation,
 		uis[0].scale));

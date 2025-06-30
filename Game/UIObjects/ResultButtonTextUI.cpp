@@ -101,10 +101,6 @@ void ResultButtonTextUI::Initialize()
 			width = static_cast<float>(REPLAY_WIDTH);
 			uvOffsetY = uvScaleY * 3;
 			break;
-		case ResultButtonTextUI::TextID::NEXT_STAGE:
-			width = static_cast<float>(NEXT_STAGE_WIDTH);
-			uvOffsetY = uvScaleY * 5;
-			break;
 		default:
 			break;
 	}
@@ -210,9 +206,6 @@ void ResultButtonTextUI::SetButtonActive(const bool& isButton)
 			case ResultButtonTextUI::TextID::REPLAY:
 				uvOffsetY = uvScaleY * 2;
 				break;
-			case ResultButtonTextUI::TextID::NEXT_STAGE:
-				uvOffsetY = uvScaleY * 4;
-				break;
 			default:
 				break;
 		}
@@ -226,9 +219,6 @@ void ResultButtonTextUI::SetButtonActive(const bool& isButton)
 				break;
 			case ResultButtonTextUI::TextID::REPLAY:
 				uvOffsetY = uvScaleY * 3;
-				break;
-			case ResultButtonTextUI::TextID::NEXT_STAGE:
-				uvOffsetY = uvScaleY * 5;
 				break;
 			default:
 				break;

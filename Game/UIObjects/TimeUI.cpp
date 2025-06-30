@@ -65,7 +65,9 @@ TimeUI::TimeUI(IObject* parent, IObject::ObjectID objectID,
 void TimeUI::Initialize()
 {
 	// 時間を初期化
-	m_currentTime = 60.0f;
+	m_currentTime = 10.0f;
+	// 初期はタイマーを止めておくメッセージで通知を受け取った際にアクティブにする
+	m_isActiveTimer = false;
 
 	// テクスチャサイズを取得する
 	float width, height;
@@ -105,8 +107,20 @@ void TimeUI::Update(const float& elapsedTime)
 	m_renderableObject->SetScale({ m_transform->GetWorldScale().x , m_transform->GetWorldScale().y });
 
 	// 時間を更新
-	m_currentTime -= elapsedTime;
-	this->SplitTimeToDigits();
+	if (m_isActiveTimer)
+	{
+		m_currentTime -= elapsedTime;
+		if (m_currentTime <= 0.0f)
+		{
+			m_currentTime = 0.0f;
+			m_isActiveTimer = false;
+			SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_GAME_OVER_SCENE);
+		}
+			
+
+		this->SplitTimeToDigits();
+	}
+	
 
 	// 描画オブジェクト更新処理
 	m_renderableObject->Update(
@@ -126,7 +140,13 @@ void TimeUI::Finalize() {}
 /// <param name="messageData">メッセージデータ</param>
 void TimeUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::START_TIME:
+			m_isActiveTimer = true;
+		default:
+			break;
+	}
 }
 
 /// <summary>

@@ -280,10 +280,12 @@
     <ClInclude Include="Game\States\Player\PlayerIdleState.h" />
     <ClInclude Include="Game\States\Player\PlayerRunState.h" />
     <ClInclude Include="Game\States\Player\PlayerSitState.h" />
+    <ClInclude Include="Game\States\SceneStates\CountdownState.h" />
     <ClInclude Include="Game\States\SceneStates\FadeStates\FadeInState.h" />
     <ClInclude Include="Game\States\SceneStates\FadeStates\FadeOutState.h" />
     <ClInclude Include="Game\States\SceneStates\GameClearMainState.h" />
     <ClInclude Include="Game\States\SceneStates\GameOverMainState.h" />
+    <ClInclude Include="Game\States\SceneStates\PlayMainState.h" />
     <ClInclude Include="Game\States\SceneStates\StageSelectMainState.h" />
     <ClInclude Include="Game\States\SceneStates\TitleMainState.h" />
     <ClInclude Include="Game\Status\BalloonScaleController.h" />
@@ -429,10 +431,12 @@
     <ClCompile Include="Game\States\Player\PlayerIdleState.cpp" />
     <ClCompile Include="Game\States\Player\PlayerRunState.cpp" />
     <ClCompile Include="Game\States\Player\PlayerSitState.cpp" />
+    <ClCompile Include="Game\States\SceneStates\CountdownState.cpp" />
     <ClCompile Include="Game\States\SceneStates\FadeStates\FadeInState.cpp" />
     <ClCompile Include="Game\States\SceneStates\FadeStates\FadeOutState.cpp" />
     <ClCompile Include="Game\States\SceneStates\GameClearMainState.cpp" />
     <ClCompile Include="Game\States\SceneStates\GameOverMainState.cpp" />
+    <ClCompile Include="Game\States\SceneStates\PlayMainState.cpp" />
     <ClCompile Include="Game\States\SceneStates\StageSelectMainState.cpp" />
     <ClCompile Include="Game\States\SceneStates\TitleMainState.cpp" />
     <ClCompile Include="Game\Status\BalloonScaleController.cpp" />

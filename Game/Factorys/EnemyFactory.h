@@ -9,7 +9,7 @@ public:
 	static std::unique_ptr<IObject> CreateEnemy(IObject* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale);
+		const DirectX::SimpleMath::Vector3& initialScale,const bool& isFixed);
 
 	// “G‚Ì‘Ì‚ğ¶¬‚·‚é
 	static std::unique_ptr<IObject> CreateEnemyBody(IObject* parent,

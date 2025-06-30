@@ -346,6 +346,8 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 			// 回転ループアニメーション
 			m_transform->GetTween()->DORotationY(-180.0f, 8.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
 
+		case Message::MessageID::FIXED:
+			m_isFixed = messageData.dataBool;
 			break;
 
 		default:

@@ -16,7 +16,8 @@
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Scenes/PlayScene.h"
 
-#include "Game/Scenes/TitleScene.h"
+#include "Game/Scenes/StageSelectScene.h"
+#include "Game/Scenes/PlayScene.h"
 
 #include "Game/Factorys/SceneFactory.h"
 
@@ -25,11 +26,7 @@
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
-#include "Game/States/SceneStates/TitleMainState.h"
-
-// フェードオブジェクト番号
-const int GameOverScene::FADE_OBJECT_NUMBER = 6;
-
+#include "Game/States/SceneStates/GameOverMainState.h"
 
 /// <summary>
 /// コンストラクタ
@@ -40,7 +37,7 @@ GameOverScene::GameOverScene()
 	m_commonResources{},
 	m_currentState{},
 	m_fadeInState{},
-	m_titleMainState{},
+	m_gameOverMainState{},
 	m_fadeOutState{},
 	m_root{}
 {
@@ -81,6 +78,8 @@ void GameOverScene::Start()
 
 	// スカイボックスを変更
 	m_commonResources->GetSkyBox()->SetDayProgress(1.0f);
+
+
 }
 
 /// <summary>
@@ -143,20 +142,21 @@ void GameOverScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 		case Message::SceneMessageID::FADE_OUT:
 
 			break;
-		case Message::SceneMessageID::FADE_OUT_CANGE_MENU_SCENE:
-
-			// 次のシーンの準備を行う
-			SceneManager::GetInstance()->PrepareScene<TitleScene>();
-
+		case Message::SceneMessageID::FADE_OUT_CANGE_SELECT_SCEEN:
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
-
+			// 次のシーンの準備を行う
+			SceneManager::GetInstance()->PrepareScene<StageSelectScene>();
 			break;		
-		case Message::SceneMessageID::MAIN:
-
+		case Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE:
 			// ステートを切り替える
-			this->ChangeState(m_titleMainState.get());
-
+			this->ChangeState(m_fadeOutState.get());
+			// 次のシーンの準備を行う
+			SceneManager::GetInstance()->PrepareScene<PlayScene>();
+			break;
+		case Message::SceneMessageID::MAIN:
+			// ステートを切り替える
+			this->ChangeState(m_gameOverMainState.get());
 			break;
 		default:
 			break;
@@ -170,15 +170,15 @@ void GameOverScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 void GameOverScene::CreateStates()
 {
 	// フェードインステート作成 初期化処理
-	m_fadeInState = std::make_unique<FadeInState>(FADE_OBJECT_NUMBER);
+	m_fadeInState = std::make_unique<FadeInState>(0);
 	m_fadeInState->Initialize();
 
 	// タイトルシーンメインステート作成　初期化処理
-	m_titleMainState = std::make_unique<TitleMainState>();
-	m_titleMainState->Initialize();
+	m_gameOverMainState = std::make_unique<GameOverMainState>();
+	m_gameOverMainState->Initialize();
 
 	// フェードアウトステート作成　初期化処理
-	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT_EXIT_GAME,0,1.0f ,false });
+	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT,0,1.0f ,false });
 	m_fadeOutState->Initialize();
 
 	// 初期ステートを設定

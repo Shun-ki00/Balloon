@@ -56,8 +56,8 @@ void DebugScene::Initialize()
 	m_root->Attach(PlayerFactory::CreatePlayer(m_root,
 		DirectX::SimpleMath::Vector3::Up,DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.1f));
 
-	m_root->Attach(EnemyFactory::CreateEnemy(m_root,
-		DirectX::SimpleMath::Vector3::Backward + DirectX::SimpleMath::Vector3::Up, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.1f));
+	//m_root->Attach(EnemyFactory::CreateEnemy(m_root,
+	//	DirectX::SimpleMath::Vector3::Backward + DirectX::SimpleMath::Vector3::Up, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.1f));
 	
 	m_root->Attach(EffectFactory::CreateEffectController(m_root ,{ ParametersID::BALLOON_EXPLOSION, ParametersID::PARTICLE  }));
 

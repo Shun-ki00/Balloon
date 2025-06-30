@@ -15,7 +15,7 @@ class Root;
 class Parameters;
 // ステート
 class FadeInState;
-class TitleMainState;
+class GameOverMainState;
 class FadeOutState;
 
 class GameOverScene : public IScene
@@ -40,18 +40,13 @@ public:
 
 	// シーンのステートを変更する
 	void ChangeState(IState* newState) override;
-	// 当たり判定メッセージを受け取る
+	// メッセージを受け取る
 	void OnSceneMessegeAccepted(Message::SceneMessageID messageID) override;
 
 private:
 
 	// ステートの作成
 	void CreateStates();
-
-private:
-
-	// フェードオブジェクト番号
-	static const int FADE_OBJECT_NUMBER;
 	
 private:
 
@@ -65,8 +60,8 @@ private:
 
 	// フェードインステート
 	std::unique_ptr<FadeInState> m_fadeInState;
-	// タイトルシーンメインステート
-	std::unique_ptr<TitleMainState> m_titleMainState;
+	// ゲームオーバーシーンメインステート
+	std::unique_ptr<GameOverMainState> m_gameOverMainState;
 	// フェードアウトステート
 	std::unique_ptr<FadeOutState> m_fadeOutState;
 

@@ -810,6 +810,7 @@ std::unique_ptr<IObject> UIFactory::CreateResultSceneButtons(
 	// キーボードメッセンジャーに登録
 	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Up, resultButtons.get());
 	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Down, resultButtons.get());
+	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Z, resultButtons.get());
 
 	// インスタンスを返す
 	return std::move(resultButtons);

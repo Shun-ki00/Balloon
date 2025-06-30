@@ -107,14 +107,6 @@ void CountdownUI::Initialize()
 void CountdownUI::Update(const float& elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
-
-	static bool active = false;
-
-	if (!active)
-	{
-		this->PlayCoundown();
-		active = true;
-	}
 		
 	// Transformの更新処理
 	m_transform->Update();
@@ -149,7 +141,14 @@ void CountdownUI::Finalize() {}
 /// <param name="messageData">メッセージデータ</param>
 void CountdownUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::PLAY_COUNTDOWN_ANIMATION:
+			this->PlayCoundown();
+			break;
+		default:
+			break;
+	}
 }
 
 /// <summary>
@@ -187,7 +186,9 @@ void CountdownUI::PlayCoundown()
 			// 「Go」を中央から大きくする　アニメーション
 			m_transform->GetTween()->DOScale(DirectX::SimpleMath::Vector3::One, 1.0f).SetDelay(0.5f).SetEase(Tween::EasingType::EaseOutBounce).OnComplete([this] {
 				// 「Go」回転しながら小さくする　アニメーション
-				m_transform->GetTween()->DOMoveZ(0.0f, 0.5f).SetDelay(0.5f).OnComplete([this] { m_isActive = false; });
+				m_transform->GetTween()->DOMoveZ(0.0f, 0.5f).SetDelay(0.5f).OnComplete([this] { 
+					SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::PLAY_MAIN_STATE);
+					m_isActive = false; });
 				});
 
 			});

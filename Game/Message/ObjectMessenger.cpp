@@ -111,6 +111,7 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const Message:
 	{
 		for (const auto it : typeIt->second)
 		{
+			if (typeIt == m_objects.end()) break;
 			// 送信するオブジェクトのメッセージハンドラを呼び出す
 			it.second->OnMessegeAccepted(messageData);
 		}

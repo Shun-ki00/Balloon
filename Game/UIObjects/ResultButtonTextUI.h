@@ -21,7 +21,6 @@ public:
 	{
 		STAGE_SELECT = 0,
 		REPLAY,
-		NEXT_STAGE,
 	};
 
 

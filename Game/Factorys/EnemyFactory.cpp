@@ -19,18 +19,20 @@
 std::unique_ptr<IObject> EnemyFactory::CreateEnemy(IObject* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const DirectX::SimpleMath::Vector3& initialRotation,
-	const DirectX::SimpleMath::Vector3& initialScale)
+	const DirectX::SimpleMath::Vector3& initialScale, const bool& isFixed)
 {
 	// 回転をクォータニオンに変換
 	DirectX::SimpleMath::Quaternion rotation =
 		EnemyFactory::ConvertToYawPitchRoll(initialRotation);
 
 	// 砲塔を宣言する
-	std::unique_ptr<IObject> enemy;
+	std::unique_ptr<Enemy> enemy;
 	// Turretクラスのインスタンスを生成する
 	enemy.reset(new Enemy(Root::GetInstance(), parent , IObject::ObjectID::ENEMY , initialPosition, rotation , initialScale , Message::MessageID::NONE));
 	// 初期化する
 	enemy->Initialize();
+	// 固定設定
+	enemy->SetIsFixed(isFixed);
 
 	// オブジェクトメッセンジャーに登録
 	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::ENEMY, enemy->GetObjectNumber(), enemy.get());

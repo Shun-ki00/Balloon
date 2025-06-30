@@ -19,17 +19,15 @@
 
 #include "Game/Factorys/SceneFactory.h"
 
-#include "Game/Scenes/TitleScene.h"
-#include "Game/Scenes/GameOverScene.h"
+#include "Game/Scenes/StageSelectScene.h"
+#include "Game/Scenes/PlayScene.h"
 
 // ステート
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
-#include "Game/States/SceneStates/TitleMainState.h"
+#include "Game/States/SceneStates/GameClearMainState.h"
 
-// フェードオブジェクト番号
-const int GameClearScene::FADE_OBJECT_NUMBER = 5;
 
 /// <summary>
 /// コンストラクタ
@@ -40,7 +38,7 @@ GameClearScene::GameClearScene()
 	m_commonResources{},
 	m_currentState{},
 	m_fadeInState{},
-	m_titleMainState{},
+	m_gameClearMainState{},
 	m_fadeOutState{},
 	m_root{}
 {
@@ -136,20 +134,21 @@ void GameClearScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 		case Message::SceneMessageID::FADE_OUT:
 
 			break;
-		case Message::SceneMessageID::FADE_OUT_CANGE_MENU_SCENE:
-
-			// 次のシーンの準備を行う
-			SceneManager::GetInstance()->PrepareScene<GameOverScene>();
-
+		case Message::SceneMessageID::FADE_OUT_CANGE_SELECT_SCEEN:
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
-
-			break;		
-		case Message::SceneMessageID::MAIN:
-
+			// 次のシーンの準備を行う
+			SceneManager::GetInstance()->PrepareScene<StageSelectScene>();
+			break;
+		case Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE:
 			// ステートを切り替える
-			this->ChangeState(m_titleMainState.get());
-
+			this->ChangeState(m_fadeOutState.get());
+			// 次のシーンの準備を行う
+			SceneManager::GetInstance()->PrepareScene<PlayScene>();
+			break;
+		case Message::SceneMessageID::MAIN:
+			// ステートを切り替える
+			this->ChangeState(m_gameClearMainState.get());
 			break;
 		default:
 			break;
@@ -164,15 +163,15 @@ void GameClearScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 void GameClearScene::CreateStates()
 {
 	// フェードインステート作成 初期化処理
-	m_fadeInState = std::make_unique<FadeInState>(FADE_OBJECT_NUMBER);
+	m_fadeInState = std::make_unique<FadeInState>(0);
 	m_fadeInState->Initialize();
 
 	// タイトルシーンメインステート作成　初期化処理
-	m_titleMainState = std::make_unique<TitleMainState>();
-	m_titleMainState->Initialize();
+	m_gameClearMainState = std::make_unique<GameClearMainState>();
+	m_gameClearMainState->Initialize();
 
 	// フェードアウトステート作成　初期化処理
-	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT_EXIT_GAME,0,1.0f ,false });
+	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT,0,1.0f ,false });
 	m_fadeOutState->Initialize();
 
 	// 初期ステートを設定

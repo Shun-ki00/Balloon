@@ -60,7 +60,8 @@ Enemy::Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_messageID(messageID),
 	m_parent(parent),
 	m_transform{},
-	m_childs {}
+	m_childs {},
+	m_isFixed{}
 {
 
 	m_collisionVisitor = CollisionVisitor::GetInstance();
@@ -138,6 +139,37 @@ void Enemy::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Enemy::Update(const float& elapsedTime)
 {
+	// プレイヤーが固定状態の場合
+	if (m_isFixed)
+	{
+		// 徘徊状態にする
+		this->ChangeState(m_enemyWanderState.get());
+
+		// 風船の大きさを更新処理
+		m_balloonScaleController->Update(elapsedTime);
+		// HPの更新処理
+		m_hpController->Update(elapsedTime);
+
+		float result = m_balloonScaleController->GetBalloonScale() * 6.0f - 3.0f;
+		dynamic_cast<FloatForceBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::FLOAT_FORCE))->SetForceStrength(result);
+
+		// Transformの更新処理
+		m_transform->Update();
+
+		// 風船の大きさを設定する
+		for (const auto& balloon : m_balloonObject)
+		{
+			balloon->GetParent()->OnMessegeAccepted({ Message::MessageID::BALLOON_SCALE ,0,m_balloonScaleController->GetBalloonScale(),false });
+		}
+
+		// 子オブジェクトの更新処理
+		for (const auto& child : m_childs)
+		{
+			child->Update(elapsedTime);
+		}
+
+		return;
+	}
 	// アクションを決定する
 	m_actionSelection->GetRootNode()->Tick();
 
@@ -269,6 +301,8 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 			Object::ChangeState(m_enemyAttackState.get());
 			break;
 
+		case Message::MessageID::FIXED:
+			m_isFixed = messageData.dataBool;
 			break;
 		default:
 			break;

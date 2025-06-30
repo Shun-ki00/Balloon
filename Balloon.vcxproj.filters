@@ -200,6 +200,21 @@
     <Filter Include="Game\Status">
       <UniqueIdentifier>{d695a56d-04be-4ecb-bc8e-09189eaa13e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\States\SceneStates\PlayScene">
+      <UniqueIdentifier>{a3d391e4-64fe-4a0d-9903-6338bab7a7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\SceneStates\TitleScene">
+      <UniqueIdentifier>{d4cae5cf-134b-40e9-9c2e-bd02ee7a5b51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\SceneStates\GameClearScene">
+      <UniqueIdentifier>{b7da699e-9950-40f7-9e7b-eb9a0e52361b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\SceneStates\GameOverScene">
+      <UniqueIdentifier>{2c587b38-9654-4614-9afd-50b6a116c326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\States\SceneStates\StageSelectScene">
+      <UniqueIdentifier>{61084144-0b53-4678-871f-c58d6c9388b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -549,9 +564,6 @@
     <ClInclude Include="Game\States\SceneStates\FadeStates\FadeOutState.h">
       <Filter>Game\States\SceneStates\FadeStates</Filter>
     </ClInclude>
-    <ClInclude Include="Game\States\SceneStates\TitleMainState.h">
-      <Filter>Game\States\SceneStates</Filter>
-    </ClInclude>
     <ClInclude Include="Game\Scenes\DebugScene.h">
       <Filter>Game\Scenes\Header</Filter>
     </ClInclude>
@@ -663,23 +675,32 @@
     <ClInclude Include="Game\States\Enemy\EnemyChaseState.h">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Game\UIObjects\StageSelectUI.h">
-      <Filter>Game\UIObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Game\UIObjects\StageSelectFrameUI.h">
-      <Filter>Game\UIObjects</Filter>
+      <Filter>Game\UIObjects\Header</Filter>
     </ClInclude>
     <ClInclude Include="Game\UIObjects\StageSelectTextUI.h">
-      <Filter>Game\UIObjects</Filter>
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\UIObjects\StageSelectUI.h">
+      <Filter>Game\UIObjects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\TitleMainState.h">
+      <Filter>Game\States\SceneStates\TitleScene</Filter>
     </ClInclude>
     <ClInclude Include="Game\States\SceneStates\GameClearMainState.h">
-      <Filter>Game\States\SceneStates</Filter>
+      <Filter>Game\States\SceneStates\GameClearScene</Filter>
     </ClInclude>
     <ClInclude Include="Game\States\SceneStates\GameOverMainState.h">
-      <Filter>Game\States\SceneStates</Filter>
+      <Filter>Game\States\SceneStates\GameOverScene</Filter>
     </ClInclude>
     <ClInclude Include="Game\States\SceneStates\StageSelectMainState.h">
-      <Filter>Game\States\SceneStates</Filter>
+      <Filter>Game\States\SceneStates\StageSelectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\CountdownState.h">
+      <Filter>Game\States\SceneStates\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\States\SceneStates\PlayMainState.h">
+      <Filter>Game\States\SceneStates\PlayScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -938,9 +959,6 @@
     <ClCompile Include="Game\States\SceneStates\FadeStates\FadeOutState.cpp">
       <Filter>Game\States\SceneStates\FadeStates</Filter>
     </ClCompile>
-    <ClCompile Include="Game\States\SceneStates\TitleMainState.cpp">
-      <Filter>Game\States\SceneStates</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Scenes\DebugScene.cpp">
       <Filter>Game\Scenes\Source</Filter>
     </ClCompile>
@@ -1049,23 +1067,32 @@
     <ClCompile Include="Game\States\Enemy\EnemyChaseState.cpp">
       <Filter>Game\States\ObjectStates\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Game\UIObjects\StageSelectUI.cpp">
-      <Filter>Game\UIObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Game\UIObjects\StageSelectFrameUI.cpp">
-      <Filter>Game\UIObjects</Filter>
+      <Filter>Game\UIObjects\Source</Filter>
     </ClCompile>
     <ClCompile Include="Game\UIObjects\StageSelectTextUI.cpp">
-      <Filter>Game\UIObjects</Filter>
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\UIObjects\StageSelectUI.cpp">
+      <Filter>Game\UIObjects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\TitleMainState.cpp">
+      <Filter>Game\States\SceneStates\TitleScene</Filter>
     </ClCompile>
     <ClCompile Include="Game\States\SceneStates\GameClearMainState.cpp">
-      <Filter>Game\States\SceneStates</Filter>
+      <Filter>Game\States\SceneStates\GameClearScene</Filter>
     </ClCompile>
     <ClCompile Include="Game\States\SceneStates\GameOverMainState.cpp">
-      <Filter>Game\States\SceneStates</Filter>
+      <Filter>Game\States\SceneStates\GameOverScene</Filter>
     </ClCompile>
     <ClCompile Include="Game\States\SceneStates\StageSelectMainState.cpp">
-      <Filter>Game\States\SceneStates</Filter>
+      <Filter>Game\States\SceneStates\StageSelectScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\CountdownState.cpp">
+      <Filter>Game\States\SceneStates\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\States\SceneStates\PlayMainState.cpp">
+      <Filter>Game\States\SceneStates\PlayScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

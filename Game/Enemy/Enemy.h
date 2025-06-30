@@ -47,6 +47,9 @@ public:
 	// 親オブジェクトを取得する
 	IObject* GetParent() const override { return m_parent; }
 
+	// 固定設定
+	void SetIsFixed(const bool& isFixed) { m_isFixed = isFixed; }
+
 	// 速度を取得する
 	DirectX::SimpleMath::Vector3& GetVelocity() override { return m_velocity; }
 	// 速度を設定する
@@ -155,6 +158,8 @@ private:
 	DirectX::SimpleMath::Vector3 m_acceralation;
 
 	float m_balloonIndex;
+
+	bool m_isFixed;
 
 	// 風船の大きさをコントロール
 	std::unique_ptr<BalloonScaleController> m_balloonScaleController;

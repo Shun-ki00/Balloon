@@ -16,6 +16,10 @@ class Root;
 class Parameters;
 class WindBehavior;
 class ParticleEmitter;
+class FadeInState;
+class CountdownState;
+class PlayMainState;
+class FadeOutState;
 
 class PlayScene : public IScene
 {
@@ -39,11 +43,18 @@ public:
 
 	// シーンのステートを変更する
 	void ChangeState(IState* newState) override;
-	// 当たり判定メッセージを受け取る
+	// メッセージを受け取る
 	void OnSceneMessegeAccepted(Message::SceneMessageID messageID) override;
 
 private:
 
+	// ステートを作成
+	void CreateState();
+
+private:
+
+	// ルート
+	Root* m_root;
 	// パラメーター
 	Parameters* m_parameters;
 	// 共有リソース
@@ -52,6 +63,15 @@ private:
 	// デバッグカメラで実装
 	std::unique_ptr<DebugCamera> m_debugCamera;
 
-	// ルート
-	Root* m_root;
+	// 現在の状態
+	IState* m_currentState;
+
+	// フェードインステート
+	std::unique_ptr<FadeInState> m_fadeInState;
+	// カウントダウンステート
+	std::unique_ptr<CountdownState> m_countdownState;
+	// メインステート
+	std::unique_ptr<PlayMainState> m_playMainState;
+	// フェードアウトステート
+	std::unique_ptr<FadeOutState> m_fadeOutState;
 };

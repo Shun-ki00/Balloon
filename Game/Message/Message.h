@@ -24,7 +24,9 @@ public:
 		ENEMY_ATTACK,
 		ENEMY_ON_BALLOON_SCALE,
 		ENEMY_OFF_BALLOON_SCALE,
-		
+
+		FIXED,
+
 
 		// エフェクト
 		EXPLOSION,
@@ -64,7 +66,9 @@ public:
 		// HPゲージの変更
 		HP_GAUGE,
 
-
+		START_TIME,
+		PLAY_COUNTDOWN_ANIMATION,
+		CHANGE_SCENE,
 
 	};
 
@@ -85,6 +89,7 @@ public:
 		COUNTDOWN,
 		MAIN,
 		SETTING,
+		PLAY_MAIN_STATE,
 	};
 
 	// メッセージデータ

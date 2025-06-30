@@ -80,5 +80,7 @@ private:
 
 	// 現在の時間
 	float m_currentTime;
+	// タイマーのアクティブ状態
+	bool m_isActiveTimer;
 
 };

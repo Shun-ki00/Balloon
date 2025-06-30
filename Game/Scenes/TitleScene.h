@@ -40,7 +40,7 @@ public:
 
 	// シーンのステートを変更する
 	void ChangeState(IState* newState) override;
-	// 当たり判定メッセージを受け取る
+	// メッセージを受け取る
 	void OnSceneMessegeAccepted(Message::SceneMessageID messageID) override;
 
 private:

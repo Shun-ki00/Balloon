@@ -72,7 +72,7 @@ void ResultSceneButtons::Initialize()
 	m_buttonIndex = 1;
 
 	// ボタンオブジェクトを三つ作成する
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
 	{
 		this->Attach(UIFactory::CreateResultButtonText(this, ObjectID::RESULT_BUTTON_TEXT,
 			{ m_transform->GetLocalPosition().x , m_transform->GetLocalPosition().y + (i * 100.0f) , 0.0f },
@@ -95,7 +95,7 @@ void ResultSceneButtons::Update(const float& elapsedTime)
 	m_transform->Update();
 
 
-	for (int i = 1; i < 4; i++)
+	for (int i = 1; i < 3; i++)
 	{
 		if (m_buttonIndex == i)
 		{
@@ -149,7 +149,18 @@ void ResultSceneButtons::Detach(std::unique_ptr<IObject> object)
 /// <param name="messageData">メッセージデータ</param>
 void ResultSceneButtons::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
+	switch (messageData.messageId)
+	{
+		case Message::MessageID::CHANGE_SCENE:
+
+			if (m_buttonIndex == 1)
+				SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_SELECT_SCEEN);
+			else
+				SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE);
+			break;
+		default:
+			break;
+	}
 }
 
 /// <summary>
