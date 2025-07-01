@@ -76,6 +76,9 @@ void TitleScene::Start()
 	// スタートテキストのアニメーションを行う
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::START_TEXT_UI, { Message::MessageID::START_TEXT_ANIMATION });
 
+	// プレイヤーの動きを変更
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_TITLE_ANIMATION });
+
 	// ステートスタート処理
 	m_currentState->PreUpdate();
 }
