@@ -36,11 +36,12 @@ void ModelResources::LoadResource(const nlohmann::json& data)
 	std::unique_ptr<DirectX::EffectFactory> effectFactory = std::make_unique<DirectX::EffectFactory>(device);
 
 	// モデルの各ディレクトリを取得する
-	const std::wstring directory       = Resources::GetDirectoryFromJSON(data,"ModelDirectory");
+	const std::wstring directory       = Resources::GetDirectoryFromJSON(data,"ModelDDSDirectory");
+	const std::wstring ModelDirectory = Resources::GetDirectoryFromJSON(data, "ModelDirectory");
 	const std::wstring playerDirectory = Resources::GetDirectoryFromJSON(data,"PlayerModelDirectory");
 	const std::wstring EnemyDirectory  = Resources::GetDirectoryFromJSON(data,"EnemyModelDirectory");
 	// ディレクトリを設定する
-	effectFactory->SetDirectory(directory.c_str());
+	effectFactory->SetDirectory(directory.c_str()); 
 
 	// モデルをロードする
 	if (data.contains("Models") && data["Models"].is_object()) {
@@ -49,15 +50,12 @@ void ModelResources::LoadResource(const nlohmann::json& data)
 		for (const auto& [key, value] : models.items()) 
 		{
 			// パス構築
-			std::wstring path = directory + L"/" + Resources::ConvertToWString(value);
+			std::wstring path = ModelDirectory + L"/" + Resources::ConvertToWString(value);
 
 			// モデルのロード
 			m_models[key] = DirectX::Model::CreateFromCMO(device, path.c_str(), *effectFactory);
 		}
 	}
-
-	// プレイヤーモデルのディレクトリを設定する
-	effectFactory->SetDirectory(playerDirectory.c_str());
 
 	// プレイヤーモデルをロードする
 	if (data.contains("PlayerModels") && data["PlayerModels"].is_object()) {
@@ -72,9 +70,6 @@ void ModelResources::LoadResource(const nlohmann::json& data)
 			m_models[key] = DirectX::Model::CreateFromCMO(device, path.c_str(), *effectFactory);
 		}
 	}
-
-	// 敵モデルのディレクトリを設定する
-	effectFactory->SetDirectory(EnemyDirectory.c_str());
 
 	// 敵モデルをロードする
 	if (data.contains("EnemyModel") && data["EnemyModel"].is_object()) {

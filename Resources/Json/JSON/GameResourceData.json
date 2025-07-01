@@ -2,9 +2,10 @@
     "TextureDirectory": "Resources/Textures",
     "NormalMapTextureDirectory": "Resources/Textures/NormalMaps",
     "DDSTextureDirectory": "Resources/Textures/DDS",
+    "ModelDDSDirectory": "Resources/Models/dds",
     "ModelDirectory": "Resources/Models",
-    "PlayerModelDirectory": "Resources/Models/PlayerModels",
-    "EnemyModelDirectory": "Resources/Models/EnemyModels",
+    "PlayerModelDirectory": "Resources/Models/CharacterModels",
+    "EnemyModelDirectory": "Resources/Models/CharacterModels",
     "ShaderDirectory": "Resources/Shaders/cso",
 
     "Textures": {
@@ -71,16 +72,12 @@
     },
 
     "EnemyModel": {
-        "EHead": "EnemyFace.cmo"
+        "EnemyHead": "EnemyHead.cmo"
     },
 
     "Models": {
         "BalloonBody": "BalloonBody.cmo",
         "BalloonRope": "BalloonRope.cmo",
-        "Box": "torus.cmo",
-        "Cloud": "Cloud.cmo",
-        "Sphere": "Sphere.cmo",
-        "Torus": "torus.cmo",
         "WoodBox": "WoodBox.cmo"
     },
 
