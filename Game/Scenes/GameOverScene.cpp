@@ -72,21 +72,24 @@ void GameOverScene::Initialize()
 /// スタート処理
 /// </summary>
 void GameOverScene::Start()
-{
+{ 
 	// ステートスタート処理
 	m_currentState->PreUpdate();
 
 	// スカイボックスを変更
 	m_commonResources->GetSkyBox()->SetDayProgress(1.0f);
 
-
+	// プレイヤーの動きを変更
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_SIT_ANIMATION });
+	  
+	 
 }
-
+ 
 /// <summary>
 /// 更新処理する
 /// </summary>
 void GameOverScene::Update()
-{
+{ 
 	// 経過時間を取得する
 	float elapsedTime = (float)m_commonResources->GetStepTimer()->GetElapsedSeconds();
 
