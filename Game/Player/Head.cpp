@@ -100,7 +100,7 @@ void Head::Initialize()
 	{
 		// 描画オブジェクト作成
 		m_renderableObject = std::make_unique<EnemyRenderableObject>(true,
-			Resources::GetInstance()->GetModelResources()->GetModel(ModelKeyID::EHead));
+			Resources::GetInstance()->GetModelResources()->GetModel(ModelKeyID::EnemyHead));
 		// 初期化処理
 		dynamic_cast<EnemyRenderableObject*>(m_renderableObject.get())->Initialize(buffer);
 	}

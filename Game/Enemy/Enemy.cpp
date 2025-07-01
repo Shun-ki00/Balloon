@@ -252,6 +252,21 @@ void Enemy::Detach(std::unique_ptr<IObject> object)
 }
 
 /// <summary>
+/// 子オブジェクトを取得する
+/// </summary>
+/// <returns>子オブジェクト</returns>
+std::vector<IObject*> Enemy::GetChilds() const
+{
+	std::vector<IObject*> result;
+	result.reserve(m_childs.size());
+	for (const auto& child : m_childs)
+	{
+		result.push_back(child.get());
+	}
+	return result;
+}
+
+/// <summary>
 /// メッセージを受け取る
 /// </summary>
 /// <param name="messageID">メッセージID</param>

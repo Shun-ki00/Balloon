@@ -56,7 +56,7 @@ enum class TextureKeyID : int
 enum class ModelKeyID : int
 {
     Head,
-    EHead,
+    EnemyHead,
     Body,
     LeftArm,
     RightArm,

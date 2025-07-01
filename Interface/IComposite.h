@@ -16,5 +16,8 @@ public:
 	virtual void Attach(std::unique_ptr<IObject> object) = 0;
 	// オブジェクトを削除する
 	virtual void Detach(std::unique_ptr<IObject> object)  = 0;
+
+	// 子オブジェクトを取得する
+	virtual std::vector<IObject*> GetChilds() const = 0;
 };
 

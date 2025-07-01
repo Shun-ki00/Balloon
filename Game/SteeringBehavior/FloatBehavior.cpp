@@ -26,6 +26,7 @@ FloatBehavior::FloatBehavior()
 
 	m_amplitude = 2.0f;
 	m_floatSpeed = 1.0f;
+	m_frequency = 1.0f;
 	m_direction = DirectX::SimpleMath::Vector3::Up;
 }
 
@@ -37,16 +38,15 @@ DirectX::SimpleMath::Vector3 FloatBehavior::Calculate()
 {
 	// 経過時間を更新する
 	float elapsedTime = (float)CommonResources::GetInstance()->GetStepTimer()->GetElapsedSeconds();
-	m_elapsedTime += elapsedTime;
 
-	// 無効の時は計算しない
-	if (!m_isFloat) return DirectX::SimpleMath::Vector3::Zero;
+	float prevTime = m_elapsedTime;
+	m_elapsedTime += elapsedTime * 2.0f;
 
-	// 計算する
-	float wave = std::sin(m_elapsedTime * 1.0f * 2.0f * DirectX::XM_PI) * m_amplitude;
+	float prevWave = std::sin(m_elapsedTime);
+	float currWave = std::sin(m_elapsedTime * m_frequency * 2.0f * DirectX::XM_PI) * m_amplitude;
 
-	// 計算結果を返す
-	return m_direction * wave;
+	float delta = currWave - prevWave;
+	return m_direction * prevWave;
 }
 
 /// <summary>

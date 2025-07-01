@@ -81,6 +81,9 @@ public:
 	// オブジェクトを削除する
 	void Detach(std::unique_ptr<IObject> node) override;
 
+	// 子オブジェクトを取得する
+	std::vector<IObject*> GetChilds() const override { return {}; }
+
 	// メッセージを取得する
 	void OnMessegeAccepted(Message::MessageData messageData) override;
 	// キーが押下げられたら通知する

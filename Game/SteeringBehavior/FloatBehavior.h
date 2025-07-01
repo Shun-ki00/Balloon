@@ -44,4 +44,6 @@ private:
 	// Œo‰ßŽžŠÔ
 	float m_elapsedTime;
 
+	float m_frequency;
+
 };

@@ -59,6 +59,8 @@ public:
 	void Attach(std::unique_ptr<IObject> object) override;
 	// オブジェクトを削除する
 	void Detach(std::unique_ptr<IObject> object) override;
+	// 子オブジェクトを取得する
+	std::vector<IObject*> GetChilds() const override { return {}; }
 
 private:
 

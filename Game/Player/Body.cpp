@@ -197,36 +197,36 @@ void Body::CreateObject()
 	{
 		// プレイヤーの頭を追加
 		this->Attach(PlayerFactory::CreatePlayerHead(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-		// プレイヤーの頭を追加
+			{0.0f , 5.7f, 0.0f}, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		// プレイヤーの左腕を追加
 		this->Attach(PlayerFactory::CreatePlayerLeftArm(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-		// プレイヤーの頭を追加
+			{ 2.45f , 1.9f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		// プレイヤーの左足を追加
 		this->Attach(PlayerFactory::CreatePlayerLeftFoot(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-		// プレイヤーの頭を追加
+			{ 1.7f , -2.2f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		// プレイヤーの右腕を追加
 		this->Attach(PlayerFactory::CreatePlayerRightArm(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
-		// プレイヤーの頭を追加
+			{ -2.2f , 1.9f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		// プレイヤーの右足を追加
 		this->Attach(PlayerFactory::CreatePlayerRightFoot(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+			{ -1.6f , -2.2f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 	}
 	else
 	{
 		// プレイヤーの頭を追加
 		this->Attach(EnemyFactory::CreateEnemyHead(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+			{ 0.0f , 5.7f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 		// プレイヤーの頭を追加
 		this->Attach(EnemyFactory::CreateEnemyLeftArm(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+			{ 2.45f , 1.9f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 		// プレイヤーの頭を追加
 		this->Attach(EnemyFactory::CreateEnemyLeftFoot(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+			{ 1.7f , -2.2f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 		// プレイヤーの頭を追加
 		this->Attach(EnemyFactory::CreateEnemyRightArm(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+			{ -2.2f , 1.9f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 		// プレイヤーの頭を追加
 		this->Attach(EnemyFactory::CreateEnemyRightFoot(this,
-			DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+			{ -1.6f , -2.2f, 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 	}
 }

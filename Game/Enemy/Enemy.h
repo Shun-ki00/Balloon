@@ -46,6 +46,9 @@ public:
 
 	// 親オブジェクトを取得する
 	IObject* GetParent() const override { return m_parent; }
+	// 子オブジェクトを取得する
+	std::vector<IObject*> GetChilds() const override;
+
 
 	// 固定設定
 	void SetIsFixed(const bool& isFixed) { m_isFixed = isFixed; }

@@ -47,8 +47,8 @@ public:
 	// 親オブジェクトを取得する
 	IObject* GetParent() const override { return m_parent; }
 	// 子オブジェクトを取得する
-	std::vector<IObject*> GetChilds() const;
-	
+	std::vector<IObject*> GetChilds() const override;
+
 	// 速度を取得する
 	DirectX::SimpleMath::Vector3& GetVelocity() override { return m_velocity; }
 	// 速度を設定する

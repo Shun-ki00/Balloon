@@ -107,6 +107,21 @@ void Balloon::Finalize()
 
 }
 
+/// <summary>
+/// 子オブジェクトを取得する
+/// </summary>
+/// <returns>子オブジェクト</returns>
+std::vector<IObject*> Balloon::GetChilds() const
+{
+	std::vector<IObject*> result;
+	result.reserve(m_childs.size());
+	for (const auto& child : m_childs)
+	{
+		result.push_back(child.get());
+	}
+	return result;
+}
+
 void Balloon::OnMessegeAccepted(Message::MessageData messageData)
 {
 	switch (messageData.messageId)

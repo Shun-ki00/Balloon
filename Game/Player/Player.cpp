@@ -33,6 +33,7 @@
 #include "Game/Parameters/Parameters.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Balloon/Balloon.h"
+#include "Game/Player/Body.h"
 
 // ステート
 #include "Game/States/Player/PlayerIdleState.h"
@@ -157,7 +158,19 @@ void Player::Update(const float& elapsedTime)
 	// プレイヤーが固定状態の場合
 	if (m_isFixed)
 	{
-		// Transformの更新処理
+		FloatBehavior* floatBehavior = dynamic_cast<FloatBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::FLOATING));
+
+		floatBehavior->On();
+		DirectX::SimpleMath::Vector3 acceleration = floatBehavior->Calculate();
+
+		// 速度に加速度を加算する
+		m_velocity += acceleration * elapsedTime;
+		// 現在の位置を更新する
+		m_transform->SetLocalPosition(m_transform->GetLocalPosition() + m_velocity * elapsedTime);
+
+		m_velocity = m_velocity * (1.0f - 2.0f * elapsedTime);
+
+		// Transformの更新のみ行う
 		m_transform->Update();
 
 		// 風船の大きさを更新処理
@@ -351,10 +364,61 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 			m_transform->GetTween()->DOMoveX(20.0f, 20.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
 			// 回転ループアニメーション
 			m_transform->GetTween()->DORotationY(-180.0f, 8.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
-
-		case Message::MessageID::FIXED:
-			m_isFixed = messageData.dataBool;
 			break;
+
+		case Message::MessageID::FIXED :
+			m_isFixed = messageData.dataBool;
+
+			if (messageData.dataBool)
+			{
+				m_steeringBehavior->Off(BEHAVIOR_TYPE::PUSH_BACK);
+				m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOAT_FORCE);
+
+				m_steeringBehavior->On(BEHAVIOR_TYPE::FLOATING);
+			}
+			else
+			{
+				m_steeringBehavior->On(BEHAVIOR_TYPE::PUSH_BACK);
+				m_steeringBehavior->On(BEHAVIOR_TYPE::FLOAT_FORCE);
+
+				m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOATING);
+			}
+			break;
+
+		case Message::MessageID::PLAYER_TITLE_ANIMATION:
+
+			using namespace DirectX::SimpleMath;
+
+			dynamic_cast<Body*>(m_childs[0].get())->GetTransform()->GetTween()->DORotation({ 0.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotation({ -5.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ -45.0f ,0.0f ,-85.0f }, 1.0f).SetLoops(10000000,Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ -100.0f ,-60.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+
+
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(20.0f)));
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-20.0f)));
+
+
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->GetTween()->DORotation({ -20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+		
+
+			break;
+
+		case Message::MessageID::PLAYER_SIT_ANIMATION:
+
+			// 左右の足を90度曲げる
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-90.0f)));
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-90.0f)));
+
+			// 頭を少し下げる
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->SetLocalRotation(
+				Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(10.0f))* 
+				Quaternion::CreateFromAxisAngle(Vector3::UnitY, DirectX::XMConvertToRadians(-20.0f))
+			);
+			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotationY(20.0f, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+
+
 
 		default:
 			break;
@@ -517,7 +581,7 @@ void Player::AttachObject()
 {
 	// 体を追加する
 	this->Attach(PlayerFactory::CreatePlayerBody(this,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		{0.0f ,5.9f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
