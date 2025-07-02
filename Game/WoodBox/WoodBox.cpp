@@ -85,7 +85,7 @@ void WoodBox::Initialize()
 	// ‰Šú‰»ˆ—
 	PBRLitConstantBuffer buffer{
 		DirectX::SimpleMath::Vector4::One,
-		0.316f,
+		0.0f,
 		1.0f,
 		1.0f,
 		1.0f

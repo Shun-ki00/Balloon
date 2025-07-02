@@ -58,6 +58,27 @@ void BalloonRenderableObject::Initialize(const PBRLitConstantBuffer& constants)
 
 	// ワールド行列初期化
 	m_worldMatrix = DirectX::SimpleMath::Matrix::Identity;
+
+	// モデルのエフェクト情報を更新する
+	m_model->UpdateEffects([](DirectX::IEffect* effect) {
+		// ベーシックエフェクトを設定する
+		DirectX::BasicEffect* basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
+		if (basicEffect)
+		{
+			// 拡散反射光
+			DirectX::SimpleMath::Color diffuseColor = DirectX::SimpleMath::Color(1.0f, 0.95f, 0.9f);
+			// ライトが照らす方向
+			DirectX::SimpleMath::Vector3 lightDirection(0.0f, 1.0f, 0.0f);
+
+			basicEffect->SetLightEnabled(1, false);
+			basicEffect->SetLightEnabled(2, false);
+
+			// ゼロ番のライトに拡散反射光を設定する
+			basicEffect->SetLightDiffuseColor(0, diffuseColor);
+			// ゼロ番のライトが照らす方向を設定する
+			basicEffect->SetLightDirection(0, lightDirection);
+		}
+		});
 }
 
 /// <summary>

@@ -60,7 +60,7 @@ void AmbientLight::Initialize()
 	m_constantBuffer->Initialize(device);
 
 	m_ambientLightData.ambientLightColor = DirectX::SimpleMath::Vector3::One;
-	m_ambientLightData.ambientLightIntensity = 0.7f;
+	m_ambientLightData.ambientLightIntensity = 0.8f;
 }
 
 /// <summary>

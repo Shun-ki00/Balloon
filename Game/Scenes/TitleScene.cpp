@@ -90,7 +90,7 @@ void TitleScene::Update()
 {
 	// 経過時間を取得する
 	float elapsedTime = (float)m_commonResources->GetStepTimer()->GetElapsedSeconds();
-
+	 
 	// シーンステートの更新処理
 	m_currentState->Update(elapsedTime);
 

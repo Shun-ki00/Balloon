@@ -333,11 +333,8 @@ void Game::Render()
 #endif
 
    
-   
     // ƒV[ƒ“‚Ì•`‰æˆ—
     m_sceneManager->Render();
-
-    m_parameters->ShowImGuiEditor();
 
     //  ImGui‚Ì•`‰æˆ—
     ImGui::Render();

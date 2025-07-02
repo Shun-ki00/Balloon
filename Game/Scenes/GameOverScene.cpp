@@ -79,6 +79,8 @@ void GameOverScene::Start()
 	// スカイボックスを変更
 	m_commonResources->GetSkyBox()->SetDayProgress(1.0f);
 
+	
+
 	// プレイヤーの動きを変更
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_SIT_ANIMATION });
 	  

@@ -432,7 +432,7 @@ void Enemy::AttachObject()
 {
 	// ‘Ì‚ð’Ç‰Á‚·‚é
 	this->Attach(EnemyFactory::CreateEnemyBody(this,
-		DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
+		{ 0.0f ,5.9f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 
 	// •—‘D‚ð’Ç‰Á‚·‚é
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,

@@ -108,6 +108,7 @@ void WoodBoxRenderableObject::Render(ID3D11DeviceContext* context, DirectX::Comm
 	// モデル描画
 	m_model->Draw(context, *commonStates, m_worldMatrix, viewMatrix, projectionMatrix, false, [&]
 		{
+
 			// 定数バッファを指定する
 			ID3D11Buffer* cbuf[] = { m_ambientLight->GetBuffer()};
 			context->VSSetConstantBuffers(1, 1, cbuf);
