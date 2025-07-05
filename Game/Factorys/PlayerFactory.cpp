@@ -31,7 +31,7 @@ std::unique_ptr<IObject> PlayerFactory::CreatePlayer(IObject* parent,
 	// 砲塔を宣言する
 	std::unique_ptr<Player> player;
 	// Turretクラスのインスタンスを生成する
-	player.reset(new Player(Root::GetInstance(), parent , IObject::ObjectID::PLAYER , initialPosition, rotation , initialScale , Message::MessageID::PLAYER_IDLING));
+	player.reset(new Player(Root::GetInstance(), parent , IObject::ObjectID::PLAYER , initialPosition, rotation , initialScale , 3));
 	// 初期化する
 	player->Initialize();
 

@@ -65,8 +65,7 @@ public:
 	Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale,
-		Message::MessageID messageID);
+		const DirectX::SimpleMath::Vector3& scale,const float& balloonIndex);
 	// デストラクタ
 	~Player() override;
 
@@ -96,12 +95,13 @@ private:
 
 	// オブジェクトを追加する
 	void AttachObject();
-
 	// ステートを作成する
 	void CreateState();
-
 	// ステアリングビヘイビアを作成する
 	void CreateSteeringBehavior();
+
+	// 風船削除処理
+	void BalloonLost(const int& balloonObjectNumber, const int& enemyObjectNumber);
 
 private:
 
@@ -157,6 +157,8 @@ private:
 	// 座るステート
 	std::unique_ptr<PlayerSitState> m_playerSitState;
 
+	// 風船の数
+	float m_balloonIndex;
 
 	// 固定設定
 	bool m_isFixed;

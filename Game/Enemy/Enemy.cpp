@@ -44,8 +44,7 @@
 Enemy::Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
-	const DirectX::SimpleMath::Vector3& scale,
-	Message::MessageID messageID)
+	const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex)
 	:
 	// 基底クラス
 	Object(
@@ -57,7 +56,7 @@ Enemy::Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + Object::CountUpNumber()),
 	m_objectID(objectID),
-	m_messageID(messageID),
+	m_balloonIndex(balloonIndex),
 	m_parent(parent),
 	m_transform{},
 	m_childs {},
@@ -171,10 +170,10 @@ void Enemy::Update(const float& elapsedTime)
 		return;
 	}
 	// アクションを決定する
-	m_actionSelection->GetRootNode()->Tick();
+	//m_actionSelection->GetRootNode()->Tick();
 
 	// オブジェクトの更新処理
-	Object::Update(elapsedTime);
+	//Object::Update(elapsedTime);
 
 	// ==== ステータスの更新処理 ====
 
@@ -274,23 +273,20 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 {
 	switch (messageData.messageId)
 	{
+		// 風船削除処理
+		case Message::MessageID::BALLOON_LOST:
+			this->BalloonLost(messageData.dataInt, static_cast<int>(messageData.dataFloat));
+			break;
+			// 衝突した時の処理
 		case Message::MessageID::ON_COLLISION:
-
-			if (true)
-			{
-				// 上向きのベクトルに変化する
-				m_velocity.y = m_velocity.y * -1.0f;
-
-				// 相手の風船を破棄する
-				auto enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::BALLOON, messageData.dataInt)->GetParent();
-
-				if(enemy == nullptr)
-					enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY, messageData.dataInt);
-
-				// 敵のオブジェクトをキャストする
-				enemy->SetIsActive(false);
-			}
-
+			if (Object::GetState() == m_enemyAttackState.get())
+			ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, messageData.dataFloat,
+				{ Message::MessageID::BALLOON_LOST,messageData.dataInt,messageData.dataFloat,false });
+			break;
+			// Y軸で逆ベクトルにする
+		case Message::MessageID::INVERT_Y_VECTOR:
+			m_velocity.y = m_velocity.y * -1.0f;
+			break;
 		case Message::MessageID::ENEMY_ON_BALLOON_SCALE:
 			// HPがあるなら有効化
 			if (m_hpController->GetHp() <= 0.01f) break;
@@ -360,6 +356,31 @@ void Enemy::DetectCollision(ICollisionVisitor* collision, IObject* object)
 {
 	// 判定を行う
 	collision->DetectCollision(this, object);
+}
+
+/// <summary>
+/// 風船削除処理
+/// </summary>
+/// <param name="balloonObjectNumber">風船の番号</param>
+/// <param name="playerObjectNumber">プレイヤーの番号</param>
+void Enemy::BalloonLost(const int& balloonObjectNumber, const int& playerObjectNumber)
+{
+	// 風船のオブジェクトIDをもとに非アクティブにする
+	for (const auto& balloon : m_balloonObject)
+	{
+		// 番号と風船がアクティブ状態でない場合スキップ
+		if (balloon->GetObjectNumber() != balloonObjectNumber ||
+			!balloon->GetIsActive()) continue;
+
+		// 非アクティブにする
+		balloon->GetParent()->SetIsActive(false);
+		// 風船の数を減らす
+		m_balloonIndex--;
+		// 当たったオブジェクト
+		ObjectMessenger::GetInstance()->Dispatch(
+			IObject::ObjectID::PLAYER, { Message::MessageID::INVERT_Y_VECTOR });
+		break;
+	}
 }
 
 

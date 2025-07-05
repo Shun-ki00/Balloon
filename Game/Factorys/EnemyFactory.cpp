@@ -28,7 +28,7 @@ std::unique_ptr<IObject> EnemyFactory::CreateEnemy(IObject* parent,
 	// 砲塔を宣言する
 	std::unique_ptr<Enemy> enemy;
 	// Turretクラスのインスタンスを生成する
-	enemy.reset(new Enemy(Root::GetInstance(), parent , IObject::ObjectID::ENEMY , initialPosition, rotation , initialScale , Message::MessageID::NONE));
+	enemy.reset(new Enemy(Root::GetInstance(), parent , IObject::ObjectID::ENEMY , initialPosition, rotation , initialScale , 3));
 	// 初期化する
 	enemy->Initialize();
 	// 固定設定

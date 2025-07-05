@@ -66,8 +66,7 @@ public:
 	Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale,
-		Message::MessageID messageID);
+		const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex);
 	// デストラクタ
 	~Enemy() override;
 
@@ -98,12 +97,13 @@ private:
 
 	// オブジェクトを追加する
 	void AttachObject();
-
 	// ステートを作成する
 	void CreateState();
-
 	// ステアリングビヘイビアを作成する
 	void CreateSteeringBehavior();
+
+	// 風船削除処理
+	void BalloonLost(const int& balloonObjectNumber, const int& playerObjectNumber);
 
 private:
 
@@ -123,8 +123,7 @@ private:
 	// 風船オブジェクト
 	std::vector<IObject*> m_balloonObject;
 	
-	// メッセージID
-	Message::MessageID m_messageID;
+
 	// Transform
 	std::unique_ptr<Transform> m_transform;
 	// 当たり判定
@@ -160,6 +159,7 @@ private:
 	// プレイヤーの加速度
 	DirectX::SimpleMath::Vector3 m_acceralation;
 
+	// 風船の数
 	float m_balloonIndex;
 
 	bool m_isFixed;

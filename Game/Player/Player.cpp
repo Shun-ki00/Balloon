@@ -34,13 +34,12 @@
 #include "Game/Enemy/Enemy.h"
 #include "Game/Balloon/Balloon.h"
 #include "Game/Player/Body.h"
-
 // ステート
 #include "Game/States/Player/PlayerIdleState.h"
 #include "Game/States/Player/PlayerRunState.h"
 #include "Game/States/Player/PlayerAttackState.h"
 #include "Game/States/Player/PlayerSitState.h"
-
+// ステータス
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
 
@@ -54,8 +53,7 @@
 Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
-	const DirectX::SimpleMath::Vector3& scale,
-	Message::MessageID messageID)
+	const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex)
 	:
 	// 基底クラス
 	Object(
@@ -68,7 +66,7 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + Object::CountUpNumber()),
 	m_objectID(objectID),
-	m_messageID(messageID),
+	m_balloonIndex(balloonIndex),
 	m_transform{},
 	m_parent(parent),
 	m_childs {},
@@ -334,41 +332,34 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 {
 	switch (messageData.messageId)
 	{
-
+		// アイドルステートに変更する
 		case Message::MessageID::PLAYER_IDLING:
 			this->ChangeState(m_playerIdleState.get());
 			break;
+		// アタックステートに変更する
 		case Message::MessageID::PLAYER_ATTCK:
+			this->ChangeState(m_playerAttackState.get());
 			break;
-
+		// 風船削除処理
+		case Message::MessageID::BALLOON_LOST:
+			this->BalloonLost(messageData.dataInt,static_cast<int>(messageData.dataFloat));
+			break;
+		// Y軸で逆ベクトルにする
+		case Message::MessageID::INVERT_Y_VECTOR:
+			m_velocity.y = m_velocity.y * -1.0f;
+			break;
+		// 衝突した時の処理
 		case Message::MessageID::ON_COLLISION:
-			
-			if (Object::GetState() == m_playerAttackState.get())
-			{
-				// 上向きのベクトルに変化する
-				m_velocity.y = m_velocity.y * -1.0f;
-
-				// 相手の風船を破棄する
-				auto enemy = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::BALLOON, messageData.dataInt)->GetParent();
-				if (enemy->GetParent()->GetParent()->GetObjectID() == ObjectID::BALLOON)
-				{
-					// 敵のオブジェクトをキャストする
-					enemy->SetIsActive(false);
-				}
-
-			}
+			if(Object::GetState() == m_playerAttackState.get())
+			ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::ENEMY, messageData.dataFloat,
+				{ Message::MessageID::BALLOON_LOST,messageData.dataInt,messageData.dataFloat,false });
 			break;
-		case Message::MessageID::PLAYER_ANIMATION:
-
-			// 移動ループアニメーション
-			m_transform->GetTween()->DOMoveX(20.0f, 20.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
-			// 回転ループアニメーション
-			m_transform->GetTween()->DORotationY(-180.0f, 8.0f).SetLoops(1000000, Tween::LoopType::Yoyo);
-			break;
-
+		// 固定処理
 		case Message::MessageID::FIXED :
-			m_isFixed = messageData.dataBool;
 
+			// 固定すかどうかの処理
+			m_isFixed = messageData.dataBool;
+			// 指定のビヘイビア状態を変更
 			if (messageData.dataBool)
 			{
 				m_steeringBehavior->Off(BEHAVIOR_TYPE::PUSH_BACK);
@@ -384,7 +375,7 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 				m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOATING);
 			}
 			break;
-
+		// プレイヤーのタイトルシーンでのアニメーション処理
 		case Message::MessageID::PLAYER_TITLE_ANIMATION:
 
 			using namespace DirectX::SimpleMath;
@@ -408,7 +399,7 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 	
 			break;
-
+		// ゲームオーバー時のアニメーション処理
 		case Message::MessageID::PLAYER_SIT_ANIMATION:
 
 			// 左右の足を90度曲げる
@@ -421,14 +412,13 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 				Quaternion::CreateFromAxisAngle(Vector3::UnitY, DirectX::XMConvertToRadians(-20.0f))
 			);
 
-
 			// 右腕のアニメーション
 			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ 0.0f ,0.0f ,-5.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 			// 左腕のアニメーション
 			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ 0.0f ,0.0f ,5.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 			// 頭のアニメーション
 			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotationY(20.0f, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-
+			break;
 		default:
 			break;
 	}
@@ -459,8 +449,6 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 				if (Object::GetState() == m_playerRunState.get())
 					Object::ChangeState(m_playerIdleState.get());
 			}
-				
-
 			break;
 		case DirectX::Keyboard::Keys::Down:
 
@@ -530,6 +518,33 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 
 		default:
 			break;
+	}
+}
+
+
+/// <summary>
+/// 風船削除処理
+/// </summary>
+/// <param name="balloonObjectNumber">風船の番号</param>
+/// <param name="enemyObjectNumber">敵の番号</param>
+void Player::BalloonLost(const int& balloonObjectNumber, const int& enemyObjectNumber)
+{
+	// 風船のオブジェクトIDをもとに非アクティブにする
+	for (const auto& balloon : m_balloonObject)
+	{
+		// 番号と風船がアクティブ状態でない場合スキップ
+		if (balloon->GetObjectNumber() == balloonObjectNumber &&
+			!balloon->GetIsActive()) continue;
+
+		// 非アクティブにする
+		balloon->GetParent()->SetIsActive(false);
+		// 風船の数を減らす
+		m_balloonIndex--;
+		// 当たったオブジェクト
+		ObjectMessenger::GetInstance()->Dispatch(
+			IObject::ObjectID::ENEMY,
+			enemyObjectNumber, Message::MessageID::INVERT_Y_VECTOR);
+		break;
 	}
 }
 

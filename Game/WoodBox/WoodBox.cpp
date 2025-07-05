@@ -137,12 +137,11 @@ void WoodBox::Update(const float& elapsedTime)
 /// </summary>
 void WoodBox::Finalize()
 {
-
 }
 
 void WoodBox::OnMessegeAccepted(Message::MessageData messageData)
 {
-	(void)messageData;
+	UNREFERENCED_PARAMETER(messageData);
 }
 
 // ’Ê’m‚·‚é

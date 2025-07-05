@@ -63,7 +63,7 @@ void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 	{
 		// 衝突した場合,メッセージを送る 衝突相手の番号も一緒に送る
 		ObjectMessenger::GetInstance()->Dispatch(object->GetObjectID(), object->GetObjectNumber(),
-			{ Message::MessageID::ON_COLLISION , object1->GetObjectNumber() });
+			{ Message::MessageID::ON_COLLISION , object1->GetObjectNumber(),static_cast<float>(object1->GetParent()->GetParent()->GetObjectNumber())});
 
 		// object 側の更新
   		m_worldBoundingSpheres[object][true] = worldBoundingSphere;

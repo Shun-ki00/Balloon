@@ -29,6 +29,8 @@ public:
 		ENEMY_OFF_BALLOON_SCALE,
 
 		FIXED,
+		INVERT_Y_VECTOR,
+		BALLOON_LOST,
 
 
 		// エフェクト
