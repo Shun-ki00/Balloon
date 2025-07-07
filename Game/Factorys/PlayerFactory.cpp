@@ -15,6 +15,8 @@
 #include "Game/Player/RightArm.h"
 #include "Game/Player/RightFoot.h"
 
+#include "Game/Factorys/CameraFactory.h"
+
 
 // ƒvƒŒƒCƒ„[‚Ìì¬
 std::unique_ptr<IObject> PlayerFactory::CreatePlayer(IObject* parent,

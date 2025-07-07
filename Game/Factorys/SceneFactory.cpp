@@ -10,6 +10,7 @@
 #include "Game/Factorys/WoodBoxFactory.h"
 #include "Game/Node/Root.h"
 #include "Game/Parameters/ParameterBuffers.h"
+#include "Game/Message/ObjectMessenger.h"
 
 #include <iostream>
 #include <fstream>
@@ -125,7 +126,6 @@ void SceneFactory::CreateStageSelectScene(Root* root)
 }
 
 
-
 /// <summary>
 /// プレイシーンオブジェクト作成
 /// </summary>
@@ -149,6 +149,13 @@ void SceneFactory::CreatePlayScene(Root* root)
 		player.scale,
 		player.fixed));
 
+	// カメラの作成をする
+	std::vector<std::unique_ptr<ICamera>> cameras;
+	cameras.emplace_back(CameraFactory::CreateFollowCaemra(
+		ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,1000)->GetTransform(), {0.0f , 8.0f , -8.0f}));
+	// カメラシステムをアタッチする 1
+	root->Attach(CameraFactory::CreateCameraSystem(root, std::move(cameras)));
+
 
 	// 敵　複数
 	const auto& enemies = data.at("Enemy").get<std::vector<EnemyParams>>();
@@ -160,6 +167,7 @@ void SceneFactory::CreatePlayScene(Root* root)
 			enemy.rotation,
 			enemy.scale,enemy.fixed));
 	}
+
 
 	// カウントダウンUI
 	const auto& uis = data.at("UI").get<std::vector<UIParams>>();
@@ -223,7 +231,6 @@ void SceneFactory::CreatePlayScene(Root* root)
 		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::One));
 
 }
-
 
 
 /// <summary>

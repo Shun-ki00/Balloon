@@ -2,6 +2,7 @@
 #include "Interface/IState.h"
 
 class InputManager;
+class ObjectMessenger;
 class IScene;
 
 class PlayMainState : public IState
@@ -26,5 +27,7 @@ public:
 
 	// インプットマネージャー
 	InputManager* m_inputManager;
+	// オブジェクトメッセンジャー
+	ObjectMessenger* m_objectMessenger;
 
 };

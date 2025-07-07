@@ -138,6 +138,8 @@ void Enemy::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Enemy::Update(const float& elapsedTime)
 {
+	if (!m_isActive) return;
+
 	// プレイヤーが固定状態の場合
 	if (m_isFixed)
 	{
@@ -169,6 +171,46 @@ void Enemy::Update(const float& elapsedTime)
 
 		return;
 	}
+
+	// 風船の数がゼロになったら
+	if (m_balloonIndex <= 0)
+	{
+		m_velocity = { 0.0f , -5.8f ,0.0f };
+
+		// プレイヤーに回転角を与える
+		m_transform->SetLocalRotation(
+			DirectX::SimpleMath::Quaternion::Concatenate(
+				m_transform->GetLocalRotation(),
+				DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
+					DirectX::SimpleMath::Vector3::UnitZ,
+					DirectX::XMConvertToRadians(4.0f)) 
+			)
+		);
+
+		m_transform->SetLocalRotation(
+			DirectX::SimpleMath::Quaternion::Concatenate(
+				m_transform->GetLocalRotation(),
+				DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
+					DirectX::SimpleMath::Vector3::UnitX,
+					DirectX::XMConvertToRadians(-6.0f))
+			)
+		);
+
+		m_transform->SetLocalRotation(
+			DirectX::SimpleMath::Quaternion::Concatenate(
+				m_transform->GetLocalRotation(),
+				DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
+					DirectX::SimpleMath::Vector3::UnitY,
+					DirectX::XMConvertToRadians(-4.0f))
+			)
+		);
+
+		if (m_transform->GetLocalPosition().y <= -30.0f)
+		{
+			m_isActive = false;
+		}
+	}
+
 	// アクションを決定する
 	//m_actionSelection->GetRootNode()->Tick();
 
@@ -370,7 +412,7 @@ void Enemy::BalloonLost(const int& balloonObjectNumber, const int& playerObjectN
 	{
 		// 番号と風船がアクティブ状態でない場合スキップ
 		if (balloon->GetObjectNumber() != balloonObjectNumber ||
-			!balloon->GetIsActive()) continue;
+			!balloon->GetParent()->GetIsActive()) continue;
 
 		// 非アクティブにする
 		balloon->GetParent()->SetIsActive(false);

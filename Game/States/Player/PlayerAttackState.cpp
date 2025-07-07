@@ -18,7 +18,7 @@ void PlayerAttackState::Initialize()
 void PlayerAttackState::PreUpdate()
 {
 	m_elapsedTime = 0.0f;
-	m_moveingTime = 0.5f;
+	m_moveingTime = 0.3f;
 
 	DirectX::SimpleMath::Vector3 velocity = { 0.0f , 0.0f ,6.0f };
 
@@ -39,7 +39,7 @@ void PlayerAttackState::Update(const float& elapsedTime)
 
 	if (m_elapsedTime >= m_moveingTime)
 	{
-		ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER,0, Message::MessageID::PLAYER_IDLING);
+		ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER,1000, Message::MessageID::PLAYER_IDLING);
 	}
 }
 

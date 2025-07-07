@@ -75,6 +75,8 @@ void PlayScene::Update()
 	// 通知を行う
 	KeyboardMessenger::GetInstance()->Dispatch();
 
+	m_currentState->Update(elapsedTime);
+
 	// カメラを更新
 	m_debugCamera->Update();
 	m_commonResources->SetViewMatrix(m_debugCamera->GetViewMatrix());

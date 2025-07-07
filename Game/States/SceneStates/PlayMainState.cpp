@@ -3,11 +3,13 @@
 #include "Game/Message/Message.h"
 #include "Framework/InputManager.h"
 #include "Framework/SceneManager.h"
+#include "Game/Message/ObjectMessenger.h"
 
 PlayMainState::PlayMainState()
 {
 	// インスタンスを取得する
 	m_inputManager = InputManager::GetInstance();
+	m_objectMessenger = ObjectMessenger::GetInstance();
 }
 
 
@@ -27,18 +29,15 @@ void PlayMainState::Update(const float& elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	if (m_inputManager->OnKeyDown(InputManager::Keys::Escape))
-	{	
-		// シーンにメッセージ送信
-		SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_TITLE_SCENE);
+	auto enemys = m_objectMessenger->FindObject(IObject::ObjectID::ENEMY);
+
+	for (const auto& enemy : enemys)
+	{
+		if (enemy->GetIsActive()) return;
 	}
 
-	// スペースで次のシーンへ
-	if (m_inputManager->OnKeyDown(InputManager::Keys::Z))
-	{
-		// シーンにメッセージ送信
-		SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE);
-	}
+	SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_GAME_CLEAR_SCENE);
+
 }
 
 void PlayMainState::PostUpdate()
