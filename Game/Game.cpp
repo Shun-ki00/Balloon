@@ -55,6 +55,14 @@ Game::~Game()
 void Game::Initialize(HWND window, int width, int height)
 {
 
+    // 時間測定用のエイリアス
+    using Clock = std::chrono::high_resolution_clock;
+    using TimePoint = Clock::time_point;
+    using Duration = std::chrono::duration<float>;
+
+    // --- 計算開始 ---
+    TimePoint startTime = Clock::now();
+   
     // デバイスリソース初期化================================================
 
         // ウィンドウハンドルを設定する
@@ -92,16 +100,16 @@ void Game::Initialize(HWND window, int width, int height)
     // ゲームデータ
     m_gameConfig = GameConfig::GetInstance();
   
+    // 海の作成
+    m_sea = std::make_unique<Sea>();
+    m_sea->Initialize();
 
     // スカイボックスの作成
     m_skyBox = std::make_unique<SkyBox>();
     m_skyBox->Initialize();
     m_commonResources->SetSkyBox(m_skyBox.get());
 
-    // 海の作成
-    m_sea = std::make_unique<Sea>();
-    m_sea->Initialize();
-
+ 
     // パラメーターのインスタンスを取得する
     m_parameters = Parameters::GetInstance();
     m_parameters->LoadFromJson("Resources/Json/JSON/Parameters.json");
@@ -153,18 +161,14 @@ void Game::Initialize(HWND window, int width, int height)
     ID3D11DeviceContext* context = m_deviceResources->GetD3DDeviceContext();
     ImGui_ImplDX11_Init(device, context);
 
-
-    // プロジェクション行列の作成
-     m_commonResources->SetProjectionMatrix(
-         DirectX::SimpleMath::Matrix::CreatePerspectiveFieldOfView(
-        DirectX::XMConvertToRadians(45.0f),
-        (float)width / (float)height,
-        0.1f,
-        100000.0f
-    ));
-
     // シーンの初期化処理
     m_sceneManager->Initialize();
+
+    // --- 計算終了 ---
+    TimePoint endTime = Clock::now();
+    Duration elapsed = endTime - startTime;
+    // 計算時間を取得
+    m_time = elapsed.count();
 
     // デバッグの時のみ作成
 #ifdef _DEBUG
@@ -327,7 +331,7 @@ void Game::Render()
     swprintf(stringBuffer, sizeof(stringBuffer) / sizeof(wchar_t), L"FPS : %d", m_timer.GetFramesPerSecond());
     m_spriteFont->DrawString(m_spriteBatch.get(), stringBuffer, SimpleMath::Vector2(10, 20), Colors::White, 0.0f, SimpleMath::Vector2::Zero, 0.8f);
     // スクリーンサイズ
-    swprintf(stringBuffer, sizeof(stringBuffer) / sizeof(wchar_t), L"ScreenW : %d ScreenH : %d", 1280, 720);
+    swprintf(stringBuffer, sizeof(stringBuffer) / sizeof(wchar_t), L"ScreenW : %d ScreenH : %d", screenWidth, screenHeight);
     m_spriteFont->DrawString(m_spriteBatch.get(), stringBuffer, SimpleMath::Vector2(10, 40), Colors::White, 0.0f, SimpleMath::Vector2::Zero, 0.8f);
     m_spriteBatch->End();
 #endif
@@ -400,8 +404,6 @@ void Game::OnResuming()
 {
     // 経過時間をリセットする
     m_timer.ResetElapsedTime();
-
-    // ゲームの実行中に電源が復帰した時の処理を記述する
 }
 
 // ウィンドウが移動したときの処理を記述する
@@ -425,7 +427,7 @@ void Game::OnWindowSizeChanged(int width, int height)
     CreateWindowSizeDependentResources();
 
     // ゲームウィンドウのサイズが変更された時の処理を記述する
-    //m_commonResources->SetScreenSize(width, height);
+    m_commonResources->SetScreenSize(width, height);
 }
 
 // Properties
@@ -441,8 +443,6 @@ void Game::GetDefaultSize(int& width, int& height) const noexcept
 // デバイスに依存したリソースを生成する
 void Game::CreateDeviceDependentResources()
 {
-   //  m_commonResources->SetDeviceResources(m_deviceResources.get());
-
     auto device = m_deviceResources->GetD3DDevice();
     //	コモンステートの作成
     m_commonStates = std::make_unique<DirectX::CommonStates>(device);
@@ -471,10 +471,10 @@ void Game::CreateWindowSizeDependentResources()
         fovAngleY,
         aspectRatio,
         0.1f,
-        1000.0f
+        10000.0f
     );
     // 射影行列を設定する
-    // m_commonResources->SetProjectionMatrix(projection);
+    m_commonResources->SetProjectionMatrix(projection);
 }
 
 // デバイスロストが発生した時の処理を記述する

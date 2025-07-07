@@ -69,7 +69,7 @@ float3 P(float2 xy, float t)
 [domain("quad")]
 DS_OUTPUT main(
     DS_INPUT input,
-    const OutputPatch<HS_OUTPUT, 32> patch,
+    const OutputPatch<HS_OUTPUT, 4> patch,
     const HS_CONSTANT_OUTPUT patchConstants
 )
 {
@@ -79,9 +79,9 @@ DS_OUTPUT main(
     float3 worldPosition = float3(0.0f, 0.0f, 0.0f);
     float2 uvOut = float2(0.0f, 0.0f);
 
-    // 制御点補間（8×4）
-    const int X = 8;
-    const int Z = 4;
+    // 制御点補間
+    const int X = 2;
+    const int Z = 2;
 
     for (int z = 0; z < Z; ++z)
     {

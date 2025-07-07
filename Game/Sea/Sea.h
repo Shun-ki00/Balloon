@@ -18,6 +18,13 @@ private:
 		DirectX::SimpleMath::Vector4    TessellationFactor;
 	};
 
+	// インスタンスデータ
+	struct InstanceData
+	{
+		DirectX::SimpleMath::Vector4 offset;
+	};
+
+
 	// 海のノイズ用の定数バッファ
 	struct SeaNoiseConstBuffer
 	{
@@ -63,16 +70,18 @@ public:
 
 private:
 
-	// バッファの作成
-	void CreateBuffer();
+	// 定数バッファの作成
+	void CreateConstBuffer();
+	// 頂点の生成
+	void CreateVertexBuffer();
+	// インスタンスデータの作成
+	void CreateInstanceData();
 
 private:
 
 	// タイム
 	float m_time;
-	// テッセレーション
-	float m_index;
-
+	
 	// 共有リソース
 	CommonResources* m_commonResources;
 	// コモンステート
@@ -107,4 +116,8 @@ private:
 
 	// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+	// インスタンスバッファ
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_instanceStructuredBuffer;
+	// インスタンスのシェーダーリソースビュー
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_instanceSRV;
 };

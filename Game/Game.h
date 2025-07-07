@@ -69,7 +69,6 @@ private:
     // ウィンドウサイズに依存したリソースを生成する
     void CreateWindowSizeDependentResources();
 
-
 private:
     // ウィンドウハンドル
     HWND            m_hWnd;
@@ -112,6 +111,8 @@ private:
     Parameters* m_parameters;
 
     CollisionVisitor* m_collisionVisitor;
+
+    float m_time;
 
     // デバッグの時のみ作成
 #ifdef _DEBUG

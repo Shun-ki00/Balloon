@@ -39,11 +39,28 @@ void Sea::Initialize()
 	// テクスチャを取得する
 	m_texture = m_resources->GetTextureResources()->GetTexture(TextureKeyID::Sea);
 
-	// 定数バッファの更新
-	this->CreateBuffer();
+	// 時間測定用のエイリアス
+	using Clock = std::chrono::high_resolution_clock;
+	using TimePoint = Clock::time_point;
+	using Duration = std::chrono::duration<float>;
 
-	// 細分度
-	m_index = 1.0f;
+	// --- 計算開始 ---
+	TimePoint startTime = Clock::now();
+
+	// 頂点バッファの作成
+	this->CreateVertexBuffer();
+	// インスタンスデータの作成
+	this->CreateInstanceData();
+	// 定数バッファの作成
+	this->CreateConstBuffer();
+
+	// --- 計算終了 ---
+	TimePoint endTime = Clock::now();
+	Duration elapsed = endTime - startTime;
+
+	// 計算時間を取得
+	m_time = elapsed.count();
+
 	// タイム初期化
 	m_time = 0.0f;
 }
@@ -56,8 +73,6 @@ void Sea::Render()
 	// タイマーの更新
 	float elapsedTime = (float)m_commonResources->GetStepTimer()->GetElapsedSeconds();
 	m_time += elapsedTime;
-	// 細分度設定
-	m_index = 40.0f;
 
 	// ワールド行列作成
 	DirectX::SimpleMath::Matrix world = 
@@ -71,7 +86,7 @@ void Sea::Render()
 	buffer.matProj = m_commonResources->GetProjectionMatrix().Transpose();
 	buffer.matWorld = world.Transpose();
 	buffer.cameraPosition = { position.x , position.y , position.z ,0.0f };
-	buffer.TessellationFactor = DirectX::SimpleMath::Vector4(m_index, m_time, 2.0f, 0.0f);
+	buffer.TessellationFactor = DirectX::SimpleMath::Vector4(0.0f, m_time, 2.0f, 0.0f);
 	// 定数バッファの更新
 	m_transformBuffer->Update(m_context, buffer);
 
@@ -84,6 +99,9 @@ void Sea::Render()
 	UINT offset[] = { 0 };
 	m_context->IASetVertexBuffers(0, 1, buffers, stride, offset);
 
+	// プリミティブトポロジー（三角形リスト）
+	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
+
 	//	シェーダーにバッファを渡す
 	ID3D11Buffer* cb[3] = { m_transformBuffer->GetBuffer() , m_seaNoiseBuffer->GetBuffer() ,m_gerstnerWaveBuffer->GetBuffer()};
 	// スロット1から3に一括バインド
@@ -95,13 +113,8 @@ void Sea::Render()
 	// サンプラーステートをピクセルシェーダーに設定
 	ID3D11SamplerState* sampler[1] = { m_commonStates->LinearWrap() };
 	m_context->PSSetSamplers(0, 1, sampler);
-
 	// ブレンドステートを設定 (半透明描画用)
 	m_context->OMSetBlendState(m_commonStates->AlphaBlend(), nullptr, 0xFFFFFFFF);
-
-	// プリミティブトポロジーを設定
-	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_32_CONTROL_POINT_PATCHLIST);
-
 	//	深度バッファに書き込み参照する
 	m_context->OMSetDepthStencilState(m_commonStates->DepthDefault(), 0);
 	// ラスタライザーステートの設定
@@ -117,8 +130,13 @@ void Sea::Render()
 	ID3D11ShaderResourceView* tex[1] = { m_texture };
 	m_context->PSSetShaderResources(0, 1, tex);
 
-	// 描画コール
-	m_context->Draw(static_cast<UINT>(32 * (700 * 700)), 0);
+	// インスタンスデータの設定
+	ID3D11ShaderResourceView* srvs[] = { m_instanceSRV.Get() };
+	m_context->VSSetShaderResources(1, 1, srvs);
+
+	// ドローコール
+	UINT instanceCount = static_cast<UINT>(700 * 700);
+	m_context->DrawInstanced(4, instanceCount, 0, 0);
 
 	//	シェーダの登録を解除しておく
 	m_context->VSSetShader(nullptr, nullptr, 0);
@@ -129,12 +147,91 @@ void Sea::Render()
 	// テクスチャリソースを解放
 	ID3D11ShaderResourceView* nullsrv[] = { nullptr };
 	m_context->PSSetShaderResources(0, 1, nullsrv);
+	m_context->VSSetShaderResources(1, 1, nullsrv);
+}
+
+
+/// <summary>
+/// 頂点バッファの作成
+/// </summary>
+void Sea::CreateVertexBuffer()
+{
+	using namespace DirectX::SimpleMath;
+
+	std::vector<DirectX::VertexPositionTexture> vertices =
+	{
+		{Vector3(-5.0f , 0.0f , -5.0f),Vector2(0.0f ,0.0f)}, // 左上
+		{Vector3( 5.0f , 0.0f , -5.0f),Vector2(1.0f ,0.0f)}, // 右上
+		{Vector3(-5.0f , 0.0f ,  5.0f),Vector2(0.0f ,1.0f)}, // 左下
+		{Vector3( 5.0f , 0.0f ,  5.0f),Vector2(1.0f ,1.0f)}, // 左下
+	};
+
+	// 頂点バッファの作成
+	D3D11_BUFFER_DESC vertexBufferDesc = {};
+	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = static_cast<UINT>(sizeof(DirectX::VertexPositionTexture) * vertices.size());
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+	D3D11_SUBRESOURCE_DATA vertexBufferData = {};
+	vertexBufferData.pSysMem = vertices.data();
+
+	m_device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, m_vertexBuffer.ReleaseAndGetAddressOf());
+}
+
+void Sea::CreateInstanceData()
+{
+	constexpr int width = 700;
+	constexpr int height = 700;
+	constexpr float tileSize = 10.0f; // 各板ポリの幅
+
+	// インスタンスデータの配列作成
+	std::vector<InstanceData> instanceData;
+	instanceData.reserve(width * height);
+
+	// 原点を中心に配置するためのオフセット
+	const float offsetX = (width - 1) * tileSize * 0.5f;
+	const float offsetZ = (height - 1) * tileSize * 0.5f;
+
+	// オフセット値を計算し格納していく
+	for (int y = 0; y < height; ++y)
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			float worldX = x * tileSize - offsetX;
+			float worldZ = y * tileSize - offsetZ;
+
+			InstanceData instance = {};
+			instance.offset = DirectX::SimpleMath::Vector4(worldX, 0.0f, worldZ,0.0f);
+			instanceData.push_back(instance);
+		}
+	}
+
+	// StructuredBuffer 用バッファ作成
+	D3D11_BUFFER_DESC desc = {};
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.ByteWidth = UINT(sizeof(InstanceData) * instanceData.size());
+	desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	desc.StructureByteStride = sizeof(InstanceData);
+	desc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+
+	D3D11_SUBRESOURCE_DATA initData = {};
+	initData.pSysMem = instanceData.data();
+
+	m_device->CreateBuffer(&desc, &initData, m_instanceStructuredBuffer.ReleaseAndGetAddressOf());
+
+	// Shader Resource View を作成
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	srvDesc.Buffer.ElementWidth = static_cast<UINT>(instanceData.size());
+
+	m_device->CreateShaderResourceView(m_instanceStructuredBuffer.Get(), &srvDesc, m_instanceSRV.ReleaseAndGetAddressOf());
 }
 
 /// <summary>
-/// バッファの作成
+/// 定数バッファの作成
 /// </summary>
-void Sea::CreateBuffer()
+void Sea::CreateConstBuffer()
 {
 	// Transformの定数バッファの作成
 	m_transformBuffer = std::make_unique<ConstantBuffer<TransformConstBuffer>>();
@@ -180,62 +277,4 @@ void Sea::CreateBuffer()
 	m_gerstnerWaveBuffer->Update(m_context, waveParams);
 	m_seaNoiseBuffer->Update(m_context, seaNoise);
 
-	const int PATCH_COUNT_X = 700;
-	const int PATCH_COUNT_Z = 700;
-	const int PATCH_TOTAL = PATCH_COUNT_X * PATCH_COUNT_Z;
-	const int VERTICES_PER_PATCH = 32;
-	const int TOTAL_VERTICES = PATCH_TOTAL * VERTICES_PER_PATCH;
-
-	std::vector<DirectX::VertexPositionTexture> vertices(TOTAL_VERTICES);
-
-	// 1つのパッチのサイズ
-	const float PATCH_SIZE = 20.0f; // 各パッチの領域（ワールド座標で）
-	const float HALF_EXTENT_X = PATCH_COUNT_X * PATCH_SIZE * 0.5f;
-	const float HALF_EXTENT_Z = PATCH_COUNT_Z * PATCH_SIZE * 0.5f;
-
-	for (int patchZ = 0; patchZ < PATCH_COUNT_Z; ++patchZ) {
-		for (int patchX = 0; patchX < PATCH_COUNT_X; ++patchX) {
-
-			int patchIndex = patchZ * PATCH_COUNT_X + patchX;
-			int baseVertexIndex = patchIndex * VERTICES_PER_PATCH;
-
-			float offsetX = patchX * PATCH_SIZE - HALF_EXTENT_X;
-			float offsetZ = patchZ * PATCH_SIZE - HALF_EXTENT_Z;
-
-			for (int z = 0; z < 4; ++z) {
-				for (int x = 0; x < 8; ++x) {
-					int localIndex = z * 8 + x;
-
-					float fx = offsetX + PATCH_SIZE * (float)x / 7.0f;
-					float fz = offsetZ + PATCH_SIZE * (float)z / 3.0f;
-
-					float u = (float)x / 7.0f;
-					float v = (float)z / 3.0f;
-
-					vertices[baseVertexIndex + localIndex] = {
-						DirectX::XMFLOAT3(fx, 0.0f, fz),
-						DirectX::XMFLOAT2(u, v)
-					};
-				}
-			}
-		}
-	}
-
-
-	// 頂点バッファの説明
-	D3D11_BUFFER_DESC vertexBufferDesc = {};
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = static_cast<UINT>(sizeof(DirectX::VertexPositionTexture) * vertices.size());
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-
-	// 頂点データの初期化
-	D3D11_SUBRESOURCE_DATA vertexData = {};
-	vertexData.pSysMem = vertices.data();
-
-	m_device->CreateBuffer(&vertexBufferDesc, &vertexData, m_vertexBuffer.ReleaseAndGetAddressOf());
-
 }
-
-
-
