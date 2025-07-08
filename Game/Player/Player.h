@@ -103,6 +103,13 @@ private:
 	// 風船削除処理
 	void BalloonLost(const int& balloonObjectNumber, const int& enemyObjectNumber);
 
+	// タイトルシーン時のアニメーション再生
+	void PlayAnimationTitle();
+	// ゲームクリア時のアニメーション再生
+	void PlayAnimationClear();
+	// ゲームオーバー時のアニメーション再生
+	void PlayAnimationFailed();
+
 private:
 
 	// === 共通なもの ===

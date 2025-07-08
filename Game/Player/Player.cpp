@@ -34,6 +34,7 @@
 #include "Game/Enemy/Enemy.h"
 #include "Game/Balloon/Balloon.h"
 #include "Game/Player/Body.h"
+#include "Framework/SceneManager.h"
 // ステート
 #include "Game/States/Player/PlayerIdleState.h"
 #include "Game/States/Player/PlayerRunState.h"
@@ -190,6 +191,16 @@ void Player::Update(const float& elapsedTime)
 		}
 
 		return;
+	}
+
+	if (m_balloonIndex <= 0)
+	{
+		m_velocity = { 0.0f ,-3.0f ,0.0f };
+
+		if (m_transform->GetLocalPosition().y <= -10.0f)
+		{
+			SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_GAME_OVER_SCENE);
+		}
 	}
 
 	// 風船の大きさを更新処理
@@ -375,50 +386,19 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 				m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOATING);
 			}
 			break;
-		// プレイヤーのタイトルシーンでのアニメーション処理
+		// プレイヤーのタイトルシーンでのアニメーション再生
 		case Message::MessageID::PLAYER_TITLE_ANIMATION:
-
-			using namespace DirectX::SimpleMath;
-
-			// 体の回転角を決定
-			dynamic_cast<Body*>(m_childs[0].get())->GetTransform()->GetTween()->DORotation({ 0.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 左足の回転角を決定
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(20.0f)));
-			// 右足の回転角を決定
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-20.0f)));
-
-			// 頭のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotation({ -5.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 右腕のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ -45.0f ,0.0f ,-85.0f }, 1.0f).SetLoops(10000000,Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 左腕のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ -100.0f ,-60.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 左足のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->GetTween()->DORotation({ -20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 右足のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-	
+			this->PlayAnimationTitle();
 			break;
-		// ゲームオーバー時のアニメーション処理
+		// ゲームオーバー時のアニメーション再生
 		case Message::MessageID::PLAYER_SIT_ANIMATION:
-
-			// 左右の足を90度曲げる
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-90.0f)));
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-90.0f)));
-
-			// 頭を少し下げる
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->SetLocalRotation(
-				Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(10.0f))* 
-				Quaternion::CreateFromAxisAngle(Vector3::UnitY, DirectX::XMConvertToRadians(-20.0f))
-			);
-
-			// 右腕のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ 0.0f ,0.0f ,-5.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 左腕のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ 0.0f ,0.0f ,5.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-			// 頭のアニメーション
-			dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotationY(20.0f, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+			this->PlayAnimationFailed();
 			break;
+		// ゲームクリア時のアニメーション再生
+		case Message::MessageID::PLAYER_CLEAR_ANIMATION:
+			this->PlayAnimationClear();
+			break;
+
 		default:
 			break;
 	}
@@ -534,7 +514,7 @@ void Player::BalloonLost(const int& balloonObjectNumber, const int& enemyObjectN
 	{
 		// 番号と風船がアクティブ状態でない場合スキップ
 		if (balloon->GetObjectNumber() == balloonObjectNumber &&
-			!balloon->GetIsActive()) continue;
+			!balloon->GetParent()->GetIsActive()) continue;
 
 		// 非アクティブにする
 		balloon->GetParent()->SetIsActive(false);
@@ -546,6 +526,78 @@ void Player::BalloonLost(const int& balloonObjectNumber, const int& enemyObjectN
 			enemyObjectNumber, Message::MessageID::INVERT_Y_VECTOR);
 		break;
 	}
+}
+
+/// <summary>
+/// タイトルシーン時のアニメーション再生
+/// </summary>
+void Player::PlayAnimationTitle()
+{
+	using namespace DirectX::SimpleMath;
+
+	// 体の回転角を決定
+	dynamic_cast<Body*>(m_childs[0].get())->GetTransform()->GetTween()->DORotation({ 0.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 左足の回転角を決定
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(20.0f)));
+	// 右足の回転角を決定
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-20.0f)));
+
+	// 頭のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotation({ -5.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 右腕のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ -45.0f ,0.0f ,-85.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 左腕のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ -100.0f ,-60.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 左足のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->GetTween()->DORotation({ -20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 右足のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+
+}
+
+/// <summary>
+/// ゲームクリア時のアニメーション再生
+/// </summary>
+void Player::PlayAnimationClear()
+{
+	using namespace DirectX::SimpleMath;
+
+	// 頭のアニメーション
+	// dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotation({ -5.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 右腕のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ -120.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 左腕のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ -120.0f ,10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 左足のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->GetTween()->DORotation({ 0.0f , 0.0f ,45.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 右足のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 0.0f , 0.0f ,-45.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+
+}
+
+/// <summary>
+/// ゲームオーバー時のアニメーション再生
+/// </summary>
+void Player::PlayAnimationFailed()
+{
+	using namespace DirectX::SimpleMath;
+
+	// 左右の足を90度曲げる
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-90.0f)));
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-90.0f)));
+
+	// 頭を少し下げる
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->SetLocalRotation(
+		Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(10.0f)) *
+		Quaternion::CreateFromAxisAngle(Vector3::UnitY, DirectX::XMConvertToRadians(-20.0f))
+	);
+
+	// 右腕のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[3]->GetTransform()->GetTween()->DORotation({ 0.0f ,0.0f ,-5.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 左腕のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[1]->GetTransform()->GetTween()->DORotation({ 0.0f ,0.0f ,5.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
+	// 頭のアニメーション
+	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotationY(20.0f, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 }
 
 

@@ -76,6 +76,8 @@ void GameClearScene::Start()
 {
 	// ステートスタート処理
 	m_currentState->PreUpdate();
+	// プレイヤーの動きを変更
+	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_CLEAR_ANIMATION });
 }
 
 /// <summary>
