@@ -44,7 +44,7 @@ std::unique_ptr<ICamera> CameraFactory::CreateFixedCaemra(DirectX::SimpleMath::V
 }
 
 
-std::unique_ptr<ICamera> CameraFactory::CreateFollowCaemra(Transform* target, DirectX::SimpleMath::Vector3 distance)
+std::unique_ptr<ICamera> CameraFactory::CreateFollowCaemra(Object* target, DirectX::SimpleMath::Vector3 distance)
 {
 	std::unique_ptr<ICamera> followCamera;
 	// FixedCameraクラスのインスタンスを生成する

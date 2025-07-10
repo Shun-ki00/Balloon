@@ -31,6 +31,7 @@ void GameConfig::LoadJsonFile()
 	m_datas.insert({ "Clear" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/GameClearScene.msgpack") });
 	// ゲームオーバーシーンデータロード
 	m_datas.insert({ "GameOver" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/GameOverScene.msgpack") });
+
 	// プレイシーンデータロード
 	m_datas.insert({ "Play0" , JsonUtilities::LoadBinaryJsonFile("Resources/Json/Binary/PlayScene.msgpack") });
 	// プレイシーンデータロード

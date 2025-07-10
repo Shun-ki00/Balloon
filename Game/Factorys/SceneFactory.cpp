@@ -11,6 +11,7 @@
 #include "Game/Node/Root.h"
 #include "Game/Parameters/ParameterBuffers.h"
 #include "Game/Message/ObjectMessenger.h"
+#include "Game/Object/Object.h"
 
 #include <iostream>
 #include <fstream>
@@ -152,7 +153,7 @@ void SceneFactory::CreatePlayScene(Root* root)
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
 	cameras.emplace_back(CameraFactory::CreateFollowCaemra(
-		ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,1000)->GetTransform(), {0.0f , 8.0f , -8.0f}));
+		dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER,1000)), {0.0f , 10.0f , -10.0f}));
 	// カメラシステムをアタッチする 1
 	root->Attach(CameraFactory::CreateCameraSystem(root, std::move(cameras)));
 

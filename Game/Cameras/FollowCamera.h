@@ -3,9 +3,24 @@
 #include "Framework/Tween/Tween.h"
 
 class Transform;
+class Object;
 
 class FollowCamera : public ICamera
 {
+
+private:
+
+	// ズームするために必要なターゲットの速度
+	static const float SPEED_TO_ZOOM_THRESHOLD;
+	// ズーム距離の補間速度
+	static const float ZOOM_INTERPOLATION_SPEED;
+	// ズーム倍率
+	static const float ZOOM_RATIO;
+
+	// バネの剛性
+	static const float SPRING_STIFFNESS;
+	// 減衰係数
+	static const float SPRING_DAMPING;
 
 public:
 	// Transformを取得する
@@ -15,7 +30,7 @@ public:
 
 public:
 	// コンストラクタ
-	FollowCamera(Transform* target,DirectX::SimpleMath::Vector3 distance);
+	FollowCamera(Object* target,DirectX::SimpleMath::Vector3 distance);
 	// デストラクタ
 	~FollowCamera() = default;
 
@@ -33,9 +48,12 @@ private:
 	// ビュー行列
 	DirectX::SimpleMath::Matrix m_viewMatrix;
 
-	// 追尾するオブジェクトのTransform
-	Transform* m_targetTransform;
-	// 距離
+	// 追尾するオブジェクト
+	Object* m_target;
+	// オフセット値
 	DirectX::SimpleMath::Vector3 m_distance;
-
+	// 速度
+	DirectX::SimpleMath::Vector3 m_velocity;
+	// ズーム状態の補間係数
+	float m_zoomBlend;
 };
