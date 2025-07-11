@@ -113,43 +113,30 @@ void PlayScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 	switch (messageID)
 	{
 		case Message::SceneMessageID::FADE_OUT:
-
 			break;
 		case Message::SceneMessageID::FADE_OUT_CANGE_GAME_CLEAR_SCENE:
-			
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
 			// 次のシーンの準備を行う
 			SceneManager::GetInstance()->PrepareScene<GameClearScene>();
-			
-
 			break;
-
 		case Message::SceneMessageID::FADE_OUT_CANGE_GAME_OVER_SCENE:
-
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
 			// 次のシーンの準備を行う
 			SceneManager::GetInstance()->PrepareScene<GameOverScene>();
-			
 			break;
-
 		case Message::SceneMessageID::MAIN:
-
 			// ステートを切り替える
 			this->ChangeState(m_countdownState.get());
-
 			break;
-
 		case Message::SceneMessageID::PLAY_MAIN_STATE:
-
 			this->ChangeState(m_playMainState.get());
 			break;
 		default:
 			break;
 	}
 }
-
 
 /// <summary>
 /// シーンのステート作成

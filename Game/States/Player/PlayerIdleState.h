@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PlayerIdleState.h
+// 概要: PlayerIdleState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 
@@ -18,10 +26,4 @@ public:
 	void PostUpdate() override;
 	// 後処理を行う
 	void Finalize() override;
-
-public:
-
-
-
-
 };

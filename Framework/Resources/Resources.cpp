@@ -48,20 +48,39 @@ void Resources::LoadResource()
 	// データを格納
 	m_data = data;
 
-	// モデルをロードする
-	std::thread model(&Resources::LoadModel, this);
-	// シェーダーをロードする
-	std::thread shader(&Resources::LoadShader, this);
+	// 時間測定用のエイリアス
+	using Clock = std::chrono::high_resolution_clock;
+	using TimePoint = Clock::time_point;
+	using Duration = std::chrono::duration<float>;
+
+	// --- 計算開始 ---
+	TimePoint startTime = Clock::now();
+
+	/*this->LoadModel();
+	this->LoadShader();
+	this->LoadTexture();
+	this->LoadGameData();*/
+
 	// テクスチャをロードする
 	std::thread texture(&Resources::LoadTexture, this);
+	// モデルをロードする
+	std::thread model(&Resources::LoadModel, this);
 	// ゲームデータをロードする
 	std::thread gameData(&Resources::LoadGameData, this);
-
+	// シェーダーをロードする
+	std::thread shader(&Resources::LoadShader, this);
+	
 	// ロードが終わるまで待つ
 	model.join();
 	texture.join();
 	shader.join();
 	gameData.join();
+
+	// --- 計算終了 ---
+	TimePoint endTime = Clock::now();
+	Duration elapsed = endTime - startTime;
+	// 計算時間を取得
+	m_time = elapsed.count();
 
 	// 初期化処理以外必要ないのでデータを空にする
 	m_data = {};

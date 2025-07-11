@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PlayerSitState.h
+// 概要: PlayerSitState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 
@@ -25,6 +33,4 @@ private:
 
 	// プレイヤーオブジェクト
 	Player* m_player;
-
-
 };

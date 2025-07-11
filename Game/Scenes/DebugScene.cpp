@@ -53,9 +53,6 @@ void DebugScene::Initialize()
 
 	m_root->Initialize();
 
-	m_root->Attach(PlayerFactory::CreatePlayer(m_root,
-		DirectX::SimpleMath::Vector3::Zero,DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.1f,true));
-
 }
 
 void DebugScene::Start()

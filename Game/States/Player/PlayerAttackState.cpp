@@ -4,17 +4,27 @@
 #include "Game/Object/Object.h"
 
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="player">プレイヤーオブジェクト</param>
 PlayerAttackState::PlayerAttackState(Object* player)
 	:
 	m_player(player)
 {
 }
 
+/// <summary>
+/// 初期化処理
+/// </summary>
 void PlayerAttackState::Initialize()
 {
 
 }
 
+/// <summary>
+/// 事前処理
+/// </summary>
 void PlayerAttackState::PreUpdate()
 {
 	m_elapsedTime = 0.0f;
@@ -31,7 +41,10 @@ void PlayerAttackState::PreUpdate()
 	);
 }
 
-
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 void PlayerAttackState::Update(const float& elapsedTime)
 {
 	// 経過時間を更新
@@ -43,12 +56,17 @@ void PlayerAttackState::Update(const float& elapsedTime)
 	}
 }
 
+/// <summary>
+/// 事後処理
+/// </summary>
 void PlayerAttackState::PostUpdate()
 {
 
 }
 
-
+/// <summary>
+/// 終了処理
+/// </summary>
 void PlayerAttackState::Finalize()
 {
 

@@ -82,4 +82,6 @@ private:
 
 	// Jsonƒf[ƒ^
 	nlohmann::json m_data;
+
+	float m_time;
 };

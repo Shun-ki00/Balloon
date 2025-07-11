@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PlayerAttackState.h
+// 概要: PlayerAttackState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 
