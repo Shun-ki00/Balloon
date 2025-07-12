@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: WindBehavior.h
+// 概要: WindBehavior.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/ISteeringBehavior.h"
 #include <random>
@@ -42,14 +50,6 @@ private:
 
     // 有効かどうかのフラグ
     bool m_isActive;
-
-    static const std::string PARAMETERS_ID;
-
-    static const std::string WIND_MIN_STRENGTH;
-    static const std::string WIND_MAX_STRENGTH;
-    static const std::string WIND_MIN_DURATION;
-    static const std::string WIND_MAX_DURATION;
-    static const std::string WIND_IDLE_TIME; 
 
     // ランダム生成器
     mutable std::default_random_engine m_rng;

@@ -1,35 +1,44 @@
+// ============================================
+// 
+// ファイル名: KnockbackBehavior.h
+// 概要: ノックバックを行うビヘイビア
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/SteeringBehavior/KnockbackBehavior.h"
 #include "Game/Object/Object.h"
 #include "Game/Parameters/Parameters.h"
 
 
-
-
-KnockbackBehavior::KnockbackBehavior(Object* object)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="object">オブジェクト</param>
+/// <param name="knockbackRadius">ノックバック範囲</param>
+/// <param name="knockbackCount">ノックバック回数</param>
+/// <param name="knockbackFoce">ノックバックを行う力</param>
+KnockbackBehavior::KnockbackBehavior(Object* object, const float& knockbackRadius, const int& knockbackCount, const float& knockbackFoce)
 	:
 	m_object(object),
-	m_target{},
+    m_knockbackRadius(knockbackRadius),
+    m_knockbackCount(knockbackCount),
+    m_knockbackFoce(knockbackFoce),
+	m_targets{},
     m_count{}
 {
-    // パラメータの設定
-    m_knockbackRadius = Parameters::GetInstance()->GetParameter(ParametersID::STEERING_BEHAVIOR,ParameterKeysF::KnockbackRadius);
-    m_knockbackFoce   = Parameters::GetInstance()->GetParameter(ParametersID::STEERING_BEHAVIOR, ParameterKeysF::KnockbackFoce);
-    m_knockbackCount  = Parameters::GetInstance()->GetParameter(ParametersID::STEERING_BEHAVIOR, ParameterKeysF::KnockbackCount);
-    m_isKnockedBack   = false;
+  
 }
 
+/// <summary>
+/// 計算処理
+/// </summary>
+/// <returns>計算結果</returns>
 DirectX::SimpleMath::Vector3 KnockbackBehavior::Calculate() 
 {
-    // デバッグの時のみパラメータを更新し続ける
-#ifdef _DEBUG
-
-     // パラメータの設定
-    m_knockbackRadius = Parameters::GetInstance()->GetParameter(ParametersID::STEERING_BEHAVIOR, ParameterKeysF::KnockbackRadius);
-    m_knockbackFoce = Parameters::GetInstance()->GetParameter(ParametersID::STEERING_BEHAVIOR, ParameterKeysF::KnockbackFoce);
-    m_knockbackCount = Parameters::GetInstance()->GetParameter(ParametersID::STEERING_BEHAVIOR, ParameterKeysF::KnockbackCount);
-
-#endif
+    // 非アクティブの時は計算しない
+    if (!m_isActive) return DirectX::SimpleMath::Vector3::Zero;
 
     // 範囲外のときは計算を行わない
     if (!IsWithinKnockbackRange() || m_isKnockedBack)
@@ -38,54 +47,79 @@ DirectX::SimpleMath::Vector3 KnockbackBehavior::Calculate()
         return DirectX::SimpleMath::Vector3::Zero;
     }
 
-    // ノックバックカウント追加
     m_count++;
-    // ノックバック回数上限を超えた場合
     if (m_count >= m_knockbackCount)
     {
         m_count = 0;
         m_isKnockedBack = true;
     }
 
-    // オブジェクトの進行方向（または向き）を取得
-    DirectX::SimpleMath::Vector3 forward = m_object->GetVelocity();
+    // 最も近いターゲット方向へノックバック
+    const DirectX::SimpleMath::Vector3 myPosition =
+        m_object->GetTransform()->GetLocalPosition();
+    Object* nearest = nullptr;
+    float minDist = std::numeric_limits<float>::max();
 
-    // オブジェクトの速度をリセット
-    // m_object->SetVelocity(DirectX::SimpleMath::Vector3::Zero);
-
-    forward = { forward.x , 0.0f , forward.z };
-
-    // もし速度がない場合回転からノックバックする方向を決定する
-    if (forward.Length() < 0.001f) 
+    for (auto* target : m_targets)
     {
-        forward = DirectX::SimpleMath::Vector3::Transform(
-            DirectX::SimpleMath::Vector3::UnitX,
-            m_object->GetTransform()->GetLocalRotation()
-        );
+        float dist = (myPosition - target->GetTransform()->GetLocalPosition()).LengthSquared();
+        if (dist < minDist)
+        {
+            minDist = dist;
+            nearest = target;
+        }
     }
 
-    // 正規化
-    forward.Normalize();
+    DirectX::SimpleMath::Vector3 direction;
 
-    // 逆方向へノックバックさせる
-    return -forward * m_knockbackFoce;
+    if (nearest)
+    {
+        direction = myPosition - nearest->GetTransform()->GetLocalPosition();
+    }
+    else
+    {
+        direction = m_object->GetVelocity();
+        if (direction.Length() < 0.001f)
+        {
+            direction = DirectX::SimpleMath::Vector3::Transform(
+                DirectX::SimpleMath::Vector3::UnitX,
+                m_object->GetTransform()->GetLocalRotation()
+            );
+        }
+    }
+    direction.y = 0.0f;
+    direction.Normalize();
+    return direction * m_knockbackFoce;
+
 }
 
-
+/// <summary>
+/// ノックバックの範囲内かどうか
+/// </summary>
+/// <returns>結果</returns>
 bool KnockbackBehavior::IsWithinKnockbackRange() 
 {
-    if (!m_target) return false;
+  
+    // ノックバックするオブジェクトの座標を取得
+    const DirectX::SimpleMath::Vector3 myPosition =
+        m_object->GetTransform()->GetLocalPosition();
 
-    // 自分の座標
-    auto myPosition = m_object->GetTransform()->GetLocalPosition();
-    // ターゲットの座標
-    auto targetPosition = m_target->GetTransform()->GetLocalPosition();
+    for (const auto& target : m_targets)
+    {
+        // ターゲットの座標を取得
+        const DirectX::SimpleMath::Vector3 targetPosition =
+            target->GetTransform()->GetLocalPosition();
 
-    // 距離を計算
-    float distance = (myPosition - targetPosition).Length();
+        // 距離を計算
+        const float distance = (myPosition - targetPosition).Length();
 
-    // 範囲内かどうか
-    return distance < m_knockbackRadius;
+        if (distance < m_knockbackCount)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /// <summary>

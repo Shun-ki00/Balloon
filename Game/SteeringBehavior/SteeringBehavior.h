@@ -2,10 +2,11 @@
 #include "Interface/ISteeringBehavior.h"
 #include "Interface/IObject.h"
 
+class WindBehavior;
+
 class SteeringBehavior
 {
 public:
-
 
 	// ステアリングビヘイビアを取得する
 	ISteeringBehavior* GetSteeringBehavior(BEHAVIOR_TYPE flags);
@@ -31,8 +32,11 @@ public:
 
 private:
 
+	// 共通のビヘイビア （風ビヘイビア）
+	WindBehavior* m_windBehavior;
+
 	// ステアリングビヘイビア
-	std::unordered_map<BEHAVIOR_TYPE, std::unique_ptr<ISteeringBehavior>> m_behaviors;
+	std::vector<std::pair<BEHAVIOR_TYPE, std::unique_ptr<ISteeringBehavior>>> m_behaviors;
 
 	// フラグ
 	uint32_t m_flags;

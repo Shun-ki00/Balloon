@@ -633,9 +633,6 @@
     <ClInclude Include="Game\Parameters\ParameterBuffers.h">
       <Filter>Game\GameConfig</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Scenes\StageSelectScene.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Game\WoodBox\WoodBox.h">
       <Filter>Game\Objects\WoodBox</Filter>
     </ClInclude>
@@ -701,6 +698,9 @@
     </ClInclude>
     <ClInclude Include="Game\States\SceneStates\PlayMainState.h">
       <Filter>Game\States\SceneStates\PlayScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Scenes\StageSelectScene.h">
+      <Filter>Game\Scenes\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1025,9 +1025,6 @@
     <ClCompile Include="Framework\Utilities\RandomUtilities.cpp">
       <Filter>Framework\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Scenes\StageSelectScene.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Game\WoodBox\WoodBox.cpp">
       <Filter>Game\Objects\WoodBox</Filter>
     </ClCompile>
@@ -1093,6 +1090,9 @@
     </ClCompile>
     <ClCompile Include="Game\States\SceneStates\PlayMainState.cpp">
       <Filter>Game\States\SceneStates\PlayScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scenes\StageSelectScene.cpp">
+      <Filter>Game\Scenes\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

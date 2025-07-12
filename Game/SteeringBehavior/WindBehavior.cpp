@@ -1,30 +1,21 @@
+// ============================================
+// 
+// ファイル名: WindBehavior.h
+// 概要: 外部の風の力を与えるビヘイビア
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/SteeringBehavior/WindBehavior.h"
 #include "Game/Parameters/Parameters.h"
 #include "Game/Parameters/ParameterKeys.h"
 
 
-const std::string WindBehavior::WIND_MIN_STRENGTH = std::string(magic_enum::enum_name(ParameterKeysF::WindMinStrength));
-const std::string WindBehavior::WIND_MAX_STRENGTH = std::string(magic_enum::enum_name(ParameterKeysF::WindMaxStrength));
-const std::string WindBehavior::WIND_MIN_DURATION = std::string(magic_enum::enum_name(ParameterKeysF::WindMinDuration));
-const std::string WindBehavior::WIND_MAX_DURATION = std::string(magic_enum::enum_name(ParameterKeysF::WindMaxDuration));
-const std::string WindBehavior::WIND_IDLE_TIME    = std::string(magic_enum::enum_name(ParameterKeysF::WindIdleTime));
-
-const std::string WindBehavior::PARAMETERS_ID = std::string(magic_enum::enum_name(ParametersID::STEERING_BEHAVIOR));
-
-
+/// <summary>
+/// コンストラクタ
+/// </summary>
 WindBehavior::WindBehavior()
-    : 
-    m_rng(std::random_device{}()),
-    m_strengthDist(
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID,WIND_MIN_STRENGTH),
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MAX_STRENGTH)),
-    m_timeDist(
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MIN_DURATION),
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MAX_DURATION)),
-    m_dirDist(-1.0f, 1.0f),
-    m_idleTime(Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_IDLE_TIME)),
-    m_timer(0.0f)
 {
 }
 
@@ -62,32 +53,22 @@ void WindBehavior::Update(float deltaTime)
         m_timer = 0.0f;
     }
 
-    // デバッグの時のみパラメータを更新し続ける
-#ifdef _DEBUG
-
-    m_strengthDist = std::uniform_real_distribution(
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MIN_STRENGTH),
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MAX_STRENGTH)
-    );
-    
-    m_timeDist = std::uniform_real_distribution(
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MIN_DURATION),
-        Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_MAX_DURATION)
-    );
-    
-    m_dirDist = std::uniform_real_distribution(-1.0f, 1.0f);
-
-    m_idleTime = Parameters::GetInstance()->GetParameter<float>(PARAMETERS_ID, WIND_IDLE_TIME);
-
-#endif
 }
 
 
+/// <summary>
+/// 計算処理
+/// </summary>
+/// <returns>計算結果</returns>
 DirectX::SimpleMath::Vector3 WindBehavior::Calculate() 
 {
     return m_currentWind;
 }
 
+
+/// <summary>
+/// 風を生成する
+/// </summary>
 void WindBehavior::GenerateNewWind() 
 {
     // 新しい風の方向をランダム生成（XZ平面）

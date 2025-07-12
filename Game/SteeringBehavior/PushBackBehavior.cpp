@@ -1,6 +1,19 @@
+// ============================================
+// 
+// ファイル名: PushBackBehavior.h
+// 概要: ステージないに戻すビヘイビア
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/SteeringBehavior/PushBackBehavior.h"
 #include "Interface/IObject.h"
+
+const DirectX::SimpleMath::Vector3 PushBackBehavior::STAGE_MIN_BOUNDS = { -10.0f , -10.0f , -10.0f };
+const DirectX::SimpleMath::Vector3 PushBackBehavior::STAGE_MAX_BOUNDS = {  10.0f ,  10.0f ,  10.0f };
+
+const float PushBackBehavior::PUSH_BACK_STRENGTH = 10.0f;
 
 /// <summary>
 /// コンストラクタ
@@ -10,9 +23,6 @@ PushBackBehavior::PushBackBehavior(IObject* object)
     :
     m_object(object)
 {
-    m_pushBackStrength = 20.0f;
-    m_stageMinBounds = { -5.0f , -5.0f , -5.0f };
-    m_stageMaxBounds = { 5.0f , 5.0f , 1000.0f };
 }
 
 /// <summary>
@@ -31,31 +41,31 @@ DirectX::SimpleMath::Vector3 PushBackBehavior::Calculate()
 
     DirectX::SimpleMath::Vector3 position = m_object->GetTransform()->GetLocalPosition();
 
-    if (position.x < m_stageMinBounds.x) 
+    if (position.x < STAGE_MIN_BOUNDS.x)
     {
-        force.x = m_pushBackStrength;
+        force.x = PUSH_BACK_STRENGTH;
     }
-    else if (position.x > m_stageMaxBounds.x) 
+    else if (position.x > STAGE_MAX_BOUNDS.x)
     {
-        force.x = -m_pushBackStrength;
-    }
-
-    if (position.y < m_stageMinBounds.y)
-    {
-        force.y = m_pushBackStrength;
-    }
-    else if (position.y > m_stageMaxBounds.y)
-    {
-        force.y = -m_pushBackStrength;
+        force.x = -PUSH_BACK_STRENGTH;
     }
 
-    if (position.z < m_stageMinBounds.z) 
+    if (position.y < STAGE_MIN_BOUNDS.y)
     {
-        force.z = m_pushBackStrength;
+        force.y = PUSH_BACK_STRENGTH;
     }
-    else if (position.z > m_stageMaxBounds.z) 
+    else if (position.y > STAGE_MAX_BOUNDS.y)
     {
-        force.z = -m_pushBackStrength;
+        force.y = -PUSH_BACK_STRENGTH;
+    }
+
+    if (position.z < STAGE_MIN_BOUNDS.z)
+    {
+        force.z = PUSH_BACK_STRENGTH;
+    }
+    else if (position.z > STAGE_MAX_BOUNDS.z)
+    {
+        force.z = -PUSH_BACK_STRENGTH;
     }
 
     return force;

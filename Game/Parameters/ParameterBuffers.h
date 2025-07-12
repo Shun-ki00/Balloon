@@ -102,10 +102,9 @@ struct PushBackBehaviorParams
 // ターゲットを追跡するビヘイビア
 struct SeekBehaviorParams
 {
-	bool isActive{};             // ビヘイビアが有効か
-	float predictionMultiplier{}; // ターゲットの未来位置をどれだけ予測するか（秒）
-	float speed{};               // 移動速度
-	float forceStrength{};       // 加える追跡力の強さ
+	DirectX::SimpleMath::Vector3 offset{}; // 位置のオフセット
+	float predictionMultiplier{};          // 予測時間の倍率
+	float seekSpeed{};                     // 移動速度
 };
 
 
@@ -122,16 +121,6 @@ struct WindBehaviorParams
 };
 
 
-// ランダムに動き回るふらふら移動ビヘイビア
-struct WanderBehaviorParams
-{
-	bool isActive{};         // ビヘイビアが有効か
-	float jitter{};          // ランダム変動の強さ（方向変化）
-	float radius{};          // 円周移動の半径
-	float distance{};        // 進行方向への距離（中心点からの距離）
-	float speed{};           // 移動速度
-	float forceStrength{};   // 加える力の強さ
-};
 
 
 // ターゲットから離れる逃走ビヘイビア

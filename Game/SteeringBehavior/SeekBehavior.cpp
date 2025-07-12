@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: SeekBehavior.h
+// 概要: オブジェクトを追尾するビヘイビア
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/SteeringBehavior/SeekBehavior.h"
 #include "Game/Object/Object.h"
@@ -6,16 +14,20 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="object">自身オブジェクト</param>
-/// <param name="target">ターゲットのオブジェクト</param>
-SeekBehavior::SeekBehavior(Object* object, Object* target)
-{
-    m_object = object;
-    m_target = target;
-
-    m_predictionMultiplier = 2.0f;
-    m_seekSpeed = 3.0f;
-    m_distance = 2.0f;
+/// <param name="object">対象のオブジェクト</param>
+/// <param name="target">追尾するオブジェクト</param>
+/// <param name="offset">オフセット値</param>
+/// <param name="predictionMultiplier">予測時間の倍率</param>
+/// <param name="speed">速度</param>
+SeekBehavior::SeekBehavior(Object* object, Object* target,
+    const DirectX::SimpleMath::Vector3& offset, const float& predictionMultiplier, const float& speed)
+    :
+    m_object(object),
+    m_target(target),
+    m_offset(offset),
+    m_predictionMultiplier(predictionMultiplier),
+    m_seekSpeed(speed)
+{    
 }
 
 /// <summary>
@@ -32,11 +44,7 @@ DirectX::SimpleMath::Vector3 SeekBehavior::Calculate()
     const DirectX::SimpleMath::Vector3 targetVelocity = m_target->GetVelocity();
 
     // 相手の座標にオフセット値を加算（オブジェクトの少し後ろ）
-    DirectX::SimpleMath::Vector3 offset = DirectX::SimpleMath::Vector3::Transform(
-        DirectX::SimpleMath::Vector3::Forward, m_target->GetTransform()->GetLocalRotation());
-    offset.Normalize();
-    offset *= m_distance;
-    targetPosition += offset;
+    targetPosition += m_offset;
 
     // 自分と相手の距離ベクトルを計算
     const DirectX::SimpleMath::Vector3 toTarget =

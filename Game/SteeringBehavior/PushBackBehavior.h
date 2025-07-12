@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PushBackBehavior.h
+// 概要: PushBackBehavior.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/ISteeringBehavior.h"
 
@@ -21,16 +29,19 @@ public:
 
 private:
 
+    // ステージの範囲
+    static const DirectX::SimpleMath::Vector3 STAGE_MIN_BOUNDS;
+    static const DirectX::SimpleMath::Vector3 STAGE_MAX_BOUNDS;
+    // 押し戻す力
+    static const float PUSH_BACK_STRENGTH;
+
+
+
+private:
+
     // 有効かどうかのフラグ
     bool m_isActive;
 
     // 対象オブジェクト
-    IObject* m_object;     
-
-    // ステージ最小座標
-    DirectX::SimpleMath::Vector3 m_stageMinBounds; 
-    // ステージ最大座標
-    DirectX::SimpleMath::Vector3 m_stageMaxBounds;  
-    // 押し戻し力
-    float m_pushBackStrength;                     
+    IObject* m_object;            
 };

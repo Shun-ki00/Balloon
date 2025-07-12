@@ -1,13 +1,20 @@
 #include "pch.h"
 #include "Game/SteeringBehavior/SteeringBehavior.h"
+#include "Game/SteeringBehavior/WindBehavior.h"
 #include "Interface/ISteeringBehavior.h"
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
 SteeringBehavior::SteeringBehavior()
+	:
+	m_windBehavior{},
+	m_behaviors{},
+	m_flags{},
+	m_targetObject{}
 {
-
+	// インスタンスを取得する
+	m_windBehavior = WindBehavior::GetInstance();
 }
 
 /// <summary>
@@ -15,7 +22,6 @@ SteeringBehavior::SteeringBehavior()
 /// </summary>
 void SteeringBehavior::Initialize()
 {
-
 }
 
 /// <summary>
@@ -30,11 +36,17 @@ DirectX::SimpleMath::Vector3 SteeringBehavior::Calculate(const float& elapsedTim
 	// 合成ステアリングベクトル
 	DirectX::SimpleMath::Vector3 steeringForce = DirectX::SimpleMath::Vector3::Zero;
 
+	// 共通のビヘイビアがオンの時は加算する
+	if ((m_flags & BEHAVIOR_TYPE::WIND) != 0 && m_windBehavior)
+	{
+		steeringForce += m_windBehavior->Calculate();
+	}
+
 	// ビヘイビアすべてを走査
 	for (const auto& [flag, behavior] : m_behaviors)
 	{
 		// 対象ビヘイビアのビットがONか確認
-		if ((m_flags & flag) == flag && behavior)
+		if ((m_flags & flag) && behavior)
 		{
 			// 各ビヘイビアの力を加算
 			steeringForce += behavior->Calculate();
@@ -51,8 +63,13 @@ DirectX::SimpleMath::Vector3 SteeringBehavior::Calculate(const float& elapsedTim
 /// <param name="steeringBehavior">ステアリングビヘイビア</param>
 void SteeringBehavior::Attach(BEHAVIOR_TYPE flag, std::unique_ptr<ISteeringBehavior> steeringBehavior)
 {
-	// ステアリングビヘイビアを追加する
-	m_behaviors[flag] = std::move(steeringBehavior);
+	// 同じ種類のビヘイビアは登録しない
+	for (const auto& pair : m_behaviors)
+	{
+		if (pair.first == flag) return;
+	}
+	// ビヘイビアの登録
+	m_behaviors.emplace_back(flag, std::move(steeringBehavior));
 
 	// ビットフラグをONにする
 	m_flags |= flag;
@@ -65,12 +82,12 @@ void SteeringBehavior::Attach(BEHAVIOR_TYPE flag, std::unique_ptr<ISteeringBehav
 /// <returns>ステアリングビヘイビア</returns>
 ISteeringBehavior* SteeringBehavior::GetSteeringBehavior(BEHAVIOR_TYPE flags)
 {
-	// 検索
-	auto it = m_behaviors.find(flags);
-
-	// ステアリングビヘイビアが見つかれば返す
-	if (it != m_behaviors.end())
-		return it->second.get();
+	// 検索して見つかれば返す
+	for (const auto& behabior : m_behaviors)
+	{
+		if (behabior.first == flags)
+			return behabior.second.get();
+	}
 
 	// 見つからない場合はnullptrを返す
 	return nullptr;
