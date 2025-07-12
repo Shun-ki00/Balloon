@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: EnemyWanderState.h
+// 概要: 敵　徘徊状態
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/States/Enemy/EnemyWanderState.h"
 #include "Game/Object/Object.h"
@@ -13,6 +21,9 @@ const float EnemyWanderState::MAX_MOVE_DISTANCE = 5.0f;
 
 const float EnemyWanderState::MIN_MOVE_SPEED = 1.0f;
 const float EnemyWanderState::MAX_MOVE_SPEED = 3.0f;
+
+const float EnemyWanderState::MIN_WAIT_TIME = 2.0f;
+const float EnemyWanderState::MAX_WAIT_TIME = 4.0f;
 
 /// <summary>
 /// コンストラクタ
@@ -102,9 +113,14 @@ void EnemyWanderState::Update(const float& elapsedTime)
 		// 膨らませる処理を終了
 		m_object->OnMessegeAccepted({ Message::MessageID::ENEMY_OFF_BALLOON_SCALE });
 
+		// 待機時間をオンにする
 		m_isWait = true;
-	}
 
+		// タイマーのリセット
+		m_timer = 0.0f;
+		// 待機時間をランダム決定
+		m_waitTime = RandomUtilities::RandomFloat(MIN_WAIT_TIME , MAX_WAIT_TIME);
+	}
 }
 
 /// <summary>

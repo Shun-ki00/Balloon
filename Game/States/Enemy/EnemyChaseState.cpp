@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: EnemyChaseState.h
+// 概要: 敵　追いかける状態
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/States/Enemy/EnemyChaseState.h"
 #include "Game/Message/ObjectMessenger.h"
@@ -7,6 +15,13 @@
 #include "Game/Enemy/Enemy.h"
 #include "Interface/IObject.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="enemy">敵オブジェクト</param>
+/// <param name="player">プレイヤーオブジェクト</param>
+/// <param name="steeringBehavior">ステアリングビヘイビア</param>
+/// <param name="seekBehavior">対象を追いかけるビヘイビア</param>
 EnemyChaseState::EnemyChaseState(Object* enemy, Object* player, SteeringBehavior* steeringBehavior, SeekBehavior* seekBehavior)
 {
 	m_enemy        = enemy;
@@ -15,13 +30,17 @@ EnemyChaseState::EnemyChaseState(Object* enemy, Object* player, SteeringBehavior
     m_steeringBehavior = steeringBehavior;
 }
 
-
+/// <summary>
+/// 初期化処理
+/// </summary>
 void EnemyChaseState::Initialize()
 {
 
 }
 
-
+/// <summary>
+/// 事前処理
+/// </summary>
 void EnemyChaseState::PreUpdate()
 {
     // ビヘイビアをオンにする
@@ -43,11 +62,14 @@ void EnemyChaseState::PreUpdate()
         float deg = DirectX::XMConvertToDegrees(yaw);
 
         // Y軸回転Tween（例: 0.3秒かけて回転）
-        m_enemy->GetTransform()->GetTween()->DORotationY(-deg, 0.0f);
+        m_enemy->GetTransform()->GetTween()->DORotationY(-deg, 0.3f);
     }
 }
 
-
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 void EnemyChaseState::Update(const float& elapsedTime)
 {
     UNREFERENCED_PARAMETER(elapsedTime);
@@ -66,12 +88,17 @@ void EnemyChaseState::Update(const float& elapsedTime)
     }
 }
 
+/// <summary>
+/// 事後処理
+/// </summary>
 void EnemyChaseState::PostUpdate()
 {
     m_steeringBehavior->Off(BEHAVIOR_TYPE::SEEK);
 }
 
-
+/// <summary>
+/// 終了処理
+/// </summary>
 void EnemyChaseState::Finalize()
 {
 

@@ -1,20 +1,37 @@
+// ============================================
+// 
+// ファイル名: EnemyAttackState.h
+// 概要: 敵　攻撃状態
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/States/Enemy/EnemyAttackState.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Object/Object.h"
 
-
-EnemyAttackState::EnemyAttackState(Object* player)
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="enemy">敵オブジェクト</param>
+EnemyAttackState::EnemyAttackState(Object* enemy)
 	:
-	m_player(player)
+	m_enemy(enemy)
 {
 }
 
+/// <summary>
+/// 初期化処理
+/// </summary>
 void EnemyAttackState::Initialize()
 {
 
 }
 
+/// <summary>
+/// 事前処理
+/// </summary>
 void EnemyAttackState::PreUpdate()
 {
 	m_elapsedTime = 0.0f;
@@ -22,16 +39,19 @@ void EnemyAttackState::PreUpdate()
 
 	DirectX::SimpleMath::Vector3 velocity = { 0.0f , 0.0f ,6.0f };
 
-	velocity = DirectX::SimpleMath::Vector3::Transform(velocity, m_player->GetTransform()->GetLocalRotation());
+	velocity = DirectX::SimpleMath::Vector3::Transform(velocity, m_enemy->GetTransform()->GetLocalRotation());
 
 	velocity.y = -6.0f;
 
-	m_player->SetVelocity(
-		m_player->GetVelocity() + velocity * 2.0f
+	m_enemy->SetVelocity(
+		m_enemy->GetVelocity() + velocity * 2.0f
 	);
 }
 
-
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 void EnemyAttackState::Update(const float& elapsedTime)
 {
 	// 経過時間を更新
@@ -39,15 +59,20 @@ void EnemyAttackState::Update(const float& elapsedTime)
 
 	if (m_elapsedTime >= m_moveingTime)
 	{
-		m_player->OnMessegeAccepted({ Message::MessageID::ENEMY_IDLING });
+		m_enemy->OnMessegeAccepted({ Message::MessageID::ENEMY_IDLING });
 	}
 }
 
+/// <summary>
+/// 事後処理
+/// </summary>
 void EnemyAttackState::PostUpdate()
 {
 }
 
-
+/// <summary>
+/// 終了処理
+/// </summary>
 void EnemyAttackState::Finalize()
 {
 

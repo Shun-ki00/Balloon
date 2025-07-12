@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PlayerRunState.cpp
+// 概要: プレイヤー　走る状態
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/States/Player/PlayerRunState.h"
 #include "Game/Object/Object.h"

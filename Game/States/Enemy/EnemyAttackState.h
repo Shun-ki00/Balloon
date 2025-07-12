@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: EnemyAttackState.h
+// 概要: EnemyAttackState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 
@@ -7,7 +15,7 @@ class EnemyAttackState : public IState
 {
 public:
 	// コンストラクタ
-	EnemyAttackState(Object* player);
+	EnemyAttackState(Object* enemy);
 	// デストラクタ
 	~EnemyAttackState() = default;
 	// 初期化する
@@ -21,13 +29,12 @@ public:
 	// 後処理を行う
 	void Finalize() override;
 
-public:
-
 private:
 
-	Object* m_player;
-
+	// 敵オブジェクト
+	Object* m_enemy;
+	// 経過時間
 	float m_elapsedTime;
-
+	// 移動時間
 	float m_moveingTime;
 };

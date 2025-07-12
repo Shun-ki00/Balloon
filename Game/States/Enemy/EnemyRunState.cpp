@@ -1,27 +1,45 @@
+// ============================================
+// 
+// ファイル名: EnemyRunState.h
+// 概要: 敵　走る状態
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/States/Enemy/EnemyRunState.h"
 #include "Game/Object/Object.h"
 
-
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="object">対象のオブジェクト</param>
 EnemyRunState::EnemyRunState(Object* object)
 {
 	m_object = object;
 }
 
-
+/// <summary>
+/// 初期化処理
+/// </summary>
 void EnemyRunState::Initialize()
 {
 	m_isBackward = false;
 	m_isForward  = false;
 }
 
-
+/// <summary>
+/// 事前処理
+/// </summary>
 void EnemyRunState::PreUpdate()
 {
 
 }
 
-
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">経過時間</param>
 void EnemyRunState::Update(const float& elapsedTime)
 {
 	// 前方へ移動中かどうか
@@ -39,6 +57,9 @@ void EnemyRunState::Update(const float& elapsedTime)
 		);
 }
 
+/// <summary>
+/// 事後処理
+/// </summary>
 void EnemyRunState::PostUpdate()
 {
 	// 速度をリセットする
@@ -48,7 +69,9 @@ void EnemyRunState::PostUpdate()
 	m_isForward = false;
 }
 
-
+/// <summary>
+/// 終了処理
+/// </summary>
 void EnemyRunState::Finalize()
 {
 	

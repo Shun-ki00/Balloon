@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: EnemyChaseState.h
+// 概要: EnemyChaseState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 #include "Interface/IObject.h"
@@ -13,7 +21,7 @@ public:
 	// コンストラクタ
 	EnemyChaseState(Object* enemy , Object* player , SteeringBehavior* steeringBehavior, SeekBehavior* seekBehavior);
 	// デストラクタ
-	~EnemyChaseState() = default;
+	~EnemyChaseState() override = default;
 	// 初期化する
 	void Initialize() override;
 	// 事前更新する
@@ -29,15 +37,11 @@ public:
 
 	// 敵オブジェクト
 	Object* m_enemy;
-
 	// プレイヤーオブジェクト
 	Object* m_player;
 
-	SteeringBehavior* m_steeringBehavior;
-
 	// ステアリングビヘイビア
+	SteeringBehavior* m_steeringBehavior;
+	// 対象を追いかけるビヘイビア
 	SeekBehavior* m_seekBehavior;
-
-
-
 };

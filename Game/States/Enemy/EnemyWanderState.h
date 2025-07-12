@@ -1,14 +1,19 @@
-#pragma once
+// ============================================
+// 
+// ファイル名: EnemyWanderState.h
+// 概要: EnemyWanderState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 
 class Transform;
 class Object;
 
-
 class EnemyWanderState : public IState
 {
-
 public:
 	// コンストラクタ
 	EnemyWanderState(Object* object);
@@ -38,6 +43,9 @@ private:
 	// 移動速度
 	static const float MIN_MOVE_SPEED;
 	static const float MAX_MOVE_SPEED;
+	// 待機時間
+	static const float MIN_WAIT_TIME;
+	static const float MAX_WAIT_TIME;
 
 public:
 

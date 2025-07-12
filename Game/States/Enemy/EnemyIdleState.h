@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: EnemyIdleState.h
+// 概要: EnemyIdleState.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IState.h"
 
@@ -7,7 +15,7 @@ public:
 	// コンストラクタ
 	EnemyIdleState();
 	// デストラクタ
-	~EnemyIdleState() = default;
+	~EnemyIdleState() override = default;
 	// 初期化する
 	void Initialize() override;
 	// 事前更新する
@@ -18,10 +26,4 @@ public:
 	void PostUpdate() override;
 	// 後処理を行う
 	void Finalize() override;
-
-public:
-
-
-
-
 };

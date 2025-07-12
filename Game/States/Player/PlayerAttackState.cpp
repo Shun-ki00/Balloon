@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: PlayerAttackState.cpp
+// 概要: プレイヤー　攻撃状態
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/States/Player/PlayerAttackState.h"
 #include "Game/Message/ObjectMessenger.h"
