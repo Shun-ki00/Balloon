@@ -13,21 +13,20 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-FloatBehavior::FloatBehavior()
+/// <param name="floatRange">揺れ幅</param>
+/// <param name="floatCycleSpeed">揺れるサイクル</param>
+/// <param name="floatSpeed">速度</param>
+/// <param name="direction">揺れる方向</param>
+FloatBehavior::FloatBehavior(const float& floatRange, const float& floatCycleSpeed, const float& floatSpeed,
+	const DirectX::SimpleMath::Vector3& direction)
 	:
-	m_isFloat{},
-	m_amplitude{},
-	m_floatSpeed{},
-	m_direction{},
-	m_elapsedTime{}
+	m_isActive{},
+	m_elapsedTime(0.0f),
+	m_floatRange(floatRange),
+	m_floatCycleSpeed(floatCycleSpeed),
+	m_floatSpeed(floatSpeed),
+	m_direction(direction)
 {
-	m_isFloat = true;
-	m_elapsedTime = 0.0f;
-
-	m_amplitude = 2.0f;
-	m_floatSpeed = 1.0f;
-	m_frequency = 1.0f;
-	m_direction = DirectX::SimpleMath::Vector3::Up;
 }
 
 /// <summary>
@@ -36,17 +35,18 @@ FloatBehavior::FloatBehavior()
 /// <returns>計算結果</returns>
 DirectX::SimpleMath::Vector3 FloatBehavior::Calculate()
 {
+	// フラグが無効ならスキップ
+	if (!m_isActive) return DirectX::SimpleMath::Vector3::Zero;
+
 	// 経過時間を更新する
 	float elapsedTime = (float)CommonResources::GetInstance()->GetStepTimer()->GetElapsedSeconds();
+	m_elapsedTime += elapsedTime * m_floatSpeed;
 
-	float prevTime = m_elapsedTime;
-	m_elapsedTime += elapsedTime * 2.0f;
+	// サイン波計算
+	float wave = std::sin(m_elapsedTime * m_floatCycleSpeed * 2.0f * DirectX::XM_PI);
+	float offset = wave * m_floatRange;
 
-	float prevWave = std::sin(m_elapsedTime);
-	float currWave = std::sin(m_elapsedTime * m_frequency * 2.0f * DirectX::XM_PI) * m_amplitude;
-
-	float delta = currWave - prevWave;
-	return m_direction * prevWave;
+	return m_direction * offset;
 }
 
 /// <summary>
@@ -55,7 +55,7 @@ DirectX::SimpleMath::Vector3 FloatBehavior::Calculate()
 void FloatBehavior::On()
 {
 	// フラグをオンにする
-	m_isFloat = true;
+	m_isActive = true;
 }
 
 /// <summary>
@@ -64,6 +64,6 @@ void FloatBehavior::On()
 void FloatBehavior::Off() 
 {
 	// フラグをオフにする
-	m_isFloat = false;
+	m_isActive = false;
 }
 

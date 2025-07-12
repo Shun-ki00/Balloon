@@ -6,6 +6,10 @@
 /// コンストラクタ
 /// </summary>
 FloatForceBehavior::FloatForceBehavior()
+    :
+    m_isActive{},
+    m_direction{},
+    m_forcePower{}
 {
 }
 

@@ -70,14 +70,14 @@ struct FollowCameraParams
 
 // === ステアリングビヘイビア ===
 
-// 浮力を発生させるビヘイビア（常に上向き等）
-struct FloatForceBehaviorParams
+// 揺れるビヘイビア
+struct FloatBehaviorParams
 {
-	bool isActive{};                            // ビヘイビアが有効か
-	DirectX::SimpleMath::Vector3 direction{};   // 力を加える方向（通常は上向き）
-	float power{};                              // 加える力の強さ
+	float m_floatRange{};                       // 揺れ幅
+	float m_floatCycleSpeed{};                  // 周期の速さ
+	float m_floatSpeed{};                       // 速度
+	DirectX::SimpleMath::Vector3 m_direction{}; // 方向
 };
-
 
 // ノックバック時の反応を制御するビヘイビア
 struct KnockbackBehaviorParams
@@ -88,23 +88,21 @@ struct KnockbackBehaviorParams
 	float force{};       // ノックバックの強さ
 };
 
-
-// 押し返し（反発）を制御するビヘイビア
-struct PushBackBehaviorParams
-{
-	bool isActive{};     // ビヘイビアが有効か
-	float stageMin{};    // 効果の最小距離（開始点）
-	float stageMax{};    // 効果の最大距離（終了点）
-	float strength{};    // 押し返しの強さ
-};
-
-
 // ターゲットを追跡するビヘイビア
 struct SeekBehaviorParams
 {
 	DirectX::SimpleMath::Vector3 offset{}; // 位置のオフセット
 	float predictionMultiplier{};          // 予測時間の倍率
 	float seekSpeed{};                     // 移動速度
+};
+
+// ターゲットから離れる逃走ビヘイビア
+struct FleeBehaviorParams
+{
+	bool isActive{};         // ビヘイビアが有効か
+	float detectionRadius{}; // 敵を検知する範囲
+	float speed{};           // 移動速度
+	float forceStrength{};   // 加える逃走力の強さ
 };
 
 
@@ -119,19 +117,6 @@ struct WindBehaviorParams
 	float idleTime{};       // 次の風までの待機時間
 	float currentDuration{};// 現在の風の残り継続時間
 };
-
-
-
-
-// ターゲットから離れる逃走ビヘイビア
-struct FleeBehaviorParams
-{
-	bool isActive{};         // ビヘイビアが有効か
-	float detectionRadius{}; // 敵を検知する範囲
-	float speed{};           // 移動速度
-	float forceStrength{};   // 加える逃走力の強さ
-};
-
 
 
 // パーティクル構造体

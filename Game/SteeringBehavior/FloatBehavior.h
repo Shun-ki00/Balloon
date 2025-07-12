@@ -23,27 +23,25 @@ public:
 	DirectX::SimpleMath::Vector3 Calculate() override;
 
 	// コンストラクタ
-	FloatBehavior();
+	FloatBehavior(const float& floatRange,const float& floatCycleSpeed , const float& floatSpeed,
+		const DirectX::SimpleMath::Vector3& direction);
 	// デストラクタ
 	~FloatBehavior() override = default;
 
 private:
 
-	// 揺れているかのフラグ
-	bool m_isFloat;
 
-	// 揺れる高さの最大値
-	float m_amplitude;
-
-	// 揺れるスピード
-	float m_floatSpeed;
-
-	// 揺れる向き
-	DirectX::SimpleMath::Vector3 m_direction;
-
+	// 有効かどうかのフラグ
+	bool m_isActive;
 	// 経過時間
 	float m_elapsedTime;
 
-	float m_frequency;
-
+	// 揺れ幅
+	float m_floatRange;
+	// 周期の速さ
+	float m_floatCycleSpeed;
+	// 速度
+	float m_floatSpeed;
+	// 方向
+	DirectX::SimpleMath::Vector3 m_direction;
 };
