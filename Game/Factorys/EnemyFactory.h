@@ -1,15 +1,13 @@
 #pragma once
 #include "Interface/IObject.h"
 #include "Interface/IEnemyFactory.h"
+#include "Game/Parameters/ParameterBuffers.h"
 
 class EnemyFactory : public IEnemyFactory
 {
 public:
 	// “G‚ğ¶¬‚·‚é
-	static std::unique_ptr<IObject> CreateEnemy(IObject* parent,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale,const bool& isFixed);
+	static std::unique_ptr<IObject> CreateEnemy(IObject* parent , const EnemyParams& enemyParams);
 
 	// “G‚Ì‘Ì‚ğ¶¬‚·‚é
 	static std::unique_ptr<IObject> CreateEnemyBody(IObject* parent,

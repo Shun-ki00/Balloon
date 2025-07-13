@@ -19,7 +19,7 @@ BalloonScaleController::BalloonScaleController(HpController* hpController, Float
 void BalloonScaleController::Initialize()
 {
 	m_isBalloonInflating = false;
-	m_balloonScale = 0.0f;
+	m_balloonScale = 0.0f; 
 }
 
 /// <summary>

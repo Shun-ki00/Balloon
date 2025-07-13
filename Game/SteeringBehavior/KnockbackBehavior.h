@@ -10,6 +10,7 @@
 #include "Interface/ISteeringBehavior.h"
 
 class Object;
+class IObject;
 
 class KnockbackBehavior : public ISteeringBehavior
 {
@@ -17,7 +18,14 @@ class KnockbackBehavior : public ISteeringBehavior
 public:
 
     // ターゲットオブジェクトを設定する
-    void SetTargetObject(Object* target) { m_targets.push_back(target); }
+    void SetTargetObject(IObject* target) { m_targets.push_back(target); }
+    void SetTargetObject(std::vector<IObject*> targets) 
+    {
+        for (const auto& target : targets)
+            m_targets.push_back(target);
+    }
+    // ターゲットをリセットする
+    void ResetTargetObject() { m_targets.clear(); }
 
     // ビヘイビアを有効にする
     void On() override;
@@ -25,7 +33,8 @@ public:
     void Off() override;
 
     // コンストラクタ
-    KnockbackBehavior(Object* object,const float& knockbackRadius,const int& knockbackCount,const float& knockbackFoce);
+    KnockbackBehavior(Object* object,
+        const float& knockbackRadius,const int& knockbackCount,const float& knockbackFoce);
     // デストラクタ
     ~KnockbackBehavior() override = default;
 
@@ -45,7 +54,7 @@ private:
     // ノックバック対象
     Object* m_object;
     // ターゲット
-    std::vector<Object*> m_targets;
+    std::vector<IObject*> m_targets;
 
     // 発生半径
     float m_knockbackRadius;

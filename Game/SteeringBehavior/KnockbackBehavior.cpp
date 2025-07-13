@@ -19,7 +19,8 @@
 /// <param name="knockbackRadius">ノックバック範囲</param>
 /// <param name="knockbackCount">ノックバック回数</param>
 /// <param name="knockbackFoce">ノックバックを行う力</param>
-KnockbackBehavior::KnockbackBehavior(Object* object, const float& knockbackRadius, const int& knockbackCount, const float& knockbackFoce)
+KnockbackBehavior::KnockbackBehavior(Object* object,
+    const float& knockbackRadius, const int& knockbackCount, const float& knockbackFoce)
 	:
 	m_object(object),
     m_knockbackRadius(knockbackRadius),
@@ -57,7 +58,7 @@ DirectX::SimpleMath::Vector3 KnockbackBehavior::Calculate()
     // 最も近いターゲット方向へノックバック
     const DirectX::SimpleMath::Vector3 myPosition =
         m_object->GetTransform()->GetLocalPosition();
-    Object* nearest = nullptr;
+    IObject* nearest = nullptr;
     float minDist = std::numeric_limits<float>::max();
 
     for (auto* target : m_targets)

@@ -41,10 +41,11 @@
 /// <param name="angle"></param>
 /// <param name="position"></param>
 /// <param name="messageID"></param>
-Enemy::Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
+Enemy::Enemy(IObject* root, IObject* parent, const IObject::ObjectID& objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
-	const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex)
+	const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex,
+	const FloatBehaviorParams& floatBehavior, const KnockbackBehaviorParams& knockbackBehavior, const SeekBehaviorParams& seekBehavior)
 	:
 	// 基底クラス
 	Object(
@@ -58,6 +59,9 @@ Enemy::Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_objectID(objectID),
 	m_balloonIndex(balloonIndex),
 	m_parent(parent),
+	m_floatBehaviorParams(floatBehavior),
+	m_knockbackBehaviorParams(knockbackBehavior),
+	m_seekBehaviorParams(seekBehavior),
 	m_transform{},
 	m_childs {},
 	m_isFixed{}
@@ -209,6 +213,20 @@ void Enemy::Update(const float& elapsedTime)
 		{
 			m_isActive = false;
 		}
+	}
+
+	// ノックバックビヘイビアを更新
+	auto knockback = dynamic_cast<KnockbackBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::KNOCK_BACK));
+	knockback->ResetTargetObject();
+
+	// 現在のプレイヤーを設定する
+	knockback->SetTargetObject(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER));
+	// 敵を設定する
+	for (const auto& enemy : ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY))
+	{
+		if (enemy == this) continue;
+
+		knockback->SetTargetObject(enemy);
 	}
 
 	// アクションを決定する
@@ -463,11 +481,15 @@ void Enemy::CreateSteeringBehavior()
 	m_steeringBehavior->Initialize();
 
 	// ノックバックビヘイビア
-	std::unique_ptr<KnockbackBehavior> knockback = std::make_unique<KnockbackBehavior>(this);
+	std::unique_ptr<KnockbackBehavior> knockback = std::make_unique<KnockbackBehavior>(this,
+		m_knockbackBehaviorParams.radius,m_knockbackBehaviorParams.count,m_knockbackBehaviorParams.force);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::KNOCK_BACK, std::move(knockback));
 
 	// 揺れるビヘイビア
-	std::unique_ptr<FloatBehavior> floatBehavior = std::make_unique<FloatBehavior>();
+	std::unique_ptr<FloatBehavior> floatBehavior = std::make_unique<FloatBehavior>(
+		m_floatBehaviorParams.floatRange,m_floatBehaviorParams.floatCycleSpeed,m_floatBehaviorParams.floatSpeed,
+		m_floatBehaviorParams.direction
+	);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::FLOATING, std::move(floatBehavior));
 
 	// 力を加えるビヘイビア
@@ -480,8 +502,10 @@ void Enemy::CreateSteeringBehavior()
 	std::unique_ptr<PushBackBehavior> pushBack = std::make_unique<PushBackBehavior>(this);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::PUSH_BACK, std::move(pushBack));
 
-	std::unique_ptr<SeekBehavior> seekBehavior = std::make_unique<SeekBehavior>(this, dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]));
-	
+	std::unique_ptr<SeekBehavior> seekBehavior = std::make_unique<SeekBehavior>(
+		this, dynamic_cast<Object*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]),
+		m_seekBehaviorParams.offset,m_seekBehaviorParams.predictionMultiplier,m_seekBehaviorParams.seekSpeed
+		);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::SEEK, std::move(seekBehavior));
 
 

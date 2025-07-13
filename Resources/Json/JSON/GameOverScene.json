@@ -4,7 +4,20 @@
         "rotation": [ 0.0, 0.0, 0.0 ],
         "scale": [ 0.1, 0.1, 0.1 ],
         "fixed": true,
-        "balloonIndex": 0.0
+        "balloonIndex": 0.0,
+        "FloatBehavior": {
+            "isActive": false,
+            "floatRange": 1.5,
+            "floatCycleSpeed": 2.0,
+            "floatSpeed": 1.0,
+            "direction": [ 0.0, 1.0, 0.0 ]
+        },
+        "KnockbackBehavior": {
+            "isActive": false,
+            "count": 2,
+            "radius": 3.0,
+            "force": 2.5
+        }
     },
 
     "WoodBox": {

@@ -54,7 +54,8 @@
 Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
-	const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex)
+	const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex,
+	const FloatBehaviorParams& floatBehavior, const KnockbackBehaviorParams& knockbackBehavior)
 	:
 	// 基底クラス
 	Object(
@@ -70,7 +71,7 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_balloonIndex(balloonIndex),
 	m_transform{},
 	m_parent(parent),
-	m_childs {},
+	m_childs{},
 	m_boundingSphere{},
 	m_balloonObject{},
 	m_velocity{},
@@ -78,6 +79,8 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_side{},
 	m_acceralation{},
 	m_steeringBehavior{},
+	m_floatBehaviorParams(floatBehavior),
+	m_knockbackBehaviorParams(knockbackBehavior),
 	m_playerIdleState{},
 	m_playerRunState{},
 	m_playerAttackState{},
@@ -101,10 +104,6 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	// 親がいる場合親を設定
 	if (parent != nullptr)
 		m_transform->SetParent(parent->GetTransform());
-
-	// ステアリングビヘイビアのインスタンスを取得
-	//m_steeringBehavior = WindBehavior::GetInstance();
-
 }
 
 /// <summary>
@@ -203,11 +202,16 @@ void Player::Update(const float& elapsedTime)
 		}
 	}
 
+	// ノックバックビヘイビアを更新
+	auto knockback = dynamic_cast<KnockbackBehavior*>(m_steeringBehavior->GetSteeringBehavior(BEHAVIOR_TYPE::KNOCK_BACK));
+	knockback->ResetTargetObject();
+	// 現在の敵を設定する
+	knockback->SetTargetObject(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::ENEMY));
+
 	// 風船の大きさを更新処理
 	m_balloonScaleController->Update(elapsedTime);
 	// HPの更新処理
 	m_hpController->Update(elapsedTime);
-
 
 	// 風船の大きさをUIに渡す
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::BALLOON_HP_UI,
@@ -541,7 +545,7 @@ void Player::PlayAnimationTitle()
 	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(20.0f)));
 	// 右足の回転角を決定
 	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->SetLocalRotation(Quaternion::CreateFromAxisAngle(Vector3::UnitX, DirectX::XMConvertToRadians(-20.0f)));
-
+	  
 	// 頭のアニメーション
 	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[0]->GetTransform()->GetTween()->DORotation({ -5.0f ,-10.0f ,0.0f }, 1.0f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 	// 右腕のアニメーション
@@ -553,7 +557,7 @@ void Player::PlayAnimationTitle()
 	// 右足のアニメーション
 	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 20.0f , 0.0f ,0.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 
-}
+} 
 
 /// <summary>
 /// ゲームクリア時のアニメーション再生
@@ -570,7 +574,7 @@ void Player::PlayAnimationClear()
 	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[2]->GetTransform()->GetTween()->DORotation({ 0.0f , 0.0f ,45.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
 	// 右足のアニメーション
 	dynamic_cast<Body*>(m_childs[0].get())->GetChilds()[4]->GetTransform()->GetTween()->DORotation({ 0.0f , 0.0f ,-45.0f }, 0.3f).SetLoops(10000000, Tween::LoopType::Yoyo).SetEase(Tween::EasingType::EaseInOutSine);
-
+	 
 }
 
 /// <summary>
@@ -628,11 +632,15 @@ void Player::CreateSteeringBehavior()
 	m_steeringBehavior->Initialize();
 
 	// ノックバックビヘイビア
-	std::unique_ptr<KnockbackBehavior> knockback = std::make_unique<KnockbackBehavior>(this);
+	std::unique_ptr<KnockbackBehavior> knockback = std::make_unique<KnockbackBehavior>(
+		this,m_knockbackBehaviorParams.radius, m_knockbackBehaviorParams.count, m_knockbackBehaviorParams.force);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::KNOCK_BACK, std::move(knockback));
 
 	// 揺れるビヘイビア
-	std::unique_ptr<FloatBehavior> floatBehavior = std::make_unique<FloatBehavior>();
+	std::unique_ptr<FloatBehavior> floatBehavior = std::make_unique<FloatBehavior>(
+		m_floatBehaviorParams.floatRange,m_floatBehaviorParams.floatCycleSpeed,m_floatBehaviorParams.floatSpeed,
+		m_floatBehaviorParams.direction
+	);
 	m_steeringBehavior->Attach(BEHAVIOR_TYPE::FLOATING, std::move(floatBehavior));
 
 	// 力を加えるビヘイビア

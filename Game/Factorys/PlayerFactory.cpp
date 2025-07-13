@@ -20,20 +20,20 @@
 
 // プレイヤーの作成
 std::unique_ptr<IObject> PlayerFactory::CreatePlayer(IObject* parent,
-	const DirectX::SimpleMath::Vector3& initialPosition,
-	const DirectX::SimpleMath::Vector3& initialRotation,
-	const DirectX::SimpleMath::Vector3& initialScale,
-	const bool isFixed
+	const PlayerParams& playerParams
 )
 {
 	// 回転をクォータニオンに変換
 	DirectX::SimpleMath::Quaternion rotation =
-		PlayerFactory::ConvertToYawPitchRoll(initialRotation);
+		PlayerFactory::ConvertToYawPitchRoll(playerParams.rotation);
 
-	// 砲塔を宣言する
+
+	// プレイヤークラスのインスタンスを生成する
 	std::unique_ptr<Player> player;
-	// Turretクラスのインスタンスを生成する
-	player.reset(new Player(Root::GetInstance(), parent , IObject::ObjectID::PLAYER , initialPosition, rotation , initialScale , 3));
+	player.reset(new Player(Root::GetInstance(), parent , IObject::ObjectID::PLAYER , 
+		playerParams.position, rotation , playerParams.scale, playerParams.balloonIndex,
+		playerParams.floatBehaviorParams,playerParams.knockbackBehaviorParams));
+
 	// 初期化する
 	player->Initialize();
 
@@ -52,7 +52,7 @@ std::unique_ptr<IObject> PlayerFactory::CreatePlayer(IObject* parent,
 	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::PLAYER , player->GetObjectNumber(), player.get());
 
 	// 固定設定の場合
-	if (isFixed) player->SetIsFixed(true);
+	if (playerParams.fixed) player->SetIsFixed(true);
 
 	// プレイヤークラスのインスタンスを返す
 	return std::move(player);

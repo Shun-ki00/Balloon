@@ -4,22 +4,72 @@
         "rotation": [ 0.0, 0.0, 0.0 ],
         "scale": [ 0.1, 0.1, 0.1 ],
         "fixed": false,
-        "balloonIndex": 0.0
+        "balloonIndex": 0.0,
+        "FloatBehavior": {
+            "floatRange": 1.5,
+            "floatCycleSpeed": 2.0,
+            "floatSpeed": 1.0,
+            "direction": [ 0.0, 1.0, 0.0 ]
+        },
+        "KnockbackBehavior": {
+            "isActive": true,
+            "count": 5,
+            "radius": 3.0,
+            "force": 2.5
+        }
     },
     "Enemy": [
         {
-            "position": [ 2.7, -0.5, -1.5 ],
+            "position": [ 6.7, -0.5, -1.5 ],
             "rotation": [ 0.0, 0.0, 0.0 ],
             "scale": [ 0.1, 0.1, 0.1 ],
             "fixed": false,
-            "balloonIndex": 0.0
+            "balloonIndex": 0.0,
+            "FloatBehavior": {
+                "isActive": true,
+                "floatRange": 1.0,
+                "floatCycleSpeed": 1.5,
+                "floatSpeed": 0.8,
+                "direction": [ 0.0, 1.0, 0.0 ]
+            },
+            "KnockbackBehavior": {
+                "isActive": true,
+                "count": 3,
+                "radius": 2.0,
+                "force": 1.5
+            },
+            "SeekBehavior": {
+                "isActive": true,
+                "offset": [ 0.0, 2.0, -1.0 ],
+                "predictionMultiplier": 2.0,
+                "seekSpeed": 3.0
+            }
         },
         {
-            "position": [ 2.7, 4.5, -1.5 ],
+            "position": [ 6.7, -0.5, -1.5 ],
             "rotation": [ 0.0, 0.0, 0.0 ],
             "scale": [ 0.1, 0.1, 0.1 ],
             "fixed": false,
-            "balloonIndex": 0.0
+            "balloonIndex": 0.0,
+            "FloatBehavior": {
+                "isActive": true,
+                "floatRange": 1.0,
+                "floatCycleSpeed": 1.5,
+                "floatSpeed": 0.8,
+                "direction": [ 0.0, 1.0, 0.0 ]
+            },
+            "KnockbackBehavior": {
+                "isActive": true,
+                "count": 3,
+                "radius": 2.0,
+                "force": 1.5
+            },
+            "SeekBehavior": {
+                "isActive": true,
+                "offset": [ 0.0, 2.0, -1.0 ],
+                "predictionMultiplier": 2.0,
+                "seekSpeed": 3.0
+            }
         }
     ],
     "UI": [

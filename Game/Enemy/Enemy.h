@@ -4,6 +4,7 @@
 #include "Interface/ICollision.h"
 #include "Game/Status/HpController.h"
 #include "Game/Status/BalloonScaleController.h"
+#include "Game/Parameters/ParameterBuffers.h"
 
 class Transform;
 class PlayerRenderableObject;
@@ -63,10 +64,11 @@ public:
 	void SetAcceralation(const DirectX::SimpleMath::Vector3& accelaration) override { m_acceralation = accelaration; }
 
 	// コンストラクタ
-	Enemy(IObject* root, IObject* parent, IObject::ObjectID objectID,
+	Enemy(IObject* root, IObject* parent,const IObject::ObjectID& objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex);
+		const DirectX::SimpleMath::Vector3& scale, const float& balloonIndex,
+		const FloatBehaviorParams& floatBehavior ,const KnockbackBehaviorParams& knockbackBehavior ,const SeekBehaviorParams& seekBehavior);
 	// デストラクタ
 	~Enemy() override;
 
@@ -135,6 +137,10 @@ private:
 	// === ステアリングビヘイビア ===
 
 	std::unique_ptr<SteeringBehavior> m_steeringBehavior;
+
+	FloatBehaviorParams m_floatBehaviorParams;
+	KnockbackBehaviorParams m_knockbackBehaviorParams;
+	SeekBehaviorParams m_seekBehaviorParams;
 
 	// === ステート ===
 

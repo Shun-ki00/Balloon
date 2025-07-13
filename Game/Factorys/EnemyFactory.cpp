@@ -16,23 +16,22 @@
 
 
 // 敵の作成
-std::unique_ptr<IObject> EnemyFactory::CreateEnemy(IObject* parent,
-	const DirectX::SimpleMath::Vector3& initialPosition,
-	const DirectX::SimpleMath::Vector3& initialRotation,
-	const DirectX::SimpleMath::Vector3& initialScale, const bool& isFixed)
+std::unique_ptr<IObject> EnemyFactory::CreateEnemy(IObject* parent, const EnemyParams& enemyParams)
 {
 	// 回転をクォータニオンに変換
 	DirectX::SimpleMath::Quaternion rotation =
-		EnemyFactory::ConvertToYawPitchRoll(initialRotation);
+		EnemyFactory::ConvertToYawPitchRoll(enemyParams.rotation);
 
 	// 砲塔を宣言する
 	std::unique_ptr<Enemy> enemy;
 	// Turretクラスのインスタンスを生成する
-	enemy.reset(new Enemy(Root::GetInstance(), parent , IObject::ObjectID::ENEMY , initialPosition, rotation , initialScale , 3));
+	enemy.reset(new Enemy(Root::GetInstance(), parent , IObject::ObjectID::ENEMY ,
+		enemyParams.position, rotation , enemyParams.scale, enemyParams.balloonIndex,
+		enemyParams.floatBehaviorParams,enemyParams.knockbackBehaviorParams,enemyParams.seekBehaviorParams));
 	// 初期化する
 	enemy->Initialize();
 	// 固定設定
-	enemy->SetIsFixed(isFixed);
+	enemy->SetIsFixed(enemyParams.fixed);
 
 	// オブジェクトメッセンジャーに登録
 	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::ENEMY, enemy->GetObjectNumber(), enemy.get());

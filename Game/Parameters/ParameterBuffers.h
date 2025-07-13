@@ -3,6 +3,60 @@
 
 // パラメータのデータ構造
 
+// === ステアリングビヘイビア ===
+
+// 揺れるビヘイビア
+struct FloatBehaviorParams
+{
+	bool isActive{};                          // ビヘイビアが有効か
+	float floatRange{};                       // 揺れ幅
+	float floatCycleSpeed{};                  // 周期の速さ
+	float floatSpeed{};                       // 速度
+	DirectX::SimpleMath::Vector3 direction{}; // 方向
+};
+
+// ノックバック時の反応を制御するビヘイビア
+struct KnockbackBehaviorParams
+{
+	bool isActive{};     // ビヘイビアが有効か
+	int count{};         // ノックバック回数または対象数
+	float radius{};      // ノックバックの有効範囲
+	float force{};       // ノックバックの強さ
+};
+
+// ターゲットを追跡するビヘイビア
+struct SeekBehaviorParams
+{
+	bool isActive{};                       // ビヘイビアが有効か
+	DirectX::SimpleMath::Vector3 offset{}; // 位置のオフセット
+	float predictionMultiplier{};          // 予測時間の倍率
+	float seekSpeed{};                     // 移動速度
+};
+
+// ターゲットから離れる逃走ビヘイビア
+struct FleeBehaviorParams
+{
+	bool isActive{};         // ビヘイビアが有効か
+	float detectionRadius{}; // 敵を検知する範囲
+	float speed{};           // 移動速度
+	float forceStrength{};   // 加える逃走力の強さ
+};
+
+
+// 風による外力のビヘイビア
+struct WindBehaviorParams
+{
+	bool isActive{};        // ビヘイビアが有効か
+	float minStrength{};    // 風の最小強度
+	float maxStrength{};    // 風の最大強度
+	float minDuration{};    // 風が吹く最短時間
+	float maxDuration{};    // 風が吹く最長時間
+	float idleTime{};       // 次の風までの待機時間
+	float currentDuration{};// 現在の風の残り継続時間
+};
+
+
+
 
 
 // === オブジェクト ===
@@ -15,15 +69,20 @@ struct PlayerParams
 	DirectX::SimpleMath::Vector3 scale;
 	bool fixed;
 	float balloonIndex;
+	FloatBehaviorParams floatBehaviorParams;
+	KnockbackBehaviorParams knockbackBehaviorParams;
 };
 // 敵
-struct EnemyParams
+struct EnemyParams 
 {
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 rotation;
 	DirectX::SimpleMath::Vector3 scale;
 	bool fixed;
 	float balloonIndex;
+	FloatBehaviorParams floatBehaviorParams;
+	KnockbackBehaviorParams knockbackBehaviorParams;
+	SeekBehaviorParams seekBehaviorParams;
 };
 // 風船
 struct BalloonParams
@@ -66,56 +125,6 @@ struct FollowCameraParams
 	std::string objectId;
 	int objectNumber;
 	DirectX::SimpleMath::Vector3 distance;
-};
-
-// === ステアリングビヘイビア ===
-
-// 揺れるビヘイビア
-struct FloatBehaviorParams
-{
-	float m_floatRange{};                       // 揺れ幅
-	float m_floatCycleSpeed{};                  // 周期の速さ
-	float m_floatSpeed{};                       // 速度
-	DirectX::SimpleMath::Vector3 m_direction{}; // 方向
-};
-
-// ノックバック時の反応を制御するビヘイビア
-struct KnockbackBehaviorParams
-{
-	bool isActive{};     // ビヘイビアが有効か
-	int count{};         // ノックバック回数または対象数
-	float radius{};      // ノックバックの有効範囲
-	float force{};       // ノックバックの強さ
-};
-
-// ターゲットを追跡するビヘイビア
-struct SeekBehaviorParams
-{
-	DirectX::SimpleMath::Vector3 offset{}; // 位置のオフセット
-	float predictionMultiplier{};          // 予測時間の倍率
-	float seekSpeed{};                     // 移動速度
-};
-
-// ターゲットから離れる逃走ビヘイビア
-struct FleeBehaviorParams
-{
-	bool isActive{};         // ビヘイビアが有効か
-	float detectionRadius{}; // 敵を検知する範囲
-	float speed{};           // 移動速度
-	float forceStrength{};   // 加える逃走力の強さ
-};
-
-
-// 風による外力のビヘイビア
-struct WindBehaviorParams
-{
-	bool isActive{};        // ビヘイビアが有効か
-	float minStrength{};    // 風の最小強度
-	float maxStrength{};    // 風の最大強度
-	float minDuration{};    // 風が吹く最短時間
-	float maxDuration{};    // 風が吹く最長時間
-	float idleTime{};       // 次の風までの待機時間
-	float currentDuration{};// 現在の風の残り継続時間
 };
 
 
@@ -176,6 +185,52 @@ inline DirectX::SimpleMath::Vector3 ParseVector3(const nlohmann::json& j)
 	};
 }
 
+// ==== ステアリングビヘイビア ====
+
+inline void from_json(const nlohmann::json& j, FloatBehaviorParams& p)
+{
+	auto node = j.at("FloatBehavior");
+
+	p.isActive = node.at("isActive").get<bool>();
+	p.floatRange = node.at("floatRange").get<float>();
+	p.floatCycleSpeed = node.at("floatCycleSpeed").get<float>();
+	p.floatSpeed = node.at("floatSpeed").get<float>();
+	p.direction = ParseVector3(node.at("direction"));
+}
+
+inline void from_json(const nlohmann::json& j, KnockbackBehaviorParams& p)
+{
+	auto node = j.at("KnockbackBehavior");
+
+	p.isActive = node.at("isActive").get<bool>();
+	p.count = node.at("count").get<int>();
+	p.radius = node.at("radius").get<float>();
+	p.force = node.at("force").get<float>();
+}
+
+inline void from_json(const nlohmann::json& j, SeekBehaviorParams& p)
+{
+	auto node = j.at("SeekBehavior");
+
+	p.isActive = node.at("isActive").get<bool>();
+	p.offset = ParseVector3(node.at("offset"));
+	p.predictionMultiplier = node.at("predictionMultiplier").get<float>();
+	p.seekSpeed = node.at("seekSpeed").get<float>();
+}
+
+inline void from_json(const nlohmann::json& j, FleeBehaviorParams& p)
+{
+	auto node = j.at("FleeBehavior");
+
+	p.isActive = node.at("isActive").get<bool>();
+	p.detectionRadius = node.at("detectionRadius").get<float>();
+	p.speed = node.at("speed").get<float>();
+	p.forceStrength = node.at("forceStrength").get<float>();
+}
+
+
+
+
 inline void from_json(const nlohmann::json& j, SceneLinkParams& s)
 {
 	//auto stage = j.at("SceneLinkParams");
@@ -200,6 +255,8 @@ inline void from_json(const nlohmann::json& j, PlayerParams& p)
 	p.scale = ParseVector3(player.at("scale"));
 	p.fixed = player.at("fixed").get<bool>();
 	p.balloonIndex = player.at("balloonIndex").get<float>();
+	p.floatBehaviorParams = player.get<FloatBehaviorParams>();
+	p.knockbackBehaviorParams = player.get<KnockbackBehaviorParams>();
 }
 
 inline void from_json(const nlohmann::json& j, EnemyParams& e)
@@ -209,6 +266,9 @@ inline void from_json(const nlohmann::json& j, EnemyParams& e)
 	e.scale = ParseVector3(j.at("scale"));
 	e.fixed = j.at("fixed").get<bool>();
 	e.balloonIndex = j.at("balloonIndex").get<float>();
+	e.floatBehaviorParams = j.get<FloatBehaviorParams>();
+	e.knockbackBehaviorParams = j.get<KnockbackBehaviorParams>();
+	e.seekBehaviorParams = j.get<SeekBehaviorParams>();
 }
 
 inline void from_json(const nlohmann::json& j, BalloonParams& b)
@@ -233,3 +293,5 @@ inline void from_json(const nlohmann::json& j, UIParams& u)
 	u.rotation = ParseVector3(j.at("rotation"));
 	u.scale = ParseVector3(j.at("scale"));
 }
+
+

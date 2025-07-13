@@ -1,16 +1,14 @@
 #pragma once
 #include "Interface/IObject.h"
 #include "Interface/IPlayerFactory.h"
+#include "Game/Parameters/ParameterBuffers.h"
 
 class PlayerFactory : public IPlayerFactory
 {
 public:
 	// プレイヤーを生成する
 	static std::unique_ptr<IObject> CreatePlayer(IObject* parent,
-		const DirectX::SimpleMath::Vector3& initialPosition,
-		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale,
-		const bool isFixed = false
+		const PlayerParams& playerParams
 		);
 
 	// プレイヤーの体を生成する

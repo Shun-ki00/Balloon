@@ -10,6 +10,7 @@
 #include "Interface/IComposite.h"
 #include "Interface/ICollision.h"
 #include "Game/Object/Object.h"
+#include "Game/Parameters/ParameterBuffers.h"
 
 class Transform;
 class PlayerRenderableObject;
@@ -65,7 +66,8 @@ public:
 	Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale,const float& balloonIndex);
+		const DirectX::SimpleMath::Vector3& scale,const float& balloonIndex,
+		const FloatBehaviorParams& floatBehavior, const KnockbackBehaviorParams& knockbackBehavior);
 	// デストラクタ
 	~Player() override;
 
@@ -152,6 +154,9 @@ private:
 	// === ステアリングビヘイビア ===
 
 	std::unique_ptr<SteeringBehavior> m_steeringBehavior;
+
+	FloatBehaviorParams m_floatBehaviorParams;
+	KnockbackBehaviorParams m_knockbackBehaviorParams;
 	
 	// === ステート ===
 

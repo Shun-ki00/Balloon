@@ -30,10 +30,9 @@ void SceneFactory::CreateTitleScene(Root* root)
 
 	std::vector<UIParams> uis;
 	data.at("UI").get_to(uis);
-
+	 
 	// プレイヤー （固定）0
-	root->Attach(PlayerFactory::CreatePlayer(root,
-		player.position, player.rotation, player.scale, true));
+	root->Attach(PlayerFactory::CreatePlayer(root, player));
 
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
@@ -143,12 +142,7 @@ void SceneFactory::CreatePlayScene(Root* root)
 
 	// プレイヤー （固定）0
 	const auto& player = data.get<PlayerParams>();
-	root->Attach(PlayerFactory::CreatePlayer(
-		root,
-		player.position,
-		player.rotation,
-		player.scale,
-		player.fixed));
+	root->Attach(PlayerFactory::CreatePlayer(root,player));
 
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
@@ -162,13 +156,8 @@ void SceneFactory::CreatePlayScene(Root* root)
 	const auto& enemies = data.at("Enemy").get<std::vector<EnemyParams>>();
 	for (const auto& enemy : enemies)
 	{
-		root->Attach(EnemyFactory::CreateEnemy(
-			root,
-			enemy.position,
-			enemy.rotation,
-			enemy.scale,enemy.fixed));
+		root->Attach(EnemyFactory::CreateEnemy(root,enemy));
 	}
-
 
 	// カウントダウンUI
 	const auto& uis = data.at("UI").get<std::vector<UIParams>>();
@@ -251,7 +240,7 @@ void SceneFactory::CreateGameClearScene(Root* root)
 
 	// プレイヤー 0 
 	root->Attach(PlayerFactory::CreatePlayer(root,
-		player.position, player.rotation, player.scale, true));
+		player));
 
 	// カメラの作成をする
 	std::vector<std::unique_ptr<ICamera>> cameras;
@@ -322,8 +311,7 @@ void SceneFactory::CreateGameOverScene(Root* root)
 	data.at("UI").get_to(uis);
 
 	// プレイヤー 0
-	root->Attach(PlayerFactory::CreatePlayer(root,
-		player.position, player.rotation, player.scale, true));
+	root->Attach(PlayerFactory::CreatePlayer(root,player));
 
 	// 木箱 1
 	root->Attach(WoodBoxFactory::CreateWoodBox(root,

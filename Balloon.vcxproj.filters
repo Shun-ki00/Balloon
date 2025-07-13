@@ -194,9 +194,6 @@
     <Filter Include="Game\Objects\WoodBox">
       <UniqueIdentifier>{563e5690-5f1d-4698-93ed-38a275df5243}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Json">
-      <UniqueIdentifier>{769212ca-8041-4283-b77f-b4ce52a783b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Status">
       <UniqueIdentifier>{d695a56d-04be-4ecb-bc8e-09189eaa13e0}</UniqueIdentifier>
     </Filter>
@@ -214,6 +211,9 @@
     </Filter>
     <Filter Include="Game\States\SceneStates\StageSelectScene">
       <UniqueIdentifier>{61084144-0b53-4678-871f-c58d6c9388b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{769212ca-8041-4283-b77f-b4ce52a783b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1116,28 +1116,28 @@
       <Filter>Shaders\Particle</Filter>
     </None>
     <None Include="Resources\Json\JSON\GameClearScene.json">
-      <Filter>Json</Filter>
+      <Filter>json</Filter>
     </None>
     <None Include="Resources\Json\JSON\GameResourceData.json">
-      <Filter>Json</Filter>
+      <Filter>json</Filter>
     </None>
     <None Include="Resources\Json\JSON\Parameters.json">
-      <Filter>Json</Filter>
-    </None>
-    <None Include="Resources\Json\JSON\Stage1Data.json">
-      <Filter>Json</Filter>
-    </None>
-    <None Include="Resources\Json\JSON\Stage1ObjectData.json">
-      <Filter>Json</Filter>
+      <Filter>json</Filter>
     </None>
     <None Include="Resources\Json\JSON\TitleScene.json">
-      <Filter>Json</Filter>
+      <Filter>json</Filter>
     </None>
     <None Include="Resources\Json\JSON\GameOverScene.json">
-      <Filter>Json</Filter>
+      <Filter>json</Filter>
     </None>
     <None Include="Resources\Json\JSON\PlayScene.json">
-      <Filter>Json</Filter>
+      <Filter>json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\PlayScene1.json">
+      <Filter>json</Filter>
+    </None>
+    <None Include="Resources\Json\JSON\PlayScene2.json">
+      <Filter>json</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

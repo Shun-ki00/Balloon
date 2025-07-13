@@ -101,7 +101,7 @@ void WoodBox::Initialize()
 	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
 
 	// —h‚ê‚éˆ—
-	m_floatBehavior = std::make_unique<FloatBehavior>();
+	m_floatBehavior = std::make_unique<FloatBehavior>(2.0f,2.0f,2.0f,DirectX::SimpleMath::Vector3::Up);
 	m_floatBehavior->On();
 }
 

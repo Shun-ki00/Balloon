@@ -4,9 +4,21 @@
         "rotation": [ 0.0, -40.0, 0.0 ],
         "scale": [ 0.1, 0.1, 0.1 ],
         "fixed": true,
-        "balloonIndex": 0.0
+        "balloonIndex": 3.0,
+        "FloatBehavior": {
+            "isActive": false,
+            "floatRange": 2.5,
+            "floatCycleSpeed": 1.0,
+            "floatSpeed": 0.5,
+            "direction": [ 0.0, 1.0, 0.0 ]
+        },
+        "KnockbackBehavior": {
+            "isActive": false,
+            "count": 2,
+            "radius": 3.0,
+            "force": 2.5
+        }
     },
-
     "camera": {
         "direction": [ 0.0, 0.0, -1.0 ],
         "rotation": [ 10.0, 30.0, 0.0 ]

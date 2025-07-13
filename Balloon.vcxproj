@@ -518,8 +518,8 @@
     <None Include="Resources\Json\JSON\GameResourceData.json" />
     <None Include="Resources\Json\JSON\Parameters.json" />
     <None Include="Resources\Json\JSON\PlayScene.json" />
-    <None Include="Resources\Json\JSON\Stage1Data.json" />
-    <None Include="Resources\Json\JSON\Stage1ObjectData.json" />
+    <None Include="Resources\Json\JSON\PlayScene1.json" />
+    <None Include="Resources\Json\JSON\PlayScene2.json" />
     <None Include="Resources\Json\JSON\TitleScene.json" />
     <None Include="Resources\Shaders\hlsl\Common.hlsli" />
     <None Include="Resources\Shaders\hlsl\Particle.hlsli" />
