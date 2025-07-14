@@ -72,12 +72,8 @@ float4 main(PS_INPUT input) : SV_TARGET
     // ランダムなオフセットを生成
     float2 uv = input.uv;
        
-    float2 offset = perlinNoise(uv );
+    float2 offset = perlinNoise(uv);
     uv += offset;
-    
-    
-    //float2 offset = perlinNoise(uv);
-    //uv += offset;
     
     // オリジナルノイズ
     float p = originalNoise(uv * fnUVPower);
@@ -88,6 +84,8 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     // テクスチャをサンプリング
     float4 output = tex.Sample(sam, uv);
+    
+    output *= color;
     
     
     return output;

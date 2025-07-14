@@ -38,8 +38,8 @@ void SceneFactory::CreateTitleScene(Root* root)
 	std::vector<std::unique_ptr<ICamera>> cameras;
 	cameras.emplace_back(CameraFactory::CreateFixedCaemra(
 		DirectX::SimpleMath::Vector3::Backward,
-		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Down, DirectX::XMConvertToRadians(30.0f)) *
-		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Right, DirectX::XMConvertToRadians(10.0f)))
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Down, DirectX::XMConvertToRadians(27.0f)) *
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Right, DirectX::XMConvertToRadians(14.0f)))
 	);
 	// カメラシステムをアタッチする 1
 	root->Attach(CameraFactory::CreateCameraSystem(root, std::move(cameras)));

@@ -1,10 +1,5 @@
 #include "pch.h"
 #include "Game/Enemy/Enemy.h"
-#include "Game/Object/Object.h"
-#include "Interface/IComposite.h"
-#include "Framework/Resources/Resources.h"
-#include "Framework/Resources/ModelResources.h"
-#include "Framework/Resources/ResourceKeys.h"
 #include "Game/Buffers.h"
 #include "Game/Factorys/EnemyFactory.h"
 #include "Game/Factorys/BalloonFactory.h"
@@ -12,27 +7,27 @@
 #include "Game/Visitor/CollisionVisitor.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Player/Player.h"
-
-#include "Interface/ISteeringBehavior.h"
+// ステアリングビヘイビア
+#include "Game/SteeringBehavior/SteeringBehavior.h"
 #include "Game/SteeringBehavior/WindBehavior.h"
 #include "Game/SteeringBehavior/KnockbackBehavior.h"
 #include "Game/SteeringBehavior/FloatBehavior.h"
 #include "Game/SteeringBehavior/FloatForceBehavior.h"
 #include "Game/SteeringBehavior/PushBackBehavior.h"
 #include "Game/SteeringBehavior/SeekBehavior.h"
-#include "Game/SteeringBehavior/SteeringBehavior.h"
-
+// ステート
 #include "Game/States/Enemy/EnemyIdleState.h"
 #include "Game/States/Enemy/EnemyRunState.h"
 #include "Game/States/Enemy/EnemyAttackState.h"
 #include "Game/States/Enemy/EnemyWanderState.h"
 #include "Game/States/Enemy/EnemyChaseState.h"
-
+// ステータス
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
 
 #include "Game/Enemy/ActionSelection.h"
 #include "Game/BehaviorTree/SelectorNode.h"
+#include "Framework/Utilities/RandomUtilities.h"
 
 
 /// <summary>
@@ -523,13 +518,13 @@ void Enemy::AttachObject()
 
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ 0.0f ,10.0f ,0.2f }, { -20.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One));
+		{ 0.0f ,10.0f ,0.2f }, { -20.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One,static_cast<float>(RandomUtilities::RandomInt(0, 5))));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ 0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,16.0f }, DirectX::SimpleMath::Vector3::One));
+		{ 0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,16.0f }, DirectX::SimpleMath::Vector3::One, static_cast<float>(RandomUtilities::RandomInt(0, 5))));
 	// 風船を追加する
 	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ -0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,-16.0f }, DirectX::SimpleMath::Vector3::One));
+		{ -0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,-16.0f }, DirectX::SimpleMath::Vector3::One, static_cast<float>(RandomUtilities::RandomInt(0, 5))));
 
 	// 風船のボディを取得
 	for (int i = 0; i < 3; i++)

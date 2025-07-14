@@ -15,13 +15,9 @@
 #include "Game/Parameters/Parameters.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Scenes/PlayScene.h"
-
 #include "Game/Scenes/StageSelectScene.h"
-#include "Game/Scenes/PlayScene.h"
-
 #include "Game/Factorys/SceneFactory.h"
-
-
+#include "Game/AmbientLight/AmbientLight.h"
 // ステート
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
@@ -78,8 +74,10 @@ void GameOverScene::Start()
 
 	// スカイボックスを変更
 	m_commonResources->GetSkyBox()->SetDayProgress(1.0f);
-
-	
+	// オブジェクトの色を変更
+	AmbientLight::GetInstance()->SettColor({ 1.0f, 0.45f, 0.25f });
+	// 海の色を変更
+	m_commonResources->GetSea()->SetColor({ 0.6f, 0.4f, 0.3f,1.0f });
 
 	// プレイヤーの動きを変更
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_SIT_ANIMATION });
@@ -118,6 +116,10 @@ void GameOverScene::Finalize()
 {
 	// スカイボックスを変更
 	m_commonResources->GetSkyBox()->SetDayProgress(0.0f);
+	// ライトの色を変更
+	AmbientLight::GetInstance()->SettColor({ 0.78f, 0.89f, 0.95f });
+	// 海の色を変更
+	m_commonResources->GetSea()->SetColor(DirectX::SimpleMath::Vector4::One);
 }
 
 /// <summary>

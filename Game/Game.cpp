@@ -103,6 +103,7 @@ void Game::Initialize(HWND window, int width, int height)
     // 海の作成
     m_sea = std::make_unique<Sea>();
     m_sea->Initialize();
+    m_commonResources->SetSea(m_sea.get());
 
     // スカイボックスの作成
     m_skyBox = std::make_unique<SkyBox>();

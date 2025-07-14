@@ -16,7 +16,6 @@
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Scenes/PlayScene.h"
 
-
 #include "Game/Factorys/SceneFactory.h"
 
 #include "Game/Scenes/StageSelectScene.h"

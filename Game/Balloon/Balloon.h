@@ -46,7 +46,7 @@ public:
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
 		const DirectX::SimpleMath::Vector3& scale,
-		Message::MessageID messageID);
+		const float& colorIndex);
 	// デストラクタ
 	~Balloon() override;
 
@@ -96,8 +96,6 @@ private:
 	// 親オブジェクト
 	IObject* m_parent;
 
-	// メッセージID
-	Message::MessageID m_messageID;
 	// Transform
 	std::unique_ptr<Transform> m_transform;
 	// 当たり判定
@@ -111,6 +109,9 @@ private:
 	DirectX::SimpleMath::Vector3 m_side;
 	// プレイヤーの加速度
 	DirectX::SimpleMath::Vector3 m_acceralation;
+
+	// 風船の色番号
+	float m_colorIndex;
 
 	// 風船の大きさ
 	float m_balloonScale;

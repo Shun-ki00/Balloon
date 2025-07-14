@@ -14,7 +14,8 @@ std::unique_ptr<IObject> BalloonFactory::CreateBalloon(
 	IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const DirectX::SimpleMath::Vector3& initialRotation,
-	const DirectX::SimpleMath::Vector3& initialScale)
+	const DirectX::SimpleMath::Vector3& initialScale,
+	const float& colorIndex)
 {
 	// 回転をクォータニオンに変換
 	DirectX::SimpleMath::Quaternion rotation =
@@ -23,7 +24,7 @@ std::unique_ptr<IObject> BalloonFactory::CreateBalloon(
 	// 砲塔を宣言する
 	std::unique_ptr<IObject> player;
 	// Turretクラスのインスタンスを生成する
-	player.reset(new Balloon(Root::GetInstance(),parent, objectID, initialPosition, rotation, initialScale, Message::MessageID::NONE));
+	player.reset(new Balloon(Root::GetInstance(),parent, objectID, initialPosition, rotation, initialScale, colorIndex));
 	// 初期化する
 	player->Initialize();
 
@@ -36,7 +37,8 @@ std::unique_ptr<IObject> BalloonFactory::CreateBalloonBody(
 	IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const DirectX::SimpleMath::Vector3& initialRotation,
-	const DirectX::SimpleMath::Vector3& initialScale)
+	const DirectX::SimpleMath::Vector3& initialScale,
+	const float& colorIndex)
 {
 	// 回転をクォータニオンに変換
 	DirectX::SimpleMath::Quaternion rotation =
@@ -45,7 +47,7 @@ std::unique_ptr<IObject> BalloonFactory::CreateBalloonBody(
 	// 砲塔を宣言する
 	std::unique_ptr<IObject> balloonBody;
 	// Turretクラスのインスタンスを生成する
-	balloonBody.reset(new BalloonBody(Root::GetInstance(), parent, objectID, initialPosition, rotation, initialScale, Message::MessageID::NONE));
+	balloonBody.reset(new BalloonBody(Root::GetInstance(), parent, objectID, initialPosition, rotation, initialScale, colorIndex));
 	// 初期化する
 	balloonBody->Initialize();
 	// オブジェクトメッセンジャーに登録

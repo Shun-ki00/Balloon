@@ -81,7 +81,7 @@ void LeftArm::Initialize()
 	// ‰Šú‰»ˆ—
 	PBRLitConstantBuffer buffer{
 		DirectX::SimpleMath::Vector4::One,
-		0.1f,
+		0.0f,
 		1.0f,
 		1.0f,
 		0.0f

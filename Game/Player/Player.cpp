@@ -43,6 +43,7 @@
 // ステータス
 #include "Game/Status/BalloonScaleController.h"
 #include "Game/Status/HpController.h"
+#include "Framework/Utilities/RandomUtilities.h"
 
 
 /// <summary>
@@ -665,21 +666,24 @@ void Player::AttachObject()
 	this->Attach(PlayerFactory::CreatePlayerBody(this,
 		{0.0f ,5.9f ,0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One));
 
-	// 風船を追加する
-	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ 0.0f ,10.0f ,0.2f }, { -20.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One));
-	// 風船を追加する
-	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ 0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,16.0f }, DirectX::SimpleMath::Vector3::One));
-	// 風船を追加する
-	this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
-		{ -0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,-16.0f }, DirectX::SimpleMath::Vector3::One));
-
-
-	for (int i = 0; i < 3; i++)
+	if (m_balloonIndex > 0)
 	{
-		// 風船のボディを取得
-		m_balloonObject.push_back(dynamic_cast<Balloon*>(m_childs[i + 1].get())->GetBody());
+		// 風船を追加する
+		this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
+			{ 0.0f ,10.0f ,0.2f }, { -20.0f ,0.0f ,0.0f }, DirectX::SimpleMath::Vector3::One,static_cast<float>(RandomUtilities::RandomInt(0,5))));
+		// 風船を追加する
+		this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
+			{ 0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,16.0f }, DirectX::SimpleMath::Vector3::One,static_cast<float>(RandomUtilities::RandomInt(0, 5))));
+		// 風船を追加する
+		this->Attach(BalloonFactory::CreateBalloon(this, IObject::ObjectID::BALLOON,
+			{ -0.9f ,10.0f ,0.0f }, { -0.0f ,0.0f ,-16.0f }, DirectX::SimpleMath::Vector3::One,static_cast<float>(RandomUtilities::RandomInt(0, 5))));
+
+
+		for (int i = 0; i < m_balloonIndex; i++)
+		{
+			// 風船のボディを取得
+			m_balloonObject.push_back(dynamic_cast<Balloon*>(m_childs[i + 1].get())->GetBody());
+		}
 	}
 
 	// オブジェクトのカウントをリセット

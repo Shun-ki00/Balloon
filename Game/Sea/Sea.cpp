@@ -14,7 +14,8 @@ Sea::Sea()
 	m_hullShader{},
 	m_domainShader{},
 	m_pixelShader{},
-	m_texture{}
+	m_texture{},
+	m_color{}
 {
 	m_commonResources = CommonResources::GetInstance();
 	m_resources       = Resources::GetInstance();
@@ -61,6 +62,9 @@ void Sea::Initialize()
 	// 計算時間を取得
 	m_time = elapsed.count();
 
+	// 色を設定
+	m_color = DirectX::SimpleMath::Vector4::One;
+
 	// タイム初期化
 	m_time = 0.0f;
 }
@@ -87,6 +91,7 @@ void Sea::Render()
 	buffer.matWorld = world.Transpose();
 	buffer.cameraPosition = { position.x , position.y , position.z ,0.0f };
 	buffer.TessellationFactor = DirectX::SimpleMath::Vector4(0.0f, m_time, 2.0f, 0.0f);
+	buffer.color = m_color;
 	// 定数バッファの更新
 	m_transformBuffer->Update(m_context, buffer);
 

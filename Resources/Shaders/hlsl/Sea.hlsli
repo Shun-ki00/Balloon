@@ -72,6 +72,7 @@ cbuffer TransformConstBuffer : register(b0)
     matrix matProj;
     float4 cameraPosition;
     float4 TessellationFactor; 
+    float4 color;
 };
 
 // 海のノイズデータ

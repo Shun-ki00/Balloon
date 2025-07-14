@@ -65,7 +65,7 @@ TimeUI::TimeUI(IObject* parent, IObject::ObjectID objectID,
 void TimeUI::Initialize()
 {
 	// 時間を初期化
-	m_currentTime = 190.0f;
+	m_currentTime = 10.0f;
 	// 初期はタイマーを止めておくメッセージで通知を受け取った際にアクティブにする
 	m_isActiveTimer = false;
 

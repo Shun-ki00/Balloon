@@ -47,8 +47,7 @@ public:
 	BalloonBody(IObject* root, IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& position,
 		const DirectX::SimpleMath::Quaternion& rotation,
-		const DirectX::SimpleMath::Vector3& scale,
-		Message::MessageID messageID);
+		const DirectX::SimpleMath::Vector3& scale,const float& colorIndex);
 	// デストラクタ
 	~BalloonBody() override;
 
@@ -83,8 +82,7 @@ private:
 	// 親オブジェクト
 	IObject* m_parent;
 
-	// メッセージID
-	Message::MessageID m_messageID;
+
 	// Transform
 	std::unique_ptr<Transform> m_transform;
 	// 描画オブジェクト
@@ -101,5 +99,6 @@ private:
 	// プレイヤーの加速度
 	DirectX::SimpleMath::Vector3 m_acceralation;
 
-
+	// 色番号
+	float m_colorIndex;
 };

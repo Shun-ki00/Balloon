@@ -18,7 +18,7 @@ Balloon::Balloon(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
 	const DirectX::SimpleMath::Vector3& scale,
-	Message::MessageID messageID)
+	const float& colorIndex)
 	:
 	// 基底クラス
 	Object(
@@ -30,7 +30,7 @@ Balloon::Balloon(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + Object::CountUpNumber()),
 	m_objectID(objectID),
-	m_messageID(messageID),
+	m_colorIndex(colorIndex),
 	m_parent(parent),
 	m_transform{}
 {
@@ -73,7 +73,7 @@ void Balloon::Initialize()
 
 	// 風船の本体を追加
 	this->Attach(BalloonFactory::CreateBalloonBody(this, m_objectID,
-		{ 0.0f , 14.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.055f));
+		{ 0.0f , 14.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.055f,m_colorIndex));
 	// 風船のひもを追加
 	this->Attach(BalloonFactory::CreateBalloonRope(this, m_objectID,
 		{ 0.0f , 6.0f , 0.0f }, DirectX::SimpleMath::Vector3::Zero, DirectX::SimpleMath::Vector3::One * 0.02f));
@@ -85,7 +85,7 @@ void Balloon::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Balloon::Update(const float& elapsedTime)
 {
-	(void)elapsedTime;
+	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// Transformの更新処理
 	m_transform->Update();

@@ -16,6 +16,11 @@ public:
 	// 定数バッファを取得する
 	ID3D11Buffer* GetBuffer() const { return m_constantBuffer->GetBuffer(); }
 
+	// 色を設定
+	void SettColor(const DirectX::SimpleMath::Vector3& color) { m_ambientLightData.ambientLightColor = color; }
+	// 強さを設定
+	void SetIntensity(const float& intensity) { m_ambientLightData.ambientLightIntensity = intensity; }
+
 	// オブジェクトのアクティブ設定
 	void SetIsActive(const bool& isActive) { m_isActive = isActive; }
 	// オブジェクトのアクティブ状態を取得

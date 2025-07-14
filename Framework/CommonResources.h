@@ -19,6 +19,7 @@
 #include "Game/SkyBox/SkyBox.h"
 #include "Framework/SceneManager.h"
 #include "Game/Transform/Transform.h"
+#include "Game/Sea/Sea.h"
 
 
 class CommonResources
@@ -40,6 +41,9 @@ public:
 	// スカイボックス
 	void SetSkyBox(SkyBox* skyBox) { m_skyBox = skyBox; }
 	SkyBox* GetSkyBox() { return m_skyBox; }
+	// 海
+	void SetSea(Sea* sea) { m_sea = sea; }
+	Sea* GetSea() { return m_sea; }
 
 	// スクリーンサイズ
 	void GetScreenSize(int& width, int& height) const { width = m_screenW; height = m_screenH; }
@@ -99,6 +103,9 @@ private:
 
 	// スカイボックス
 	SkyBox* m_skyBox;
+	// 海
+	Sea* m_sea;
+
 	// スクリーンサイズ
 	int m_screenW, m_screenH;
 

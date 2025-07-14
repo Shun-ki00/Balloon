@@ -16,6 +16,7 @@ private:
 		DirectX::SimpleMath::Matrix		matProj;
 		DirectX::SimpleMath::Vector4    cameraPosition;
 		DirectX::SimpleMath::Vector4    TessellationFactor;
+		DirectX::SimpleMath::Vector4    color;
 	};
 
 	// インスタンスデータ
@@ -56,6 +57,10 @@ private:
 	};
 
 public:
+
+	// 色を設定する
+	void SetColor(const DirectX::SimpleMath::Vector4& color) { m_color = color; }
+
 	// コンストラクタ
 	Sea();
 	// デストラクタ
@@ -120,4 +125,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_instanceStructuredBuffer;
 	// インスタンスのシェーダーリソースビュー
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_instanceSRV;
+
+	// 色
+	DirectX::SimpleMath::Vector4 m_color;
 };

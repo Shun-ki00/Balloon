@@ -16,8 +16,7 @@
 BalloonBody::BalloonBody(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	const DirectX::SimpleMath::Vector3& position,
 	const DirectX::SimpleMath::Quaternion& rotation,
-	const DirectX::SimpleMath::Vector3& scale,
-	Message::MessageID messageID)
+	const DirectX::SimpleMath::Vector3& scale, const float& colorIndex)
 	:
 	// 基底クラス
 	Object(
@@ -29,8 +28,8 @@ BalloonBody::BalloonBody(IObject* root, IObject* parent, IObject::ObjectID objec
 	m_isActive(true),
 	m_objectNumber(root->GetObjectNumber() + Object::CountUpNumber()),
 	m_objectID(objectID),
-	m_messageID(messageID),
 	m_parent(parent),
+	m_colorIndex(colorIndex),
 	m_transform{}
 {
 	// 共有リソースのインスタンスを取得する
@@ -75,9 +74,9 @@ void BalloonBody::Initialize()
 	// 初期化処理
 	PBRLitConstantBuffer buffer{
 		DirectX::SimpleMath::Vector4::One,
-		0.0f,
+		0.1f,
 		1.0f,
-		1.0f,
+		m_colorIndex,
 		0.0f
 	};
 
@@ -97,7 +96,7 @@ void BalloonBody::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void BalloonBody::Update(const float& elapsedTime)
 {
-	(void)elapsedTime;
+	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// Transformの更新処理
 	m_transform->Update();
@@ -110,12 +109,11 @@ void BalloonBody::Update(const float& elapsedTime)
 /// </summary>
 void BalloonBody::Finalize()
 {
-
 }
 
 void BalloonBody::OnMessegeAccepted(Message::MessageData messageData)
 {
-	(void)messageData;
+	UNREFERENCED_PARAMETER(messageData);
 }
 
 // 通知する

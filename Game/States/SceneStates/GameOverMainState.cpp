@@ -4,6 +4,7 @@
 #include "Framework/InputManager.h"
 #include "Framework/SceneManager.h"
 
+
 GameOverMainState::GameOverMainState()
 {
 	// インスタンスを取得する

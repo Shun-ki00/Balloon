@@ -59,8 +59,8 @@ void AmbientLight::Initialize()
 	m_constantBuffer = std::make_unique<ConstantBuffer<AmbientLightParameters>>();
 	m_constantBuffer->Initialize(device);
 
-	m_ambientLightData.ambientLightColor = DirectX::SimpleMath::Vector3::One;
-	m_ambientLightData.ambientLightIntensity = 0.8f;
+	m_ambientLightData.ambientLightColor = { 0.78f, 0.89f, 0.95f };
+	m_ambientLightData.ambientLightIntensity = 1.0f;
 }
 
 /// <summary>

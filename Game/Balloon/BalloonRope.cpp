@@ -95,7 +95,7 @@ void BalloonRope::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void BalloonRope::Update(const float& elapsedTime)
 {
-	(void)elapsedTime;
+	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// Transformの更新処理
 	m_transform->Update();
@@ -115,7 +115,7 @@ void BalloonRope::Finalize()
 
 void BalloonRope::OnMessegeAccepted(Message::MessageData messageData)
 {
-	(void)messageData;
+	UNREFERENCED_PARAMETER(messageData);
 }
 
 // 通知する

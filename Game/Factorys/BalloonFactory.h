@@ -6,21 +6,23 @@
 class BalloonFactory : public IBalloonFactory
 {
 public:
-	// “G‚ğ¶¬‚·‚é
+	// •—‘D‚ğ¶¬
 	static std::unique_ptr<IObject> CreateBalloon(
 		IObject* parent,IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale);
+		const DirectX::SimpleMath::Vector3& initialScale,
+		const float& colorIndex);
 
-	// “G‚Ì‘Ì‚ğ¶¬‚·‚é
+	// •—‘D‚Ì–{‘Ì‚ğ¶¬
 	static std::unique_ptr<IObject> CreateBalloonBody(
 		IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const DirectX::SimpleMath::Vector3& initialRotation,
-		const DirectX::SimpleMath::Vector3& initialScale);
+		const DirectX::SimpleMath::Vector3& initialScale,
+		const float& colorIndex);
 
-	// “G‚Ì“ª‚ğ¶¬‚·‚é
+	// •—‘D‚Ìü‚ğ¶¬
 	static std::unique_ptr<IObject> CreateBalloonRope(
 		IObject* parent, IObject::ObjectID objectID,
 		const DirectX::SimpleMath::Vector3& initialPosition,
