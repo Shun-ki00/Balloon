@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: TitleScene.cpp
-// 概要: タイトルのシーン
+// ファイル名: StageSelectScene.cpp
+// 概要: ステージセレクトシーン
 // 
 // 製作者 : 清水駿希
 // 
@@ -15,21 +15,14 @@
 #include "Game/Parameters/Parameters.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Scenes/PlayScene.h"
-
-
 #include "Game/Factorys/SceneFactory.h"
-
 #include "Game/Scenes/TitleScene.h"
 #include "Game/Scenes/GameOverScene.h"
-
-// ステート
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
 #include "Game/States/SceneStates/StageSelectMainState.h"
 
-// フェードオブジェクト番号
-const int StageSelectScene::FADE_OBJECT_NUMBER = 5;
 
 /// <summary>
 /// コンストラクタ
@@ -103,6 +96,9 @@ void StageSelectScene::Update()
 	m_root->Update(elapsedTime);
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
 void StageSelectScene::Render()
 {
 	// 描画処理を行う
@@ -139,33 +135,25 @@ void StageSelectScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 	switch (messageID)
 	{
 		case Message::SceneMessageID::FADE_OUT_CANGE_TITLE_SCENE:
-
 			// 次のシーンの準備を行う
 			SceneManager::GetInstance()->PrepareScene<TitleScene>();
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
-
 			break;
-
 		case Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE:
-
 			// 次のシーンの準備を行う
 			SceneManager::GetInstance()->PrepareScene<PlayScene>();
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
-
 			break;		
 		case Message::SceneMessageID::MAIN:
-
 			// ステートを切り替える
 			this->ChangeState(m_stageSelectMainState.get());
-
 			break;
 		default:
 			break;
 	}
 }
-
 
 
 /// <summary>
@@ -174,7 +162,7 @@ void StageSelectScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 void StageSelectScene::CreateStates()
 {
 	// フェードインステート作成 初期化処理
-	m_fadeInState = std::make_unique<FadeInState>(FADE_OBJECT_NUMBER);
+	m_fadeInState = std::make_unique<FadeInState>(0);
 	m_fadeInState->Initialize();
 
 	// ステージセレクトシーンメインステート作成　初期化処理

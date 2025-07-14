@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: TitleScene.cpp
-// 概要: タイトルのシーン
+// ファイル名: GameClearScene.cpp
+// 概要: ゲームクリアシーン
 // 
 // 製作者 : 清水駿希
 // 
@@ -15,13 +15,9 @@
 #include "Game/Parameters/Parameters.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Scenes/PlayScene.h"
-
 #include "Game/Factorys/SceneFactory.h"
-
 #include "Game/Scenes/StageSelectScene.h"
 #include "Game/Scenes/PlayScene.h"
-
-// ステート
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
@@ -97,6 +93,9 @@ void GameClearScene::Update()
 	m_root->Update(elapsedTime);
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
 void GameClearScene::Render()
 {
 	// 描画処理を行う
@@ -132,9 +131,6 @@ void GameClearScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 {
 	switch (messageID)
 	{
-		case Message::SceneMessageID::FADE_OUT:
-
-			break;
 		case Message::SceneMessageID::FADE_OUT_CANGE_SELECT_SCEEN:
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());

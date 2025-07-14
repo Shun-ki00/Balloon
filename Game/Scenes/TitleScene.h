@@ -9,7 +9,6 @@
 #pragma once
 #include "Interface/IScene.h"
 
-
 class CommonResources;
 class Root;
 class Parameters;
@@ -54,6 +53,8 @@ private:
 	Parameters* m_parameters;
 	// 共有リソース
 	CommonResources* m_commonResources;
+	// ルート
+	Root* m_root;
 
 	// 現在の状態
 	IState* m_currentState;
@@ -66,7 +67,4 @@ private:
 	std::unique_ptr<FadeOutState> m_fadeOutState;
 	// フェードアウトステート
 	std::unique_ptr<FadeOutState> m_gameExitFadeOutState;
-
-	// ルート
-	Root* m_root;
 };

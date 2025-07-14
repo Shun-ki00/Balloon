@@ -15,11 +15,8 @@
 #include "Game/Message/ObjectMessenger.h"
 #include "Interface/IObject.h"
 #include "Game/Message/Message.h"
-// ファクトリ
 #include "Game/Factorys/SceneFactory.h"
-// シーン
 #include "Game/Scenes/StageSelectScene.h"
-// ステート
 #include "Interface/IState.h"
 #include "Game/States/SceneStates/FadeStates/FadeInState.h"
 #include "Game/States/SceneStates/FadeStates/FadeOutState.h"
@@ -33,11 +30,11 @@ TitleScene::TitleScene()
 	:
 	m_parameters{},
 	m_commonResources{},
+	m_root{},
 	m_currentState{},
 	m_fadeInState{},
 	m_titleMainState{},
-	m_fadeOutState{},
-	m_root{}
+	m_fadeOutState{}
 {
 	// インスタンスを取得する
 	m_commonResources  = CommonResources::GetInstance();
@@ -75,7 +72,6 @@ void TitleScene::Start()
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::TITLE_LOGO_UI, { Message::MessageID::TITLE_LOGO_ANIMATION });
 	// スタートテキストのアニメーションを行う
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::START_TEXT_UI, { Message::MessageID::START_TEXT_ANIMATION });
-
 	// プレイヤーの動きを変更
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, { Message::MessageID::PLAYER_TITLE_ANIMATION });
 
@@ -98,6 +94,9 @@ void TitleScene::Update()
 	m_root->Update(elapsedTime);
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
 void TitleScene::Render()
 {
 	// 描画処理を行う
@@ -133,29 +132,19 @@ void TitleScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 {
 	switch (messageID)
 	{
-		case Message::SceneMessageID::FADE_OUT:
-
-			break;
 		case Message::SceneMessageID::FADE_OUT_CANGE_MENU_SCENE:
-
 			// 次のシーンの準備を行う
 			SceneManager::GetInstance()->PrepareScene<StageSelectScene>();
-
 			// ステートを切り替える
 			this->ChangeState(m_fadeOutState.get());
-
 			break;		
 		case Message::SceneMessageID::FADE_OUT_EXIT_GAME:
 			// ステートを切り替える
 			this->ChangeState(m_gameExitFadeOutState.get());
-
 			break;
-
 		case Message::SceneMessageID::MAIN:
-
 			// ステートを切り替える
 			this->ChangeState(m_titleMainState.get());
-
 			break;
 		default:
 			break;
@@ -179,6 +168,7 @@ void TitleScene::CreateStates()
 	m_fadeOutState = std::make_unique<FadeOutState>(Message::MessageData{Message::MessageID::FADE_OUT,0,1.0f ,false});
 	m_fadeOutState->Initialize();
 
+	// ゲーム終了フェードアウトステート作成　初期化処理
 	m_gameExitFadeOutState = std::make_unique<FadeOutState>(Message::MessageData{ Message::MessageID::FADE_OUT_EXIT_GAME,0,1.0f ,false });
 	m_gameExitFadeOutState->Initialize();
 

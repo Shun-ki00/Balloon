@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: TitleScene.h
-// 概要: TitleScene.cppのヘッダーファイル
+// ファイル名: GameOverScene.h
+// 概要: GameOverScene.cppのヘッダーファイル
 // 
 // 製作者 : 清水駿希
 // 
@@ -9,11 +9,9 @@
 #pragma once
 #include "Interface/IScene.h"
 
-
 class CommonResources;
 class Root;
 class Parameters;
-// ステート
 class FadeInState;
 class GameOverMainState;
 class FadeOutState;
@@ -54,6 +52,8 @@ private:
 	Parameters* m_parameters;
 	// 共有リソース
 	CommonResources* m_commonResources;
+	// ルート
+	Root* m_root;
 
 	// 現在の状態
 	IState* m_currentState;
@@ -64,7 +64,4 @@ private:
 	std::unique_ptr<GameOverMainState> m_gameOverMainState;
 	// フェードアウトステート
 	std::unique_ptr<FadeOutState> m_fadeOutState;
-
-	// ルート
-	Root* m_root;
 };

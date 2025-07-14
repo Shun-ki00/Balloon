@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: DebugScene.h
-// 概要: DebugScene.cppのヘッダーファイル
+// ファイル名: PlayScene.h
+// 概要: PlayScene.cppのヘッダーファイル
 // 
 // 製作者 : 清水駿希
 // 
@@ -53,12 +53,12 @@ private:
 
 private:
 
-	// ルート
-	Root* m_root;
 	// パラメーター
 	Parameters* m_parameters;
 	// 共有リソース
 	CommonResources* m_commonResources;
+	// ルート
+	Root* m_root;
 
 	// デバッグカメラで実装
 	std::unique_ptr<DebugCamera> m_debugCamera;

@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: DebugScene.cpp
-// 概要: デバッグ用のシーン
+// ファイル名: PlayScene.cpp
+// 概要: プレイシーン
 // 
 // 製作者 : 清水駿希
 // 
@@ -28,23 +28,40 @@
 #include "Game/States/SceneStates/CountdownState.h"
 #include "Game/Scenes/GameClearScene.h"
 #include "Game/Scenes/GameOverScene.h"
-
 #include "Game/Factorys/SceneFactory.h"
 
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayScene::PlayScene()
+	:
+	m_parameters{},
+	m_commonResources{},
+	m_root{},
+	m_debugCamera{},
+	m_currentState{},
+	m_fadeInState{},
+	m_countdownState{},
+	m_playMainState{},
+	m_fadeOutState{}
 {
 	m_commonResources  = CommonResources::GetInstance();
 	m_parameters       = Parameters::GetInstance();
 	m_root             = Root::GetInstance();
 }
 
-
+/// <summary>
+/// デストラクタ
+/// </summary>
 PlayScene::~PlayScene()
 {
 
 }
 
+/// <summary>
+/// 初期化処理
+/// </summary>
 void PlayScene::Initialize()
 {
 	// デバッグカメラ
@@ -60,6 +77,9 @@ void PlayScene::Initialize()
 	this->CreateState();
 }
 
+/// <summary>
+/// 開始処理
+/// </summary>
 void PlayScene::Start()
 {
 	m_currentState->PreUpdate();
@@ -68,6 +88,9 @@ void PlayScene::Start()
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER_ICON_UI, { Message::MessageID::PLAY_PLAYER_ICON_ANIMATION });
 }
 
+/// <summary>
+/// 更新処理
+/// </summary>
 void PlayScene::Update()
 {
 	const float elapsedTime = (float)m_commonResources->GetStepTimer()->GetElapsedSeconds();
@@ -85,17 +108,26 @@ void PlayScene::Update()
 	m_root->Update(elapsedTime);
 }
 
+/// <summary>
+/// 描画処理
+/// </summary>
 void PlayScene::Render()
 {
 	m_commonResources->GetRenderer()->Render();
 }
 
-
+/// <summary>
+/// 終了処理
+/// </summary>
 void PlayScene::Finalize()
 {
 
 }
 
+/// <summary>
+/// ステートを変更
+/// </summary>
+/// <param name="newState">次のステート</param>
 void PlayScene::ChangeState(IState* newState)
 {
 	// 終了処理
@@ -108,6 +140,10 @@ void PlayScene::ChangeState(IState* newState)
 	m_currentState->PreUpdate();
 }
 
+/// <summary>
+/// メッセージを受け取る
+/// </summary>
+/// <param name="messageID">メッセージデータ</param>
 void PlayScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 {
 	switch (messageID)

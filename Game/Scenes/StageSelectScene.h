@@ -1,7 +1,7 @@
 // ============================================
 // 
-// ファイル名: TitleScene.h
-// 概要: TitleScene.cppのヘッダーファイル
+// ファイル名: StageSelectScene.h
+// 概要: StageSelectScene.cppのヘッダーファイル
 // 
 // 製作者 : 清水駿希
 // 
@@ -14,7 +14,6 @@ class CommonResources;
 class Root;
 class Parameters;
 class SceneManager;
-// ステート
 class FadeInState;
 class StageSelectMainState;
 class FadeOutState;
@@ -48,11 +47,6 @@ private:
 
 	// ステートの作成
 	void CreateStates();
-
-private:
-
-	// フェードオブジェクト番号
-	static const int FADE_OBJECT_NUMBER;
 	
 private:
 
@@ -62,7 +56,8 @@ private:
 	CommonResources* m_commonResources;
 	// シーンマネージャー
 	SceneManager* m_sceneManager;
-
+	// ルート
+	Root* m_root;
 
 	// 現在の状態
 	IState* m_currentState;
@@ -74,6 +69,4 @@ private:
 	// フェードアウトステート
 	std::unique_ptr<FadeOutState> m_fadeOutState;
 
-	// ルート
-	Root* m_root;
 };
