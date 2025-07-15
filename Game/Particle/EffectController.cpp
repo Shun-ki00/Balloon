@@ -36,7 +36,7 @@ void EffectController::Update(const float& elapsedTime)
 }
 
 
-void EffectController::AddEffect(ParametersID id)
+void EffectController::AddEffect(ParametersID id, ParticleParameters params)
 {
 	// エミッター
 	std::unique_ptr<ParticleEmitter> emitter;
@@ -44,10 +44,10 @@ void EffectController::AddEffect(ParametersID id)
 	for (int i = 0; i < MAX_POOL; i++)
 	{
 		// エミッタークラスのインスタンスを生成する
-		emitter.reset(new ParticleEmitter() );
+		emitter.reset(new ParticleEmitter(params) );
 
 		// 初期化処理
-		emitter->Initialize(id);
+		emitter->Initialize();
 
 		// 描画管理者に追加
 		CommonResources::GetInstance()->GetRenderer()->Attach(emitter.get());

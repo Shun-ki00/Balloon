@@ -167,6 +167,8 @@ struct ParticleParameters
 };
 
 
+
+
 // ゲームデータ
 struct SceneLinkParams
 {
@@ -292,6 +294,41 @@ inline void from_json(const nlohmann::json& j, UIParams& u)
 	u.position = ParseVector3(j.at("position"));
 	u.rotation = ParseVector3(j.at("rotation"));
 	u.scale = ParseVector3(j.at("scale"));
+}
+
+
+inline void from_json(const nlohmann::json& j, ParticleParameters& p)
+{
+	j.at("duration").get_to(p.duration);
+	j.at("startDelay").get_to(p.startDelay);
+	j.at("lifeTime").get_to(p.lifeTime);
+	j.at("speed").get_to(p.speed);
+	j.at("rotation").get_to(p.rotation);
+	j.at("gravityModifier").get_to(p.gravityModifier);
+	j.at("emissionRate").get_to(p.emissionRate);
+	j.at("coneAngle").get_to(p.coneAngle);
+	j.at("coneRadius").get_to(p.coneRadius);
+	j.at("coneHeight").get_to(p.coneHeight);
+	j.at("sphereRadius").get_to(p.sphereRadius);
+	j.at("sphereRandomDirectionStrength").get_to(p.sphereRandomDirectionStrength);
+
+	j.at("texture").get_to(p.texture);
+	j.at("shader").get_to(p.shader);
+
+	j.at("isLooping").get_to(p.isLooping);
+	j.at("prewarm").get_to(p.prewarm);
+	j.at("isPlaying").get_to(p.isPlaying);
+	j.at("coneEmitFromShell").get_to(p.coneEmitFromShell);
+	j.at("sphereEmitFromShell").get_to(p.sphereEmitFromShell);
+
+	std::vector<float> vec3;
+	j.at("startScale").get_to(vec3); p.startScale = { vec3[0], vec3[1], vec3[2] };
+	j.at("coneDirection").get_to(vec3); p.coneDirection = { vec3[0], vec3[1], vec3[2] };
+	j.at("conePosition").get_to(vec3); p.conePosition = { vec3[0], vec3[1], vec3[2] };
+	j.at("sphereCenter").get_to(vec3); p.sphereCenter = { vec3[0], vec3[1], vec3[2] };
+
+	std::vector<float> vec4;
+	j.at("startColor").get_to(vec4); p.startColor = { vec4[0], vec4[1], vec4[2], vec4[3] };
 }
 
 

@@ -153,7 +153,6 @@ void GameClearScene::OnSceneMessegeAccepted(Message::SceneMessageID messageID)
 }
 
 
-
 /// <summary>
 ///	シーンのステートの作成
 /// </summary>

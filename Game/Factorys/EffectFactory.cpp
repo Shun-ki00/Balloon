@@ -16,7 +16,7 @@ std::unique_ptr<IObject>EffectFactory::CreateEffectController(IObject* parent, s
 
 	for (const auto& id : ids)
 	{
-		m_effectController->AddEffect(id);
+		//m_effectController->AddEffect(id);
 	}
 
 	ObjectMessenger::GetInstance()->Register(IObject::ObjectID::EFFECT_CONTROLLER, Root::GetInstance()->GetNodeCount(), m_effectController.get());

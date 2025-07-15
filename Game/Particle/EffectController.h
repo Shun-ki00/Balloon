@@ -1,6 +1,7 @@
 #pragma once
 #include "Interface/IObject.h"
 #include "Game/Parameters/ParameterKeys.h"
+#include "Game/Parameters/ParameterBuffers.h"
 
 class ParticleEmitter;
 
@@ -36,7 +37,7 @@ public:
 	~EffectController() = default;
 
 	// エフェクトを追加
-	void AddEffect(ParametersID id);
+	void AddEffect(ParametersID id , ParticleParameters params);
 
 public:
 	

@@ -9,7 +9,9 @@
 #include "Game/Buffers.h"
 
 
-
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Renderer::Renderer()
 {
 	m_commonResources = CommonResources::GetInstance();
@@ -61,13 +63,9 @@ Renderer::Renderer()
 	// シェーダーにデータを渡すためのUIのバーテックスバッファの作成
 	 desc = {};
 	ZeroMemory(&desc, sizeof(desc));
-	// サイズは必要な頂点分にする
 	desc.ByteWidth = sizeof(DirectX::VertexPositionColorTexture) * 300; 
-	// 毎フレーム書き換えるならDYNAMICを使う
 	desc.Usage = D3D11_USAGE_DYNAMIC;
-	// バインドフラグはVertexBuffer
 	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	// CPUから書き込みできるようにする
 	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	// バッファ作成
 	m_device->CreateBuffer(&desc, nullptr, &m_particleVertexBuffer);
@@ -248,20 +246,15 @@ void Renderer::ParticleRender(const DirectX::SimpleMath::Matrix& viewMatrix, con
 	m_context->GSSetConstantBuffers(0, 1, cb);
 	m_context->PSSetConstantBuffers(0, 1, cb);
 
-	//	半透明描画指定		補間アルファ合成
-	ID3D11BlendState* blendstate = m_commonStates->NonPremultiplied();
-	//	透明判定処理
-	m_context->OMSetBlendState(blendstate, nullptr, 0xFFFFFFFF);
-
-	//	深度バッファに書き込み参照する
+	// ブレンドステート設定
+	m_context->OMSetBlendState(m_commonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+	// デプスステンシルステート設定
 	m_context->OMSetDepthStencilState(m_commonStates->DepthRead(), 0);
-
-	//	カリングはなし
+	// ラスタライザーステート設定
 	m_context->RSSetState(m_commonStates->CullNone());
 
 	//	インプットレイアウトの登録
 	m_context->IASetInputLayout(m_particleiInputLayout);
-
 	// プリミティブトポロジーを設定
 	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
@@ -270,7 +263,7 @@ void Renderer::ParticleRender(const DirectX::SimpleMath::Matrix& viewMatrix, con
 	// ジオメトリシェーダーの設定
 	m_context->GSSetShader(m_particleGeometryShader, nullptr, 0);
 
-	
+	// 各エミッタ―の粒子を描画する
 	for (int i = 0; i < particleEmitterNumber; ++i)
 	{
 		ParticleEmitter* emitter = m_particleEmitter[i];
@@ -278,32 +271,36 @@ void Renderer::ParticleRender(const DirectX::SimpleMath::Matrix& viewMatrix, con
 		if (!emitter->GetIsActive() || emitter->GetInputDatas().empty())
 			continue;
 
+		// エミッタのワールド行列を設定する
 		particleConstBuffer.worldMatrix = DirectX::SimpleMath::Matrix::Identity;
 		m_particleConstBuffer->UpdateIfNeeded(m_context, particleConstBuffer);
 
+		// テクスチャを設定する
 		ID3D11ShaderResourceView* srv = emitter->GetTexture();
 		m_context->PSSetShaderResources(0, 1, &srv);
-
+		// サンプラーステートを設定する
 		ID3D11SamplerState* sampler[1] = { m_commonStates->LinearWrap() };
 		m_context->PSSetSamplers(0, 1, sampler);
 
+		// ピクセルシェーダーを設定する
 		m_context->PSSetShader(emitter->GetPixelShader(), nullptr, 0);
 
+		// 頂点バッファの更新
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		m_context->Map(m_particleVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
 		memcpy(mappedResource.pData, emitter->GetInputDatas().data(),
 			sizeof(DirectX::VertexPositionColorTexture) * emitter->GetInputDatas().size());
-
 		m_context->Unmap(m_particleVertexBuffer.Get(), 0);
-
+		// 頂点バッファの設定
 		UINT stride = sizeof(DirectX::VertexPositionColorTexture);
 		UINT offset = 0;
 		ID3D11Buffer* buffer = m_particleVertexBuffer.Get();
 		m_context->IASetVertexBuffers(0, 1, &buffer, &stride, &offset);
 
+		// ドローコール
 		m_context->Draw(static_cast<UINT>(emitter->GetInputDatas().size()), 0);
 
+		// リソースの解放
 		m_context->PSSetShader(nullptr, nullptr, 0);
 		ID3D11ShaderResourceView* nullsrv[] = { nullptr };
 		m_context->PSSetShaderResources(0, 1, nullsrv);

@@ -5,41 +5,54 @@ class Particle
 
 public:
 
-    DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
-
-    float GetScale() const { return m_currentSize; }
-
-    DirectX::SimpleMath::Vector4 GetColor() const { return m_currentColor; }
-
-    bool GetIsActive() const { return m_isActive; }
-
-	Particle();
-	~Particle() = default;
-
-
-    void Initialize(
+    // 値を設定する
+    void SetParameters(
         const DirectX::SimpleMath::Vector3& position,
         const DirectX::SimpleMath::Vector3& velocity,
         const DirectX::SimpleMath::Vector3& acceleration,
-        float lifetime,
-        float startSize,
-        float endSize,
+        const float& lifetime,
+        const float& startSize,
+        const float& endSize,
         const DirectX::SimpleMath::Vector4& startColor,
         const DirectX::SimpleMath::Vector4& endColor
     );
 
-    void Update(const float& elapsedTime);
+    // 状態を取得
+    bool GetIsActive() const { return m_isActive; }
+    // 頂点データを取得
+    DirectX::VertexPositionColorTexture GetVertexData() const { return m_inputData; }
 
+public:
+
+    // コンストラクタ
+	Particle();
+    // デストラクタ
+	~Particle() = default;
+
+    // 初期化処理
+    void Initialize();
+    // 更新処理
+    void Update(const float& elapsedTime);
+    
 private:
 
     bool m_isActive;
 
+    // 頂点データ
     DirectX::VertexPositionColorTexture m_inputData;
 
-    // 基本属性
+    // 座標
     DirectX::SimpleMath::Vector3 m_position;
+    // 回転角
+    float m_angle;
+
+    // 速度
     DirectX::SimpleMath::Vector3 m_velocity;
+    // 加速度
     DirectX::SimpleMath::Vector3 m_acceleration;
+
+    // 重力値
+    float m_gravity;
 
     // ライフタイム
     float m_totalLifetime; // 最大寿命
