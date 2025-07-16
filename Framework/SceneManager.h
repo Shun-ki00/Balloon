@@ -60,6 +60,8 @@ public:
 			ObjectMessenger::GetInstance()->Begin();
 			// キーボードメッセンジャーのアタッチを許可
 			KeyboardMessenger::GetInstance()->Begin();
+			// 衝突判定をアタッチ中にする
+			CollisionVisitor::GetInstance()->Begin();
 
 			// シーンの初期化処理を行う
 			m_nextScene->Initialize();

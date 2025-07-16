@@ -29,6 +29,13 @@ void PlayMainState::Update(const float& elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	if (!m_objectMessenger->FindObject(IObject::ObjectID::PLAYER)[0]->GetIsActive())
+	{
+		SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_GAME_OVER_SCENE);
+
+		return;
+	}
+
 	auto enemys = m_objectMessenger->FindObject(IObject::ObjectID::ENEMY);
 
 	for (const auto& enemy : enemys)
@@ -37,7 +44,6 @@ void PlayMainState::Update(const float& elapsedTime)
 	}
 
 	SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_GAME_CLEAR_SCENE);
-
 }
 
 void PlayMainState::PostUpdate()

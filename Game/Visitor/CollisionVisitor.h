@@ -15,6 +15,12 @@ public:
 	// 境界ボックスを描画する
 	void DebugDraw(DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* primitiveBatch) override;
 
+	// アタッチの許可
+	void Begin() override;
+	// アタッチの終了
+	void End() override;
+
+	// データ削除
 	void Clear();
 
 private:
@@ -37,6 +43,9 @@ public:
 
 
 private:
+
+	// 衝突判定の許可
+	bool m_isActiveAttach;
 
 	// 「砲塔」配列バウンディングボックス
 	std::unordered_map<int, DirectX::BoundingSphere*> m_boundingSphere;

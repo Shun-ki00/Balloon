@@ -154,6 +154,8 @@ void Player::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Player::Update(const float& elapsedTime)
 {
+	if (!m_isActive) return;
+
 	// プレイヤーが固定状態の場合
 	if (m_isFixed)
 	{
@@ -195,11 +197,30 @@ void Player::Update(const float& elapsedTime)
 
 	if (m_balloonIndex <= 0)
 	{
-		m_velocity = { 0.0f ,-3.0f ,0.0f };
+		m_velocity = { 0.0f ,-4.0f ,0.0f };
 
-		if (m_transform->GetLocalPosition().y <= -10.0f)
+		// プレイヤーに回転角を与える
+		m_transform->SetLocalRotation(
+			DirectX::SimpleMath::Quaternion::Concatenate(
+				m_transform->GetLocalRotation(),
+				DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
+					DirectX::SimpleMath::Vector3::UnitZ,
+					DirectX::XMConvertToRadians(4.0f))
+			)
+		);
+
+		m_transform->SetLocalRotation(
+			DirectX::SimpleMath::Quaternion::Concatenate(
+				m_transform->GetLocalRotation(),
+				DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
+					DirectX::SimpleMath::Vector3::UnitX,
+					DirectX::XMConvertToRadians(-6.0f))
+			)
+		);
+
+		if (m_transform->GetLocalPosition().y <= -30.0f)
 		{
-			SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_GAME_OVER_SCENE);
+			m_isActive = false;
 		}
 	}
 

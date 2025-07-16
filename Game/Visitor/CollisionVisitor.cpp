@@ -4,9 +4,15 @@
 #include "Game/Message/ObjectMessenger.h"
 #include "Framework/Microsoft/DebugDraw.h"
 
+/// <summary>
+/// コンストラクタ
+/// </summary>
 CollisionVisitor::CollisionVisitor()
+	:
+	m_isActiveAttach(false),
+	m_boundingSphere{},
+	m_worldBoundingSpheres{}
 {
-
 }
 
 /// <summary>
@@ -31,9 +37,16 @@ void CollisionVisitor::PrepareCollision(IObject* object, DirectX::BoundingSphere
 }
 
 
-
+/// <summary>
+/// 当たり判定を行う
+/// </summary>
+/// <param name="object">オブジェクト</param>
+/// <param name="object1">オブジェクト1</param>
 void CollisionVisitor::DetectCollision(IObject* object, IObject* object1)
 {
+	// アタッチ中は衝突判定を行わない
+	if (m_isActiveAttach) return;
+
 	DirectX::BoundingSphere worldBoundingSphere;
 	DirectX::BoundingSphere worldBoundingSphere1;
 
@@ -103,6 +116,24 @@ void CollisionVisitor::DebugDraw(DirectX::PrimitiveBatch<DirectX::VertexPosition
 	}
 
 	m_worldBoundingSpheres.clear();
+}
+
+/// <summary>
+/// アタッチを開始
+/// </summary>
+void CollisionVisitor::Begin()
+{
+	// アタッチの許可
+	m_isActiveAttach = true;
+}
+
+/// <summary>
+/// アタッチ終了
+/// </summary>
+void CollisionVisitor::End()
+{
+	// アタッチの終了
+	m_isActiveAttach = false;
 }
 
 /// <summary>

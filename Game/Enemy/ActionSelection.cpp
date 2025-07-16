@@ -81,7 +81,7 @@ void ActionSelection::Initialize(Enemy* enemy)
 
 
 	m_lowHpSequenceNode->AddChild(m_lowHpCheck.get());
-	m_lowHpSequenceNode->AddChild(m_ChangeChaseState.get());
+	//m_lowHpSequenceNode->AddChild(m_ChangeChaseState.get());
 	//m_lowHpSequenceNode->AddChild(m_messageBalloonScaleOff.get());
 
 	m_hpSelectorNode->AddChild(m_hightHpSequenceNode.get());

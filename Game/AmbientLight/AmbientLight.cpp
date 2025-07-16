@@ -69,7 +69,7 @@ void AmbientLight::Initialize()
 /// <param name="elapsedTime">Œo‰ßŽžŠÔ</param>
 void AmbientLight::Update(const float& elapsedTime)
 {
-	(void)elapsedTime;
+	UNREFERENCED_PARAMETER(elapsedTime);
 
 	m_constantBuffer->UpdateIfNeeded(m_context, m_ambientLightData);
 }
@@ -79,12 +79,11 @@ void AmbientLight::Update(const float& elapsedTime)
 /// </summary>
 void AmbientLight::Finalize()
 {
-
 }
 
 void AmbientLight::OnMessegeAccepted(Message::MessageData messageData)
 {
-	(void)messageData;
+	UNREFERENCED_PARAMETER(messageData);
 }
 
 

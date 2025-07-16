@@ -7,6 +7,12 @@ public:
 	// デストラクタ
 	virtual ~ICollisionVisitor() = default;
 
+
+	// アタッチの許可
+	virtual void Begin() = 0;
+	// アタッチの終了
+	virtual void End() = 0;
+
 	// 衝突準備ビジターを開始する
 	virtual void StartPrepareCollision(IObject* component) = 0;
 	// 再帰的に衝突準備ビジターを呼び出す

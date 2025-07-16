@@ -48,6 +48,7 @@ void SceneManager::Initialize()
 	m_commonResources->GetRenderer()->Begin();
 	ObjectMessenger::GetInstance()->Begin();
 	KeyboardMessenger::GetInstance()->Begin();
+	CollisionVisitor::GetInstance()->Begin();
 
 	// 初期シーンの作成
 	m_currentScene = std::make_unique<TitleScene>();
@@ -56,9 +57,11 @@ void SceneManager::Initialize()
 
 	// アタッチ終了
 	Root::GetInstance()->End();
+	CollisionVisitor::GetInstance()->End();
 	m_commonResources->GetRenderer()->End();
 	ObjectMessenger::GetInstance()->End();
 	KeyboardMessenger::GetInstance()->End();
+
 
 	// 初期シーンのスタート処理
 	m_currentScene->Start();
@@ -119,7 +122,7 @@ bool SceneManager::CheckChageScene()
 		CommonResources::GetInstance()->GetRenderer()->End();
 		ObjectMessenger::GetInstance()->End();
 		KeyboardMessenger::GetInstance()->End();
-
+		CollisionVisitor::GetInstance()->End();
 		TweenManager::GetInstance()->Stop();
 		
 		// 前のシーンを削除する
