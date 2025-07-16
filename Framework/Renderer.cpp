@@ -9,7 +9,9 @@
 #include "Game/Buffers.h"
 
 
-
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Renderer::Renderer()
 {
 	m_commonResources = CommonResources::GetInstance();

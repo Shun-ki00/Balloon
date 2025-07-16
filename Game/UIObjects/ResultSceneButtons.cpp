@@ -71,7 +71,7 @@ void ResultSceneButtons::Initialize()
 
 	m_buttonIndex = 1;
 
-	// ボタンオブジェクトを三つ作成する
+	// ボタンオブジェクトを二つ作成する
 	for (int i = 0; i < 2; i++)
 	{
 		this->Attach(UIFactory::CreateResultButtonText(this, ObjectID::RESULT_BUTTON_TEXT,
@@ -179,14 +179,14 @@ void ResultSceneButtons::OnKeyPressed(KeyType type, const DirectX::Keyboard::Key
 			// ボタンの番号を減算
 			m_buttonIndex--;
 			if (m_buttonIndex < 1)
-				m_buttonIndex = 3;
+				m_buttonIndex = 2;
 
 			break;
 		case DirectX::Keyboard::Keys::Down:
 
 			// ボタンの番号を加算
 			m_buttonIndex++;
-			if (m_buttonIndex > 3)
+			if (m_buttonIndex > 2)
 				m_buttonIndex = 1;
 
 			break;
