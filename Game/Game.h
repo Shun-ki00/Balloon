@@ -18,6 +18,7 @@ class Sea;
 class Parameters;
 class CollisionVisitor;
 class GameConfig;
+class DebugRenderer;
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -127,5 +128,7 @@ private:
     std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
     //	スプライトフォント
     std::unique_ptr<DirectX::SpriteFont>  m_spriteFont;
+
+    DebugRenderer* m_debugRenderer;
 #endif
 };

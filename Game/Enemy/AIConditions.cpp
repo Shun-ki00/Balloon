@@ -2,6 +2,7 @@
 #include "Game/Enemy/AIConditions.h"
 #include "Game/Player/Player.h"
 #include "Game/Object/Object.h"
+#include "Framework/DebugRenderer.h"
 
 // AIConditions
 std::unique_ptr<AIConditions> AIConditions::s_aiConditions = nullptr;
@@ -52,6 +53,8 @@ bool AIConditions::IsAbovePlayer(Object* enemy, float heightOffset)
 		m_player->GetTransform()->GetLocalPosition().y + heightOffset;
 	// 敵のオフセット座標
 	float enemyHeight = enemy->GetTransform()->GetLocalPosition().y;
+
+	DebugRenderer::GetInstance()->Attach({ {m_player->GetTransform()->GetLocalPosition().x , playerOffset , m_player->GetTransform()->GetLocalPosition().z} ,2.2f});
 
 	// プレイヤーの上にいる場合trueを返す
 	return enemyHeight >= playerOffset;
@@ -125,6 +128,8 @@ bool AIConditions::IsPlayerInRange(Object* enemy, DirectX::SimpleMath::Vector3 o
 	float distanceSquared = (playerPosition - enemyPosition).LengthSquared();
 	// 許容範囲の半径の2乗（平方距離）を計算
 	float rangeSquared = range * range;
+
+	DebugRenderer::GetInstance()->Attach({ playerPosition , range });
 
 	// 距離の平方が範囲の平方以下なら、範囲内と判定
 	return distanceSquared <= rangeSquared;

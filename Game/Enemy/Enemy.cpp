@@ -225,10 +225,10 @@ void Enemy::Update(const float& elapsedTime)
 	}
 
 	// アクションを決定する
-	//m_actionSelection->GetRootNode()->Tick();
+	m_actionSelection->GetRootNode()->Tick();
 
 	// オブジェクトの更新処理
-	//Object::Update(elapsedTime);
+	Object::Update(elapsedTime);
 
 	// ==== ステータスの更新処理 ====
 
@@ -336,7 +336,7 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 		case Message::MessageID::ON_COLLISION:
 			if (Object::GetState() == m_enemyAttackState.get())
 			ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::PLAYER, messageData.dataFloat,
-				{ Message::MessageID::BALLOON_LOST,messageData.dataInt,messageData.dataFloat,false });
+				{ Message::MessageID::BALLOON_LOST,messageData.dataInt,static_cast<float>(m_objectNumber),false });
 			break;
 			// Y軸で逆ベクトルにする
 		case Message::MessageID::INVERT_Y_VECTOR:
@@ -360,8 +360,9 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 			Object::ChangeState(m_enemyWanderState.get());
 			break;
 		case Message::MessageID::ENEMY_CHASE:
-			if (Object::GetState() != m_enemyAttackState.get())
+			if (Object::GetState() != m_enemyAttackState.get() || Object::GetState() != m_enemyChaseState.get())
 			Object::ChangeState(m_enemyChaseState.get());
+			break;
 		case Message::MessageID::ENEMY_ATTACK:
 			if(Object::GetState() != m_enemyAttackState.get())
 			Object::ChangeState(m_enemyAttackState.get());

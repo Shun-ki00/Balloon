@@ -518,19 +518,19 @@ void Player::BalloonLost(const int& balloonObjectNumber, const int& enemyObjectN
 	for (const auto& balloon : m_balloonObject)
 	{
 		// 番号と風船がアクティブ状態でない場合スキップ
-		if (balloon->GetObjectNumber() == balloonObjectNumber &&
+		if (balloon->GetObjectNumber() != balloonObjectNumber ||
 			!balloon->GetParent()->GetIsActive()) continue;
 
 		// 非アクティブにする
 		balloon->GetParent()->SetIsActive(false);
 		// 風船の数を減らす
-		m_balloonIndex--;
+   		m_balloonIndex--;
 		// 当たったオブジェクト
 		ObjectMessenger::GetInstance()->Dispatch(
 			IObject::ObjectID::ENEMY,
 			enemyObjectNumber, Message::MessageID::INVERT_Y_VECTOR);
 		break;
-	}
+	} 
 }
 
 /// <summary>

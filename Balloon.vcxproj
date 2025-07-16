@@ -190,6 +190,7 @@
     <ClInclude Include="Framework\AudioManager.h" />
     <ClInclude Include="Framework\CameraSystem.h" />
     <ClInclude Include="Framework\CommonResources.h" />
+    <ClInclude Include="Framework\DebugRenderer.h" />
     <ClInclude Include="Framework\DepthStencil.h" />
     <ClInclude Include="Framework\DeviceResources.h" />
     <ClInclude Include="Framework\Easing.h" />
@@ -354,6 +355,7 @@
   <ItemGroup>
     <ClCompile Include="Framework\AudioManager.cpp" />
     <ClCompile Include="Framework\CameraSystem.cpp" />
+    <ClCompile Include="Framework\DebugRenderer.cpp" />
     <ClCompile Include="Framework\DepthStencil.cpp" />
     <ClCompile Include="Framework\DeviceResources.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />

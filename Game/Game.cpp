@@ -20,6 +20,7 @@
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
 #include <Framework/Microsoft/DebugDraw.h>
+#include "Framework/DebugRenderer.h"
 
 
 extern void ExitGame() noexcept;
@@ -206,6 +207,8 @@ void Game::Initialize(HWND window, int width, int height)
     m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(
         m_deviceResources->GetD3DDeviceContext()
     );
+
+    m_debugRenderer = DebugRenderer::GetInstance();
 #endif
 }
 
@@ -323,6 +326,8 @@ void Game::Render()
 
     // “–‚½‚è”»’è‚Ì‹«ŠE‚ð•`‰æ
     m_collisionVisitor->DebugDraw(m_primitiveBatch.get());
+
+    m_debugRenderer->Render(m_primitiveBatch.get());
 
     m_primitiveBatch->End();
 

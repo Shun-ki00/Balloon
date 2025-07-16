@@ -35,13 +35,15 @@ void EnemyAttackState::Initialize()
 void EnemyAttackState::PreUpdate()
 {
 	m_elapsedTime = 0.0f;
-	m_moveingTime = 0.5f;
+	m_moveingTime = 1.5f;
 
-	DirectX::SimpleMath::Vector3 velocity = { 0.0f , 0.0f ,6.0f };
+	DirectX::SimpleMath::Vector3 velocity = { 0.0f , 0.0f ,-1.0f };
 
-	velocity = DirectX::SimpleMath::Vector3::Transform(velocity, m_enemy->GetTransform()->GetLocalRotation());
+	auto player = ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0];
 
-	velocity.y = -6.0f;
+	velocity = DirectX::SimpleMath::Vector3::Transform(velocity, player->GetTransform()->GetLocalRotation());
+
+	velocity.y = -3.0f;
 
 	m_enemy->SetVelocity(
 		m_enemy->GetVelocity() + velocity * 2.0f

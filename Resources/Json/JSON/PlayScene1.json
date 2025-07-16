@@ -4,8 +4,9 @@
         "rotation": [ 0.0, 0.0, 0.0 ],
         "scale": [ 0.1, 0.1, 0.1 ],
         "fixed": false,
-        "balloonIndex": 0.0,
+        "balloonIndex": 3.0,
         "FloatBehavior": {
+            "isActive": true,
             "floatRange": 1.5,
             "floatCycleSpeed": 2.0,
             "floatSpeed": 1.0,
@@ -24,7 +25,7 @@
             "rotation": [ 0.0, 0.0, 0.0 ],
             "scale": [ 0.1, 0.1, 0.1 ],
             "fixed": false,
-            "balloonIndex": 0.0,
+            "balloonIndex": 3.0,
             "FloatBehavior": {
                 "isActive": true,
                 "floatRange": 1.0,
@@ -50,7 +51,7 @@
             "rotation": [ 0.0, 0.0, 0.0 ],
             "scale": [ 0.1, 0.1, 0.1 ],
             "fixed": false,
-            "balloonIndex": 0.0,
+            "balloonIndex": 3.0,
             "FloatBehavior": {
                 "isActive": true,
                 "floatRange": 1.0,
@@ -76,7 +77,7 @@
             "rotation": [ 0.0, 0.0, 0.0 ],
             "scale": [ 0.1, 0.1, 0.1 ],
             "fixed": false,
-            "balloonIndex": 0.0,
+            "balloonIndex": 3.0,
             "FloatBehavior": {
                 "isActive": true,
                 "floatRange": 1.0,

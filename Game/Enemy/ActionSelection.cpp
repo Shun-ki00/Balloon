@@ -26,9 +26,15 @@ void ActionSelection::Initialize(Enemy* enemy)
 	// アクションノードを作成する
 	this->CreateActionNode();
 
+	m_AttackSequenceNode = std::make_unique<SequenceNode>("AttackSequenceNode");
+	m_AttackSequenceNode->AddChild(m_isAttackRangeCheck.get());
+	m_AttackSequenceNode->AddChild(m_ChangeAttackState.get());
+
 	m_aboveSequenceNode = std::make_unique<SequenceNode>("aboveSequence");
 	m_aboveSequenceNode->AddChild(m_isAboveCheck.get());
 	m_aboveSequenceNode->AddChild(m_messageBalloonScaleOff.get());
+	m_aboveSequenceNode->AddChild(m_AttackSequenceNode.get());
+
 
 	m_belowSequenceNode = std::make_unique<SequenceNode>("belowSequence");
 	m_belowSequenceNode->AddChild(m_isBelowCheck.get());
@@ -38,9 +44,7 @@ void ActionSelection::Initialize(Enemy* enemy)
 	m_hightSelectorNode->AddChild(m_aboveSequenceNode.get());
 	m_hightSelectorNode->AddChild(m_belowSequenceNode.get());
 
-	m_AttackSequenceNode = std::make_unique<SequenceNode>("AttackSequenceNode");
-	m_AttackSequenceNode->AddChild(m_isAttackRangeCheck.get());
-	m_AttackSequenceNode->AddChild(m_ChangeAttackState.get());
+
 
 	// プレイヤーの範囲外にいるとき　ノード作成
 	m_outOfRange = std::make_unique<SequenceNode>("OutOfRangeSequence");
@@ -66,14 +70,15 @@ void ActionSelection::Initialize(Enemy* enemy)
 	m_lowHpSequenceNode = std::make_unique<SequenceNode>("LowHpSequence");
 
 	m_hightHpSequenceNode->AddChild(m_hightHpCheck.get());
-	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
 	m_hightHpSequenceNode->AddChild(m_ChangeChaseState.get());
 	m_hightHpSequenceNode->AddChild(m_hightSelectorNode.get());
-
-	m_mediumHpSequenceNode->AddChild(m_mediumHpCheck.get());
 	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
+	 
+	m_mediumHpSequenceNode->AddChild(m_mediumHpCheck.get());
 	m_mediumHpSequenceNode->AddChild(m_ChangeChaseState.get());
 	m_mediumHpSequenceNode->AddChild(m_hightSelectorNode.get());
+	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
+
 
 	m_lowHpSequenceNode->AddChild(m_lowHpCheck.get());
 	m_lowHpSequenceNode->AddChild(m_ChangeChaseState.get());
@@ -102,12 +107,12 @@ void ActionSelection::CreateActionNode()
 	// プレイヤーの一定範囲内にいるかどうか
 	m_isInRangeCheck = std::make_unique<ActionNode>("InRange", [&]()
 		{
-			return m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 2.0f , -1.0f }, 2.0f) ? Result::SUCCESS : Result::FAILURE;
+			return m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 1.0f , 0.0f }, 6.0f) ? Result::SUCCESS : Result::FAILURE;
 		});
 	// プレイヤーの一定範囲外にいるかどうか
 	m_isOutRangeCheck = std::make_unique<ActionNode>("OutRange", [&]()
 		{
-			return !m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 2.0f , -1.0f }, 2.0f) ? Result::SUCCESS : Result::FAILURE;
+			return !m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 1.0f , 0.0f }, 6.0f) ? Result::SUCCESS : Result::FAILURE;
 		});
 
 
@@ -123,7 +128,7 @@ void ActionSelection::CreateActionNode()
 		});
 
 	m_isAttackRangeCheck = std::make_unique<ActionNode>("AttackRangeCheck", [&]() {
-		return m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 3.0f , 0.0f }, 1.0f) ? Result::SUCCESS : Result::FAILURE;
+		return m_aiConditions->IsPlayerInRange(m_enemy, { 0.0f , 4.0f , 0.0f }, 0.8f) ? Result::SUCCESS : Result::FAILURE;
 		});
 
 

@@ -19,9 +19,9 @@ public:
 	~AIConditions();
 
 	// プレイヤーより上にいるかどうか
-	bool IsAbovePlayer(Object* enemy, float heightOffset = 0.5f);
+	bool IsAbovePlayer(Object* enemy, float heightOffset = 3.5f);
 	// プレイヤーより下にいるかどうか
-	bool IsBelowPlayer(Object* enemy, float heightOffset = 0.5f);
+	bool IsBelowPlayer(Object* enemy, float heightOffset = 3.5f);
 	// プレイヤーの視野内にいるかどうか
 	bool IsPlayerVisible(Object* enemy);
 	// プレイヤーの一定範囲内にいるかどうか

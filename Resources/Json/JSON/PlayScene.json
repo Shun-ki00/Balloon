@@ -15,13 +15,13 @@
         "KnockbackBehavior": {
             "isActive": true,
             "count": 5,
-            "radius": 3.0,
+            "radius": 3.0, 
             "force": 2.5
         }
     },
     "Enemy": [
         {
-            "position": [ 6.7, -0.5, -1.5 ],
+            "position": [ 1.7, -0.5, -1.5 ],
             "rotation": [ 0.0, 0.0, 0.0 ],
             "scale": [ 0.1, 0.1, 0.1 ],
             "fixed": false,
@@ -41,9 +41,9 @@
             },
             "SeekBehavior": {
                 "isActive": true,
-                "offset": [ 0.0, 2.0, -1.0 ],
+                "offset": [ 0.0, 0.0, -0.2 ],
                 "predictionMultiplier": 2.0,
-                "seekSpeed": 3.0
+                "seekSpeed": 3.5
             }
         }
     ],

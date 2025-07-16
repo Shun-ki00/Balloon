@@ -101,5 +101,4 @@ void EnemyChaseState::PostUpdate()
 /// </summary>
 void EnemyChaseState::Finalize()
 {
-
 }
