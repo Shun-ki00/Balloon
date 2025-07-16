@@ -98,6 +98,13 @@ void Sea::Render()
 	// 入力レイアウトを設定
 	m_context->IASetInputLayout(m_inputLayout);
 
+	// ブレンドステートを設定 (半透明描画用)
+	m_context->OMSetBlendState(m_commonStates->NonPremultiplied(), nullptr, 0xFFFFFFFF);
+	//	深度バッファに書き込み参照する
+	m_context->OMSetDepthStencilState(m_commonStates->DepthRead(), 0);
+	// ラスタライザーステートの設定
+	m_context->RSSetState(m_commonStates->CullCounterClockwise());
+
 	// 頂点バッファを設定
 	ID3D11Buffer* buffers[] = { m_vertexBuffer.Get() };
 	UINT stride[] = { sizeof(DirectX::VertexPositionTexture) };
@@ -118,12 +125,7 @@ void Sea::Render()
 	// サンプラーステートをピクセルシェーダーに設定
 	ID3D11SamplerState* sampler[1] = { m_commonStates->LinearWrap() };
 	m_context->PSSetSamplers(0, 1, sampler);
-	// ブレンドステートを設定 (半透明描画用)
-	m_context->OMSetBlendState(m_commonStates->AlphaBlend(), nullptr, 0xFFFFFFFF);
-	//	深度バッファに書き込み参照する
-	m_context->OMSetDepthStencilState(m_commonStates->DepthDefault(), 0);
-	// ラスタライザーステートの設定
-	m_context->RSSetState(m_commonStates->CullCounterClockwise());
+
 
 	//	シェーダをセットする
 	m_context->VSSetShader(m_vertexShader, nullptr, 0);

@@ -87,6 +87,8 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     output *= color;
     
+    output.w = 0.7f;
+    
     
     return output;
 }
