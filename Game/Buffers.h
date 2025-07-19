@@ -23,6 +23,7 @@ struct UIConstBuffer
 	DirectX::SimpleMath::Vector4 time;
 };
 
+
 // ライトの定数バッファ用構造体
 struct DirectionalLightBuffer
 {

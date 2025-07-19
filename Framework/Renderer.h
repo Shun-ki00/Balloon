@@ -3,11 +3,13 @@
 #include "Interface/IRenderableObject.h"
 #include "Game/Buffers/ConstantBuffer.h"
 #include "Game/Particle/ParticleEmitter.h"
+#include "Game/ShadowMap/CascadedShadowMap.h"
 
 class CommonResources;
 class Particle;
 class ParticleEmitter;
 class UIRenderableObject;
+class CascadedShadowMap;
 
 class Renderer
 {
@@ -17,6 +19,9 @@ public:
 	Renderer();
 	// デストラクタ
 	~Renderer() = default;
+
+	// シャドウマップを取得する
+	ID3D11ShaderResourceView* GetShadowMap() const { return m_shadowMap->GetShadowShaderResourceView(); }
 
 	// 描画オブジェクト追加
 	void Attach(IObject* object, IRenderableObject* renderableObject);
@@ -75,6 +80,9 @@ private:
 	int m_objectNumber;
 	int m_uiObjectNumber;
 	int particleEmitterNumber;
+
+	// シャドウマップ描画
+	std::unique_ptr<CascadedShadowMap> m_shadowMap;
 
 
 	// === UI ===

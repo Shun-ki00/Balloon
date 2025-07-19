@@ -71,7 +71,7 @@ public:
 	// 初期化処理
 	void Initialize();
 	// 描画処理
-	void Render();
+	void Render(ID3D11ShaderResourceView* shadowMap);
 
 private:
 
@@ -118,6 +118,11 @@ private:
 	std::unique_ptr<ConstantBuffer<SeaNoiseConstBuffer>> m_seaNoiseBuffer;
 	// 波定数バッファ
 	std::unique_ptr<ConstantBuffer<GerstnerWaveConstBuffer>> m_gerstnerWaveBuffer;
+
+	// ライト用の定数バッファ
+	std::unique_ptr<ConstantBuffer<DirectionalLightBuffer>> m_constantLightBuffer;
+	// サンプラ
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_shadowMapSampler;
 
 	// 頂点バッファ
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;

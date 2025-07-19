@@ -3,8 +3,16 @@
 
 // テクスチャ
 Texture2D tex : register(t0);
+// シャドウマップテクスチャ
+Texture2D ShadowMapTexture : register(t1);
 // サンプラー
 SamplerState sam : register(s0);
+// シャドウマップ用テクスチャサンプラー
+SamplerComparisonState ShadowMapSampler : register(s1);
+
+// マッハバンド対策
+//#define SHADOW_EPSILON 0.0005f
+static const float SHADOW_EPSILON = 0.0005f;
 
 float random(float2 uv)
 {
@@ -69,10 +77,20 @@ void waveUV(inout float2 uv)
 // ピクセルシェーダー本体
 float4 main(PS_INPUT input) : SV_TARGET
 {
-    // ランダムなオフセットを生成
     float2 uv = input.uv;
+
+// ランダムなオフセットスケール（必要に応じて調整）
+    float offsetScale = 0.001f;
+
+// 各軸ごとに異なるランダムシードを与える
+    float2 offset = float2(
+    random(uv),
+    random(uv * TessellationFactor.y)
+    ) * offsetScale;
+
+    uv += offset;
        
-    float2 offset = perlinNoise(uv);
+    offset = perlinNoise(uv);
     uv += offset;
     
     // オリジナルノイズ
@@ -87,8 +105,18 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     output *= color;
     
-    output.w = 0.7f;
+    float4 lightPos = mul(input.positionWS, lightViewProjection);
+        // 現在のピクセルがシャドウマップ上でどの位置にあたるか計算する
+    float2 suv = lightPos.xy * float2(0.5f, -0.5f) + 0.5f;
+    // 通常描画の深度値とライト空間の深度値を比較して影になるか調べる
+    // ShadowMapTextureの該当する場所の深度値と現在のピクセルの深度値を比較して、影になるか調べる
+    // shadow　0.0f：影がある、1.0f：影がない
+    float shadow = ShadowMapTexture.SampleCmpLevelZero(
+        ShadowMapSampler, suv, lightPos.z - SHADOW_EPSILON);
     
+    output.rgb *= lerp(lightAmbient, float3(1.0f, 1.0f, 1.0f), shadow);
+    
+    output.w = 0.7f;
     
     return output;
 }

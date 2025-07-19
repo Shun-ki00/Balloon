@@ -31,7 +31,8 @@ void UIRenderableObject::Update(ID3D11DeviceContext* context, const DirectX::Sim
 }
 
 void UIRenderableObject::Render(ID3D11DeviceContext* context, DirectX::CommonStates* commonStates,
-	DirectX::SimpleMath::Matrix viewMatrix, DirectX::SimpleMath::Matrix projectionMatrix
+	DirectX::SimpleMath::Matrix viewMatrix, DirectX::SimpleMath::Matrix projectionMatrix,
+	ID3D11ShaderResourceView* shadowMap
 )
 {
 	UNREFERENCED_PARAMETER(context);

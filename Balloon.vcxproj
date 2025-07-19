@@ -271,6 +271,7 @@
     <ClInclude Include="Game\Scenes\StageSelectScene.h" />
     <ClInclude Include="Game\Scenes\TitleScene.h" />
     <ClInclude Include="Game\Sea\Sea.h" />
+    <ClInclude Include="Game\ShadowMap\CascadedShadowMap.h" />
     <ClInclude Include="Game\SkyBox\SkyBox.h" />
     <ClInclude Include="Game\States\Enemy\EnemyAttackState.h" />
     <ClInclude Include="Game\States\Enemy\EnemyChaseState.h" />
@@ -423,6 +424,7 @@
     <ClCompile Include="Game\Scenes\StageSelectScene.cpp" />
     <ClCompile Include="Game\Scenes\TitleScene.cpp" />
     <ClCompile Include="Game\Sea\Sea.cpp" />
+    <ClCompile Include="Game\ShadowMap\CascadedShadowMap.cpp" />
     <ClCompile Include="Game\SkyBox\SkyBox.cpp" />
     <ClCompile Include="Game\States\Enemy\EnemyAttackState.cpp" />
     <ClCompile Include="Game\States\Enemy\EnemyChaseState.cpp" />

@@ -14,6 +14,12 @@ public:
     // アクティブ状態を取得
     bool GetIsActive() const override { return m_isAcitve; }
 
+    // モデルを取得する
+    DirectX::Model* GetModel() const override { return nullptr; }
+
+    // ワールド行列を取得する
+    DirectX::SimpleMath::Matrix GetWorldMatrix() const override { return DirectX::SimpleMath::Matrix::Identity; }
+
     // 座標を設定
     void SetPosition(const DirectX::SimpleMath::Vector3& position) { 
         m_uiVertexBuffer.position = { position.x , position.y ,position.z, 1.0f}; }
@@ -71,7 +77,8 @@ public:
     void Update(ID3D11DeviceContext* context, const DirectX::SimpleMath::Matrix& worldMatrix) override;
     // 描画処理
     void Render(ID3D11DeviceContext* context, DirectX::CommonStates* commonStates,
-        DirectX::SimpleMath::Matrix viewMatrix, DirectX::SimpleMath::Matrix projectionMatrix
+        DirectX::SimpleMath::Matrix viewMatrix, DirectX::SimpleMath::Matrix projectionMatrix,
+        ID3D11ShaderResourceView* shadowMap = nullptr
     ) override;
 
 private:

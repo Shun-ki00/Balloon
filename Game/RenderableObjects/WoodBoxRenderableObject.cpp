@@ -44,6 +44,21 @@ void WoodBoxRenderableObject::Initialize(const PBRLitConstantBuffer& constants)
 	m_constantBuffer = std::make_unique<ConstantBuffer<PBRLitConstantBuffer>>();
 	m_constantBuffer->Initialize(m_device);
 
+	// 定数バッファオブジェクトの作成
+	m_constantLightBuffer = std::make_unique<ConstantBuffer<DirectionalLightBuffer>>();
+	m_constantLightBuffer->Initialize(m_device);
+
+	// シャドウマップ用のサンプラーを作成する
+	D3D11_SAMPLER_DESC samplerDesc = CD3D11_SAMPLER_DESC(D3D11_DEFAULT);
+	samplerDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
+	DX::ThrowIfFailed(
+		m_device->CreateSamplerState(&samplerDesc, m_shadowMapSampler.ReleaseAndGetAddressOf())
+	);
+
 	// テクスチャを設定
 	m_baseMap   = m_resources->GetTextureResources()->GetTexture(TextureKeyID::WoodBox);
 	m_normalMap = m_resources->GetTextureResources()->GetTexture(TextureKeyID::WoodBoxNormal);
@@ -92,6 +107,8 @@ void WoodBoxRenderableObject::Update(ID3D11DeviceContext* context, const DirectX
 	m_worldMatrix = worldMatrix;
 	// 値が変更されている場合更新処理を行う
 	this->UpdateConstantBufferIfNeeded(context);
+
+	this->CreateLightBuffer();
 }
 
 /// <summary>
@@ -99,7 +116,8 @@ void WoodBoxRenderableObject::Update(ID3D11DeviceContext* context, const DirectX
 /// </summary>
 /// <param name="context">コンテキスト</param>
 void WoodBoxRenderableObject::Render(ID3D11DeviceContext* context, DirectX::CommonStates* commonStates,
-	DirectX::SimpleMath::Matrix viewMatrix, DirectX::SimpleMath::Matrix projectionMatrix
+	DirectX::SimpleMath::Matrix viewMatrix, DirectX::SimpleMath::Matrix projectionMatrix,
+	ID3D11ShaderResourceView* shadowMap
 )
 {
 	// 非アクティブの時は描画しない
@@ -129,6 +147,7 @@ void WoodBoxRenderableObject::Render(ID3D11DeviceContext* context, DirectX::Comm
 				m_baseMap,
 				m_normalMap,
 				m_skyMap,
+				shadowMap
 			};
 
 			context->VSSetShaderResources(0, (UINT)tex.size(), tex.data());
@@ -139,9 +158,9 @@ void WoodBoxRenderableObject::Render(ID3D11DeviceContext* context, DirectX::Comm
 			context->PSSetShader(m_pixelShader, nullptr, 0);
 
 			// サンプラーステートを指定する
-			ID3D11SamplerState* sampler[] = { commonStates->LinearWrap() };
-			context->VSSetSamplers(0, 1, sampler);
-			context->PSSetSamplers(0, 1, sampler);
+			ID3D11SamplerState* sampler[] = { commonStates->LinearWrap(),m_shadowMapSampler.Get() };
+			context->VSSetSamplers(0, 2, sampler);
+			context->PSSetSamplers(0, 2, sampler);
 		});
 
 	// シェーダの解放
@@ -171,4 +190,46 @@ ID3D11Buffer* WoodBoxRenderableObject::GetConstantBuffer() const
 void WoodBoxRenderableObject::UpdateConstantBufferIfNeeded(ID3D11DeviceContext* context)
 {
 	m_constantBuffer->UpdateIfNeeded(context, m_constants);
+}
+
+
+void WoodBoxRenderableObject::CreateLightBuffer()
+{
+	using namespace DirectX::SimpleMath;
+
+	// ----------------------------------------------------------- //
+	// ライト空間のビュー行列と射影行列を作成する
+	// ----------------------------------------------------------- //
+
+	/* 手順４ */
+
+	// ライトの向いている方向を調整する
+	//const Vector3 lightDir = Vector3(0.0f, -1.0f, 0.0f);
+
+	Vector3 lightDir = Vector3::Transform(Vector3(0.0f, 0.0f, 1.0f), DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitX, DirectX::XMConvertToRadians(90.0f)) *
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(180.0f)));
+
+	// ライト空間のビュー行列を計算する
+	const Matrix lightView = Matrix::CreateLookAt(
+		{ 0.0f , 10.0f ,0.0f },			// eye
+		Vector3(0.0f, 10.0f, 0.0f) + lightDir,	// target
+		Vector3::UnitY				// up
+	);
+
+	const Matrix Projection = Matrix::CreateOrthographicOffCenter(
+		-50.0f / 2.0f, 50.0f / 2.0f,   // 左・右
+		-50.0f / 2.0f, 50.0f / 2.0f,   // 下・上
+		0.1f, 1000.0f     // Near・Far
+	);
+
+	DirectionalLightBuffer cb;
+	const Matrix viewProj = lightView * Projection;
+	cb.lightViewProjection = XMMatrixTranspose(viewProj);
+	cb.lightPosition = Vector3(0.0f, 10.0f, 0.0f);
+	cb.lightDirection = lightDir;							// ライトが照らす方向
+	cb.lightAmbient = Color(0.1f, 0.1f, 0.1f);
+
+
+	// 定数バッファの更新
+	m_constantLightBuffer->Update(CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext(), cb);
 }

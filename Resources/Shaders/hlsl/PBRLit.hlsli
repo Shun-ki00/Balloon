@@ -11,6 +11,15 @@ cbuffer PBRLitConstantBuffer : register(b2)
     float t_useNormalMap : packoffset(c1.w); // 法線マップを使用するか
 }
 
+// ライト用定数バッファ
+cbuffer LightParameters : register(b3)
+{
+    float4x4 lightViewProjection : packoffset(c0);
+    float4 lightPosition : packoffset(c4);
+    float3 lightDirirection : packoffset(c5);
+    float3 lightAmbient : packoffset(c6);
+};
+
 // 頂点シェーダ入力用
 struct VS_Input
 {

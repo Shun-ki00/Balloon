@@ -15,7 +15,11 @@ public:
     // アクティブ状態を取得
     virtual bool GetIsActive() const { return m_isAcitve; }
 
+    // モデルを取得する
+    DirectX::Model* GetModel() const override { return m_model; }
 
+    // ワールド行列を取得する
+    DirectX::SimpleMath::Matrix GetWorldMatrix() const override { return m_worldMatrix; }
     // ワールド行列を設定する
     void SetWorldMatrix(const DirectX::SimpleMath::Matrix& worldMatrix) { m_worldMatrix = worldMatrix; }
 
@@ -33,7 +37,8 @@ public:
     void Update(ID3D11DeviceContext* context , const DirectX::SimpleMath::Matrix& worldMatrix) override;
     // 描画を行う
     void Render(ID3D11DeviceContext* context, DirectX::CommonStates* commonStates ,
-        DirectX::SimpleMath::Matrix viewMatrix , DirectX::SimpleMath::Matrix projectionMatrix
+        DirectX::SimpleMath::Matrix viewMatrix , DirectX::SimpleMath::Matrix projectionMatrix,
+        ID3D11ShaderResourceView* shadowMap = nullptr
         ) override;
     // コンストラクタ
     BalloonRenderableObject(const bool &isActive ,DirectX::Model* model);
@@ -43,6 +48,8 @@ public:
 private:
     // 値が変更された場合更新処理を行う
     void UpdateConstantBufferIfNeeded(ID3D11DeviceContext* context) override;
+
+    void CreateLightBuffer();
 
 private:
 
@@ -67,6 +74,12 @@ private:
     PBRLitConstantBuffer m_constants;
     // 定数バッファ
     std::unique_ptr<ConstantBuffer<PBRLitConstantBuffer>> m_constantBuffer;
+
+    // ライト用の定数バッファ
+    std::unique_ptr<ConstantBuffer<DirectionalLightBuffer>> m_constantLightBuffer;
+
+    // サンプラ
+    Microsoft::WRL::ComPtr<ID3D11SamplerState> m_shadowMapSampler;
 
     // モデル
     DirectX::Model* m_model;

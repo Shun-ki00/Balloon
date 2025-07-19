@@ -48,12 +48,28 @@ void Sea::Initialize()
 	// --- 計算開始 ---
 	TimePoint startTime = Clock::now();
 
+	// シャドウマップ用のサンプラーを作成する
+	D3D11_SAMPLER_DESC samplerDesc = CD3D11_SAMPLER_DESC(D3D11_DEFAULT);
+	samplerDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS;
+	DX::ThrowIfFailed(
+		m_device->CreateSamplerState(&samplerDesc, m_shadowMapSampler.ReleaseAndGetAddressOf())
+	);
+
+	// 定数バッファオブジェクトの作成
+	m_constantLightBuffer = std::make_unique<ConstantBuffer<DirectionalLightBuffer>>();
+	m_constantLightBuffer->Initialize(m_device);
+
 	// 頂点バッファの作成
 	this->CreateVertexBuffer();
 	// インスタンスデータの作成
 	this->CreateInstanceData();
 	// 定数バッファの作成
 	this->CreateConstBuffer();
+
 
 	// --- 計算終了 ---
 	TimePoint endTime = Clock::now();
@@ -72,7 +88,7 @@ void Sea::Initialize()
 /// <summary>
 /// 描画処理
 /// </summary>
-void Sea::Render()
+void Sea::Render(ID3D11ShaderResourceView* shadowMap)
 {
 	// タイマーの更新
 	float elapsedTime = (float)m_commonResources->GetStepTimer()->GetElapsedSeconds();
@@ -115,17 +131,16 @@ void Sea::Render()
 	m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
 
 	//	シェーダーにバッファを渡す
-	ID3D11Buffer* cb[3] = { m_transformBuffer->GetBuffer() , m_seaNoiseBuffer->GetBuffer() ,m_gerstnerWaveBuffer->GetBuffer()};
+	ID3D11Buffer* cb[4] = { m_transformBuffer->GetBuffer() , m_seaNoiseBuffer->GetBuffer() ,m_gerstnerWaveBuffer->GetBuffer(),m_constantLightBuffer->GetBuffer()};
 	// スロット1から3に一括バインド
-	m_context->VSSetConstantBuffers(0, 3, cb);
-	m_context->HSSetConstantBuffers(0, 3, cb);
-	m_context->DSSetConstantBuffers(0, 3, cb);
-	m_context->PSSetConstantBuffers(0, 3, cb);
-
+	m_context->VSSetConstantBuffers(0, 4, cb);
+	m_context->HSSetConstantBuffers(0, 4, cb);
+	m_context->DSSetConstantBuffers(0, 4, cb);
+	m_context->PSSetConstantBuffers(0, 4, cb);
+	
 	// サンプラーステートをピクセルシェーダーに設定
-	ID3D11SamplerState* sampler[1] = { m_commonStates->LinearWrap() };
-	m_context->PSSetSamplers(0, 1, sampler);
-
+	ID3D11SamplerState* sampler[2] = { m_commonStates->AnisotropicWrap(),m_shadowMapSampler.Get() };
+	m_context->PSSetSamplers(0, 2, sampler);
 
 	//	シェーダをセットする
 	m_context->VSSetShader(m_vertexShader, nullptr, 0);
@@ -134,8 +149,8 @@ void Sea::Render()
 	m_context->PSSetShader(m_pixelShader , nullptr, 0);
 
 	// テクスチャの設定
-	ID3D11ShaderResourceView* tex[1] = { m_texture };
-	m_context->PSSetShaderResources(0, 1, tex);
+	ID3D11ShaderResourceView* tex[2] = { m_texture,shadowMap };
+	m_context->PSSetShaderResources(0, 2, tex);
 
 	// インスタンスデータの設定
 	ID3D11ShaderResourceView* srvs[] = { m_instanceSRV.Get() };
@@ -284,4 +299,42 @@ void Sea::CreateConstBuffer()
 	m_gerstnerWaveBuffer->Update(m_context, waveParams);
 	m_seaNoiseBuffer->Update(m_context, seaNoise);
 
+
+	using namespace DirectX::SimpleMath;
+
+	// ----------------------------------------------------------- //
+	// ライト空間のビュー行列と射影行列を作成する
+	// ----------------------------------------------------------- //
+
+	/* 手順４ */
+
+	// ライトの向いている方向を調整する
+	//const Vector3 lightDir = Vector3(0.0f, -1.0f, 0.0f);
+
+	Vector3 lightDir = Vector3::Transform(Vector3(0.0f, 0.0f, 1.0f), DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitX, DirectX::XMConvertToRadians(90.0f)) *
+		DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::UnitY, DirectX::XMConvertToRadians(180.0f)));
+
+	// ライト空間のビュー行列を計算する
+	const Matrix lightView = Matrix::CreateLookAt(
+		{ 0.0f , 10.0f ,0.0f },			// eye
+		Vector3(0.0f, 10.0f, 0.0f) + lightDir,	// target
+		Vector3::UnitY				// up
+	);
+
+	const Matrix Projection = Matrix::CreateOrthographicOffCenter(
+		-50.0f / 2.0f, 50.0f / 2.0f,   // 左・右
+		-50.0f / 2.0f, 50.0f / 2.0f,   // 下・上
+		0.1f, 1000.0f     // Near・Far
+	);
+
+	DirectionalLightBuffer cb;
+	const Matrix viewProj = lightView * Projection;
+	cb.lightViewProjection = XMMatrixTranspose(viewProj);
+	cb.lightPosition = Vector3(0.0f, 10.0f, 0.0f);
+	cb.lightDirection = lightDir;							// ライトが照らす方向
+	cb.lightAmbient = Color(0.1f, 0.1f, 0.1f);
+
+
+	// 定数バッファの更新
+	m_constantLightBuffer->Update(CommonResources::GetInstance()->GetDeviceResources()->GetD3DDeviceContext(), cb);
 }

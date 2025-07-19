@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: CameraSystem.h
+// 概要: カメラ制御クラス
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Framework/CameraSystem.h"
 #include "Framework/CommonResources.h"

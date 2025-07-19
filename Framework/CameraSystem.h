@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: CameraSystem.h
+// 概要: CameraSystem.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/ICamera.h"
 #include "Interface/IObject.h"

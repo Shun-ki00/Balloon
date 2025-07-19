@@ -75,6 +75,7 @@ cbuffer TransformConstBuffer : register(b0)
     float4 color;
 };
 
+
 // 海のノイズデータ
 cbuffer SeaNoiseConstBuffer : register(b1)
 {
@@ -124,3 +125,12 @@ cbuffer GerstnerWaveConstBuffer : register(b2)
     float qRatio3     : packoffset(c5.z);
     float pad3        : packoffset(c5.w);
 }
+
+// ライト用定数バッファ
+cbuffer LightParameters : register(b3)
+{
+    float4x4 lightViewProjection : packoffset(c0);
+    float4 lightPosition : packoffset(c4);
+    float3 lightDirirection : packoffset(c5);
+    float3 lightAmbient : packoffset(c6);
+};

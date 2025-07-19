@@ -6,6 +6,7 @@
 #include "Game/RenderableObjects/UIRenderableObject .h"
 #include "Game/Particle/Particle.h"
 #include "Game/Particle/ParticleEmitter.h"
+#include "Game/ShadowMap/CascadedShadowMap.h"
 #include "Game/Buffers.h"
 
 
@@ -76,6 +77,9 @@ Renderer::Renderer()
 
 	// アタッチの許可初期化処理
 	m_isActiveAttach = false;
+
+	m_shadowMap = std::make_unique<CascadedShadowMap>();
+	m_shadowMap->Initialize();
 }
 
 
@@ -204,6 +208,8 @@ void Renderer::Reset()
 /// <param name="projectionMatrix">射影行列</param>
 void Renderer::ModelRender(const DirectX::SimpleMath::Matrix& viewMatrix, const DirectX::SimpleMath::Matrix& projectionMatrix)
 {
+	// シャドウマップの描画
+	m_shadowMap->Begin();
 	for (int i = 0; i < m_objectNumber; ++i)
 	{
 		IObject* object = m_objectKeys[i];
@@ -213,7 +219,22 @@ void Renderer::ModelRender(const DirectX::SimpleMath::Matrix& viewMatrix, const 
 
 		if (active && renderable->GetIsActive())
 		{
-			renderable->Render(m_context, m_commonStates, viewMatrix, projectionMatrix);
+			if (object->GetObjectID() != IObject::ObjectID::BALLOON)
+			m_shadowMap->Draw(renderable->GetModel(), m_context, m_commonStates, renderable->GetWorldMatrix());
+		}
+	}
+	m_shadowMap->End();
+
+	for (int i = 0; i < m_objectNumber; ++i)
+	{
+		IObject* object = m_objectKeys[i];
+		IRenderableObject* renderable = m_modelRenderableObjects[object];
+
+		bool active = this->IsHierarchyActive(object);
+
+		if (active && renderable->GetIsActive())
+		{
+			renderable->Render(m_context, m_commonStates, viewMatrix, projectionMatrix, m_shadowMap->GetShadowShaderResourceView());
 		}
 	}
 }

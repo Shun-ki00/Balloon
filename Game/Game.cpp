@@ -85,9 +85,9 @@ void Game::Initialize(HWND window, int width, int height)
     m_commonResources->SetDeviceResources(m_deviceResources.get());
 
     // タイマー設定を変更する   
-    //m_timer.SetFixedTimeStep(true);
+    // m_timer.SetFixedTimeStep(true);
     // タイマーにターゲット経過秒(60FPS)を設定する
-   // m_timer.SetTargetElapsedSeconds(1.0 / 60);
+    // m_timer.SetTargetElapsedSeconds(1.0 / 60);
 
     // スクリーンサイズを設定
     m_commonResources->SetScreenSize(width, height);
@@ -282,7 +282,9 @@ void Game::Render()
     // スカイボックスを描画
     m_skyBox->Render(m_context, m_commonStates.get());
     // 海の描画
-    m_sea->Render();
+    m_sea->Render(m_renderer->GetShadowMap());
+    // シーンの描画処理
+    m_sceneManager->Render();
 
     // デバッグ描画
 #ifdef _DEBUG
@@ -343,9 +345,6 @@ void Game::Render()
 #endif
 
    
-    // シーンの描画処理
-    m_sceneManager->Render();
-
     //  ImGuiの描画処理
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
