@@ -114,6 +114,10 @@ private:
 
 private:
 
+	static const float ROTATION_SPEED;
+
+private:
+
 	// === 共通なもの ===
 
 	// ビジター
@@ -179,5 +183,8 @@ private:
 	std::unique_ptr<BalloonScaleController> m_balloonScaleController;
 	// HPをコントロール
 	std::unique_ptr<HpController> m_hpController;
+
+	// 経過時間
+	float m_elapsedTime;
 
 };

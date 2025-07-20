@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: Enemy.h
+// 概要: 敵オブジェクト
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #include "pch.h"
 #include "Game/Enemy/Enemy.h"
 #include "Game/Buffers.h"
@@ -340,7 +348,7 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 			break;
 			// Y軸で逆ベクトルにする
 		case Message::MessageID::INVERT_Y_VECTOR:
-			m_velocity.y = m_velocity.y * -1.0f;
+			if (m_velocity.y > 0.0f) m_velocity.y *= -1.0f;
 			break;
 		case Message::MessageID::ENEMY_ON_BALLOON_SCALE:
 			// HPがあるなら有効化

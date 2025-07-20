@@ -1,3 +1,11 @@
+// ============================================
+// 
+// ファイル名: Enemy.h
+// 概要: Enemy.cppのヘッダーファイル
+// 
+// 製作者 : 清水駿希
+// 
+// ============================================
 #pragma once
 #include "Interface/IComposite.h"
 #include "Game/Object/Object.h"

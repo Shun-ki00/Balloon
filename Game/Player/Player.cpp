@@ -45,6 +45,7 @@
 #include "Game/Status/HpController.h"
 #include "Framework/Utilities/RandomUtilities.h"
 
+const float Player::ROTATION_SPEED = 130.0f;
 
 /// <summary>
 /// コンストラクタ
@@ -88,7 +89,8 @@ Player::Player(IObject* root, IObject* parent, IObject::ObjectID objectID,
 	m_playerSitState{},
 	m_balloonScaleController{},
 	m_hpController{},
-	m_isFixed{}
+	m_isFixed{},
+	m_elapsedTime{}
 {
 	m_collisionVisitor = CollisionVisitor::GetInstance();
 
@@ -154,6 +156,8 @@ void Player::Initialize()
 /// <param name="elapsedTime">経過時間</param>
 void Player::Update(const float& elapsedTime)
 {
+	m_elapsedTime = elapsedTime;
+
 	if (!m_isActive) return;
 
 	// プレイヤーが固定状態の場合
@@ -383,7 +387,7 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 			break;
 		// Y軸で逆ベクトルにする
 		case Message::MessageID::INVERT_Y_VECTOR:
-			m_velocity.y = m_velocity.y * -1.0f;
+			if (m_velocity.y > 0.0f) m_velocity.y *= -1.0f;
 			break;
 		// 衝突した時の処理
 		case Message::MessageID::ON_COLLISION:
@@ -479,7 +483,7 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 					m_transform->GetLocalRotation(),
 					DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
 						DirectX::SimpleMath::Vector3::Up,
-						DirectX::XMConvertToRadians(2.0f))
+						DirectX::XMConvertToRadians(m_elapsedTime * ROTATION_SPEED))
 				)
 			);
 
@@ -492,7 +496,7 @@ void Player::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
 					m_transform->GetLocalRotation(),
 					DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(
 						DirectX::SimpleMath::Vector3::Up,
-						DirectX::XMConvertToRadians(-2.0f))
+						DirectX::XMConvertToRadians(m_elapsedTime * -ROTATION_SPEED))
 				)
 			);
 			break;

@@ -38,7 +38,7 @@ void PlayerAttackState::PreUpdate()
 	m_elapsedTime = 0.0f;
 	m_moveingTime = 0.3f;
 
-	DirectX::SimpleMath::Vector3 velocity = { 0.0f , 0.0f ,6.0f };
+	DirectX::SimpleMath::Vector3 velocity = { 0.0f , 0.0f ,4.0f };
 
 	velocity = DirectX::SimpleMath::Vector3::Transform(velocity, m_player->GetTransform()->GetLocalRotation());
 
