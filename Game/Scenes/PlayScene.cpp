@@ -82,6 +82,9 @@ void PlayScene::Initialize()
 /// </summary>
 void PlayScene::Start()
 {
+	// BGMを再生する
+	AudioManager::GetInstance()->PlayBgm(XACT_WAVEBANK_SOUNDS::XACT_WAVEBANK_SOUNDS_PLAYSCENE, 1.0f);
+
 	m_currentState->PreUpdate();
 
 	// アニメーション開始

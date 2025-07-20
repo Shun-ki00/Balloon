@@ -28,7 +28,7 @@ public:
 	void Update(DX::StepTimer const& timer);
 
 	// BGMÇçƒê∂Ç∑ÇÈ
-	void PlayBgm(XACT_WAVEBANK_SOUNDS bgmName, float fadeTime = 1.0f);
+	void PlayBgm(XACT_WAVEBANK_SOUNDS bgmName, float fadeTime );
 	void PlayBgm(XACT_WAVEBANK_SOUNDS bgmName);
 	// BGMÇí‚é~Ç∑ÇÈ
 	void StopBgm(float fadeTime = 1.0f);

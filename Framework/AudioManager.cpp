@@ -57,6 +57,11 @@ void AudioManager::Initialize()
 	eflags |= DirectX::AUDIO_ENGINE_FLAGS::AudioEngine_Debug;
 #endif
 
+	// 音量をすべて1に初期化
+	m_masterVolume = 1.0f;
+	m_seVolume = 1.0f;
+	m_bgmVolume = 1.0f;
+
 	// オーディオエンジンを作成する
 	m_audioEngine = std::make_unique<DirectX::AudioEngine>(eflags);
 	// マスター音量の初期化
@@ -66,11 +71,6 @@ void AudioManager::Initialize()
 	std::thread bgm(&AudioManager::LoadBGM, this);
 	// シェーダーをロードする
 	std::thread se(&AudioManager::LoadSE, this);
-
-	// 音量をすべて1に初期化
-	m_masterVolume = 1.0f;
-	m_seVolume     = 1.0f;
-	m_bgmVolume    = 0.5f;
 
 	// 10個ほど用意しておく
 	m_currentSes = std::vector<DirectX::SoundEffectInstance*>(10);
@@ -134,13 +134,14 @@ void AudioManager::Update(DX::StepTimer const& timer)
 		// 最終音量を設定
 		m_currentBgm->SetVolume(m_currentValue);
 
-		if(m_currentValue <= 0.0f)
-		// 音量が0になった時はBGMを停止する
-		m_currentBgm->Stop(true);
-
-		// 解放する
-		m_currentBgm = nullptr;
-
+		if (m_currentValue <= 0.0f)
+		{
+			// 音量が0になった時はBGMを停止する
+			m_currentBgm->Stop(true);
+			// 解放する
+			m_currentBgm = nullptr;
+		}
+		
 		// フェードを非アクティブ
 		m_isActive = false;
 	}

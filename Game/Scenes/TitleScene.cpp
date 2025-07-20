@@ -68,6 +68,9 @@ void TitleScene::Initialize()
 /// </summary>
 void TitleScene::Start()
 {
+	// BGMを再生する
+	AudioManager::GetInstance()->PlayBgm(XACT_WAVEBANK_SOUNDS::XACT_WAVEBANK_SOUNDS_TITLESCENE,1.0f);
+
 	// タイトルロゴのアニメーションを行う
 	ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::TITLE_LOGO_UI, { Message::MessageID::TITLE_LOGO_ANIMATION });
 	// スタートテキストのアニメーションを行う

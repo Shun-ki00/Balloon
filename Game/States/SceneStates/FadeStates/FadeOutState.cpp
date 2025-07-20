@@ -22,6 +22,8 @@ void FadeOutState::Initialize()
 
 void FadeOutState::PreUpdate()
 {
+	// BGMを再生する
+	AudioManager::GetInstance()->StopBgm(1.0f);
 	// フェードアウトを行う
 	m_objectMessenger->Dispatch(IObject::ObjectID::FADE, m_messageData);
 }

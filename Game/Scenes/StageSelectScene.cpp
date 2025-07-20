@@ -70,6 +70,9 @@ void StageSelectScene::Initialize()
 /// </summary>
 void StageSelectScene::Start()
 {
+	// BGMを再生する
+	AudioManager::GetInstance()->PlayBgm(XACT_WAVEBANK_SOUNDS::XACT_WAVEBANK_SOUNDS_SELECTSCENE, 1.0f);
+
 	// ステートスタート処理
 	m_currentState->PreUpdate();
 
