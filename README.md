@@ -1,5 +1,8 @@
 # 「BALLOON」（開発中）
 
+## 実行形式
+最新版の実行ファイルはこちらからダウンロードできます： [Download BALLOON v1.0.0](https://github.com/Shun-ki00/Balloon/releases/latest)
+
 ## ゲーム概要
 プレイヤーと敵は複数風船をつけていて、相手の風船をアタックして割る！  
 全ての風船を割り、敵を落としたら勝ち！！
