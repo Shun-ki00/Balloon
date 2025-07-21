@@ -90,6 +90,8 @@ void TimeUI::Initialize()
 
 	// 描画管理者に渡す
 	m_commonResources->GetRenderer()->Attach(this, m_renderableObject.get());
+
+	this->SplitTimeToDigits();
 }
 
 /// <summary>
@@ -106,6 +108,8 @@ void TimeUI::Update(const float& elapsedTime)
 	// スケールを設定
 	m_renderableObject->SetScale({ m_transform->GetWorldScale().x , m_transform->GetWorldScale().y });
 
+	this->SplitTimeToDigits();
+
 	// 時間を更新
 	if (m_isActiveTimer)
 	{
@@ -118,7 +122,7 @@ void TimeUI::Update(const float& elapsedTime)
 		}
 			
 
-		this->SplitTimeToDigits();
+		
 	}
 	
 
