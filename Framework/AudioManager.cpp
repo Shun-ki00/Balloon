@@ -315,7 +315,7 @@ void AudioManager::StopSE()
 		{
 			// ’âŽ~‚·‚é
 			se->Stop();
-			// ‰ð•ú‚·‚é
+			// ‰ð•ú‚·‚é 
 			se = nullptr;
 		}
 	}

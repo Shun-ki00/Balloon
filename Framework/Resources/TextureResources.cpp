@@ -53,12 +53,12 @@ void TextureResources::LoadResource(const nlohmann::json& data)
 			HRESULT hr = DirectX::CreateWICTextureFromFile(
 				m_device,
 				path.c_str(),
-				nullptr,
+				nullptr, 
 				m_textures[key].ReleaseAndGetAddressOf()
 			);
 
 			// ロード失敗時はデバッグ時のみ停止
-			assert(SUCCEEDED(hr)); 
+			assert(SUCCEEDED(hr));   
 		}
 	}
 

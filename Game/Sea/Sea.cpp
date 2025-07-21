@@ -15,7 +15,7 @@ Sea::Sea()
 	m_domainShader{},
 	m_pixelShader{},
 	m_texture{},
-	m_color{}
+	m_color{} 
 {
 	m_commonResources = CommonResources::GetInstance();
 	m_resources       = Resources::GetInstance();

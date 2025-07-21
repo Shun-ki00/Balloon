@@ -87,7 +87,7 @@ Renderer::Renderer()
 /// •`‰æˆ—‚ğs‚¤
 /// </summary>
 void Renderer::Render()
-{
+{	
 	DirectX::SimpleMath::Matrix viewMatrix       = m_commonResources->GetViewMatrix();
 	DirectX::SimpleMath::Matrix projectionMatrix = m_commonResources->GetProjectionMatrix();
 
@@ -214,6 +214,8 @@ void Renderer::ModelRender(const DirectX::SimpleMath::Matrix& viewMatrix, const 
 	{
 		IObject* object = m_objectKeys[i];
 		IRenderableObject* renderable = m_modelRenderableObjects[object];
+
+		if (object == nullptr || renderable == nullptr) continue;
 
 		bool active = this->IsHierarchyActive(object);
 

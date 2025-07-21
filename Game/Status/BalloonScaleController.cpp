@@ -62,7 +62,7 @@ void BalloonScaleController::Update(const float& elapsedTime)
 			{
 				m_audioManager->StopSE(m_balloonReleaseAirIndex);
 				m_balloonReleaseAirIndex = -1;
-			}
+			} 
 				
 			m_balloonScale = 0.0f;
 		}

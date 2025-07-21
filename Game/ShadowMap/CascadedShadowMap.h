@@ -25,7 +25,7 @@ namespace DX
 class CascadedShadowMap
 {
 private:
-	const float SHADOWMAP_SIZE = 2120.0f;
+	const float SHADOWMAP_SIZE = 1120.0f;
 
 public:
 	// Œ»İ‚ÌƒJƒƒ‰‚ÌTransform‚ğİ’è‚·‚é

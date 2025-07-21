@@ -18,13 +18,13 @@
 
 #include "Game/Factorys/PlayerFactory.h"
 #include "Game/Factorys/BalloonFactory.h"
-
+ 
 #include "Game/Buffers.h"
 
 #include "Game/SteeringBehavior/WindBehavior.h"
 #include "Game/SteeringBehavior/KnockbackBehavior.h"
 #include "Game/SteeringBehavior/FloatBehavior.h"
-#include "Game/SteeringBehavior/FloatForceBehavior.h"
+#include "Game/SteeringBehavior/FloatForceBehavior.h" 
 #include "Game/SteeringBehavior/PushBackBehavior.h"
 #include "Game/SteeringBehavior/SteeringBehavior.h"
 
@@ -549,7 +549,7 @@ void Player::BalloonLost(const int& balloonObjectNumber, const int& enemyObjectN
 		// 非アクティブにする
 		balloon->GetParent()->SetIsActive(false);
 		// 風船の数を減らす
-   		m_balloonIndex--;
+   		m_balloonIndex--; 
 		// SEを再生
 		AudioManager::GetInstance()->PlaySE(XACT_WAVEBANK_SOUNDS_SE::XACT_WAVEBANK_SOUNDS_BALLOON_POP);
 		// 当たったオブジェクト
