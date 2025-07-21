@@ -38,7 +38,10 @@ public:
 	// SEÇçƒê∂
 	void PlaySE(XACT_WAVEBANK_SOUNDS_SE bgmName);
 	int PlayLoopSE(XACT_WAVEBANK_SOUNDS_SE bgmName);
+
+	// SEÇí‚é~
 	void StopSE(int index);
+	void StopSE();
 
 private:
 

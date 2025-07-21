@@ -42,7 +42,6 @@ float4 main(PS_Input input) : SV_TARGET
     // shadow　0.0f：影がある、1.0f：影がない
     float shadow = ShadowMapTexture.SampleCmpLevelZero(
         ShadowMapSampler, uv, lightPos.z - SHADOW_EPSILON);
-
     
      // PBRのBRDFを計算
     float4 color = BRDF(

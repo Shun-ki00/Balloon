@@ -243,12 +243,20 @@ void AudioManager::StopBgm()
 /// </summary>
 void AudioManager::PlaySE(XACT_WAVEBANK_SOUNDS_SE bgmName)
 {
-	// サウンドエフェクトをセットして取得する
-	auto soundEffect = this->SetSE(m_seMaps.at(bgmName).get());
-	// 一応再度音量を設定する
-	soundEffect->SetVolume(m_seVolume);
-	// SEを再生する（ループ再生は行わない）
-	soundEffect->Play(false);
+	for (int i = 0; i < m_currentSes.size(); i++)
+	{
+		// 使用していないものを探す
+		if (m_currentSes[i] != nullptr) continue;
+
+		// 使用していない場合インスタンスを設定する
+		m_currentSes[i] = m_seMaps.at(bgmName).get();
+
+		// 音量を設定する
+		m_currentSes[i]->SetVolume(m_seVolume);
+
+		// ループ再生は行わない
+		m_currentSes[i]->Play(false);
+	}
 }
 
 /// <summary>
@@ -260,7 +268,7 @@ int AudioManager::PlayLoopSE(XACT_WAVEBANK_SOUNDS_SE bgmName)
 	for (int i = 0; i < m_currentSes.size(); i++)
 	{
 		// 使用していないものを探す
-		if (m_currentSes[i] == nullptr) continue;
+		if (m_currentSes[i] != nullptr) continue;
 
 		// 使用していない場合インスタンスを設定する
 		m_currentSes[i] = m_seMaps.at(bgmName).get();
@@ -283,11 +291,36 @@ int AudioManager::PlayLoopSE(XACT_WAVEBANK_SOUNDS_SE bgmName)
 /// </summary>
 void AudioManager::StopSE(int index)
 {
-	// 効果音を停止する
-	m_currentSes[index]->Stop();
-	// インスタンスを解放
-	m_currentSes[index] = nullptr;
+	// index の範囲チェックとポインタの null チェック
+	if (index >= 0 && index < static_cast<int>(m_currentSes.size()) && m_currentSes[index])
+	{
+		// 効果音を停止する
+		m_currentSes[index]->Stop();
+		// インスタンスを解放
+		m_currentSes[index] = nullptr;
+	}
 }
+
+/// <summary>
+/// 再生中のSEを全て止める
+/// </summary>
+void AudioManager::StopSE()
+{
+	for (auto& se : m_currentSes)
+	{
+		if (se == nullptr) continue;
+
+		// 再生中の物があれば停止して解放
+		if (DirectX::SoundState::PLAYING == se->GetState())
+		{
+			// 停止する
+			se->Stop();
+			// 解放する
+			se = nullptr;
+		}
+	}
+}
+
 
 /// <summary>
 /// マスター音量を設定

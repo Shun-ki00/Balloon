@@ -47,7 +47,7 @@ public:
 	void Initialize();
 	// •`‰æˆ—
 	void Draw(DirectX::Model* model ,ID3D11DeviceContext1* context, DirectX::CommonStates* states,
-		DirectX::SimpleMath::Matrix world);
+		Transform* transform);
 
 	void Begin();
 	void End();

@@ -1,5 +1,6 @@
 #pragma once
 
+class AudioManager;
 class FloatForceBehavior;
 class HpController;
 
@@ -29,6 +30,8 @@ public:
 
 private:
 
+	AudioManager* m_audioManager;
+
 	// ステアリングビヘイビア
 	FloatForceBehavior* m_floatForceBehavior;
 	// HPコントローラー
@@ -38,5 +41,9 @@ private:
 	float m_balloonScale;
 	// 風船を膨らませているかどうか
 	bool m_isBalloonInflating;
+
+	int m_balloonBlowUpIndex;
+
+	int m_balloonReleaseAirIndex; 
 
 };

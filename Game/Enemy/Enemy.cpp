@@ -15,6 +15,7 @@
 #include "Game/Visitor/CollisionVisitor.h"
 #include "Game/Message/ObjectMessenger.h"
 #include "Game/Player/Player.h"
+#include "Framework/AudioManager.h"
 // ステアリングビヘイビア
 #include "Game/SteeringBehavior/SteeringBehavior.h"
 #include "Game/SteeringBehavior/WindBehavior.h"
@@ -348,7 +349,7 @@ void Enemy::OnMessegeAccepted(Message::MessageData messageData)
 			break;
 			// Y軸で逆ベクトルにする
 		case Message::MessageID::INVERT_Y_VECTOR:
-			if (m_velocity.y > 0.0f) m_velocity.y *= -1.0f;
+			if (m_velocity.y < 0.0f) m_velocity.y *= -1.0f;
 			break;
 		case Message::MessageID::ENEMY_ON_BALLOON_SCALE:
 			// HPがあるなら有効化
@@ -440,6 +441,8 @@ void Enemy::BalloonLost(const int& balloonObjectNumber, const int& playerObjectN
 		balloon->GetParent()->SetIsActive(false);
 		// 風船の数を減らす
 		m_balloonIndex--;
+		// SEを再生
+		AudioManager::GetInstance()->PlaySE(XACT_WAVEBANK_SOUNDS_SE::XACT_WAVEBANK_SOUNDS_BALLOON_POP);
 		// 当たったオブジェクト
 		ObjectMessenger::GetInstance()->Dispatch(
 			IObject::ObjectID::PLAYER, { Message::MessageID::INVERT_Y_VECTOR });

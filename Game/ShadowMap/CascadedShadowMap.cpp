@@ -108,8 +108,15 @@ void CascadedShadowMap::Initialize()
 /// <param name="model">モデル</param>
 /// <param name="world">ワールド行列</param>
 void CascadedShadowMap::Draw(DirectX::Model* model, ID3D11DeviceContext1* context, DirectX::CommonStates* states,
-	DirectX::SimpleMath::Matrix world)
+	Transform* transform)
 {
+	using namespace DirectX::SimpleMath;
+
+	Matrix world =
+		Matrix::CreateScale(transform->GetWorldScale() * 2.0f) *
+		Matrix::CreateFromQuaternion(transform->GetWorldRotation()) *
+		Matrix::CreateTranslation(transform->GetWorldPosition());
+
 	// 影用モデル描画
 	model->Draw(context, *states, world, m_lightViewMatrix, m_lightProjectionMatrix, false, [&]
 		{

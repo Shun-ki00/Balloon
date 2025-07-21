@@ -8,8 +8,37 @@
 #include "Game/Player/Player.h"
 #include "Game/Message/ObjectMessenger.h"
 
-
+/// <summary>
+/// コンストラクタ
+/// </summary>
 ActionSelection::ActionSelection()
+	:
+    m_enemy{},
+    m_aiConditions{},
+    m_root{},
+    m_outOfRange{},
+    m_inOfRange{},
+    m_aboveSequenceNode{},
+    m_belowSequenceNode{},
+    m_hightHpSequenceNode{},
+    m_mediumHpSequenceNode{},
+    m_lowHpSequenceNode{},
+    m_AttackSequenceNode{},
+    m_hpSelectorNode{},
+    m_hightSelectorNode{},
+    m_isAboveCheck{},
+    m_isBelowCheck{},
+    m_isInRangeCheck{},
+    m_isOutRangeCheck{},
+    m_isAttackRangeCheck{},
+    m_ChangeIdlingState{},
+    m_ChangeChaseState{},
+    m_ChangeAttackState{},
+    m_messageBalloonScaleOff{},
+    m_messageBalloonScaleOn{},
+    m_hightHpCheck{},
+    m_mediumHpCheck{},
+    m_lowHpCheck{}
 {
 	// インスタンスを取得する
 	m_aiConditions = AIConditions::GetInstance();
@@ -17,88 +46,94 @@ ActionSelection::ActionSelection()
 
 void ActionSelection::Initialize(Enemy* enemy)
 {
-	// 敵のオブジェクトを取得する
-	m_enemy = enemy;
+    // ===========================================
+    // 初期設定
+    // ===========================================
+    // 敵のオブジェクトを取得する
+    m_enemy = enemy;
 
-	m_aiConditions->SetTargetObject(
-	dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0]));
+    // AI条件にターゲットプレイヤーを設定する
+    m_aiConditions->SetTargetObject(
+        dynamic_cast<Player*>(ObjectMessenger::GetInstance()->FindObject(IObject::ObjectID::PLAYER)[0])
+    );
 
-	// アクションノードを作成する
-	this->CreateActionNode();
+    // 基本アクションノードを作成する
+    this->CreateActionNode();
 
-	m_AttackSequenceNode = std::make_unique<SequenceNode>("AttackSequenceNode");
-	m_AttackSequenceNode->AddChild(m_isAttackRangeCheck.get());
-	m_AttackSequenceNode->AddChild(m_ChangeAttackState.get());
+    // ===========================================
+    // 攻撃関連ノードの作成
+    // ===========================================
+    // 攻撃シーケンスノード（攻撃範囲チェック → 攻撃状態変更）
+    m_AttackSequenceNode = std::make_unique<SequenceNode>("AttackSequenceNode");
+    m_AttackSequenceNode->AddChild(m_isAttackRangeCheck.get());
+    m_AttackSequenceNode->AddChild(m_ChangeAttackState.get());
 
-	m_aboveSequenceNode = std::make_unique<SequenceNode>("aboveSequence");
-	m_aboveSequenceNode->AddChild(m_isAboveCheck.get());
-	m_aboveSequenceNode->AddChild(m_messageBalloonScaleOff.get());
-	m_aboveSequenceNode->AddChild(m_AttackSequenceNode.get());
+    // プレイヤーより上にいる時のシーケンス（上チェック → メッセージバルーンOFF → 攻撃）
+    m_aboveSequenceNode = std::make_unique<SequenceNode>("AboveSequenceNode");
+    m_aboveSequenceNode->AddChild(m_isAboveCheck.get());
+    m_aboveSequenceNode->AddChild(m_messageBalloonScaleOff.get());
+    m_aboveSequenceNode->AddChild(m_AttackSequenceNode.get());
 
+    // プレイヤーより下にいる時のシーケンス（下チェック → メッセージバルーンON）
+    m_belowSequenceNode = std::make_unique<SequenceNode>("BelowSequenceNode");
+    m_belowSequenceNode->AddChild(m_isBelowCheck.get());
+    m_belowSequenceNode->AddChild(m_messageBalloonScaleOn.get());
 
-	m_belowSequenceNode = std::make_unique<SequenceNode>("belowSequence");
-	m_belowSequenceNode->AddChild(m_isBelowCheck.get());
-	m_belowSequenceNode->AddChild(m_messageBalloonScaleOn.get());
+    // 高さ判定セレクター（上 または 下）
+    m_hightSelectorNode = std::make_unique<SelectorNode>("HeightSelectorNode");
+    m_hightSelectorNode->AddChild(m_aboveSequenceNode.get());
+    m_hightSelectorNode->AddChild(m_belowSequenceNode.get());
 
-	m_hightSelectorNode = std::make_unique<SelectorNode>("HightSelectorNode");
-	m_hightSelectorNode->AddChild(m_aboveSequenceNode.get());
-	m_hightSelectorNode->AddChild(m_belowSequenceNode.get());
+    // ===========================================
+    // HP判定ノードの作成
+    // ===========================================
+    // HP高い時のシーケンス（HPチェック → 追跡状態 → 高さ判定 → 攻撃）
+    m_hightHpSequenceNode = std::make_unique<SequenceNode>("HighHpSequenceNode");
+    m_hightHpSequenceNode->AddChild(m_hightHpCheck.get());
+    m_hightHpSequenceNode->AddChild(m_ChangeChaseState.get());
+    m_hightHpSequenceNode->AddChild(m_hightSelectorNode.get());
+    m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
 
+    // HP中間時のシーケンス（HPチェック → 追跡状態 → 高さ判定 → 攻撃）
+    m_mediumHpSequenceNode = std::make_unique<SequenceNode>("MediumHpSequenceNode");
+    m_mediumHpSequenceNode->AddChild(m_mediumHpCheck.get());
+    m_mediumHpSequenceNode->AddChild(m_ChangeChaseState.get());
+    m_mediumHpSequenceNode->AddChild(m_hightSelectorNode.get());
+    m_mediumHpSequenceNode->AddChild(m_AttackSequenceNode.get());
 
+    // HP低い時のシーケンス（HPチェックのみ - 将来の拡張用）
+    m_lowHpSequenceNode = std::make_unique<SequenceNode>("LowHpSequenceNode");
+    m_lowHpSequenceNode->AddChild(m_lowHpCheck.get());
 
-	// プレイヤーの範囲外にいるとき　ノード作成
-	m_outOfRange = std::make_unique<SequenceNode>("OutOfRangeSequence");
-	// 子ノードを追加
-	m_outOfRange->AddChild(m_isOutRangeCheck.get());
-	m_outOfRange->AddChild(m_ChangeIdlingState.get());
+    // m_lowHpSequenceNode->AddChild(m_ChangeChaseState.get());
+    // m_lowHpSequenceNode->AddChild(m_messageBalloonScaleOff.get());
 
-	// プレイヤーの範囲内にいるとき　ノード作成
-	m_inOfRange = std::make_unique<SequenceNode>("InOfRangeSequence");
-	
-	// チェックするアクションノードを追加
-	m_inOfRange->AddChild(m_isInRangeCheck.get());
+    // HPセレクター（高HP または 中HP または 低HP）
+    m_hpSelectorNode = std::make_unique<SelectorNode>("HpSelectorNode");
+    m_hpSelectorNode->AddChild(m_hightHpSequenceNode.get());
+    m_hpSelectorNode->AddChild(m_mediumHpSequenceNode.get());
+    m_hpSelectorNode->AddChild(m_lowHpSequenceNode.get());
 
-	// HPをで判定するアクションノードを追加
-	m_hpSelectorNode = std::make_unique<SelectorNode>("HpSelector");
-	
+    // ===========================================
+    // 範囲判定ノードの作成
+    // ===========================================
+    // プレイヤー範囲外時のシーケンス（範囲外チェック → アイドル状態変更）
+    m_outOfRange = std::make_unique<SequenceNode>("OutOfRangeSequenceNode");
+    m_outOfRange->AddChild(m_isOutRangeCheck.get());
+    m_outOfRange->AddChild(m_ChangeIdlingState.get());
 
-	// HPが高い時
-	m_hightHpSequenceNode = std::make_unique<SequenceNode>("HightHpSequence");
-	// HPが中間の時
-	m_mediumHpSequenceNode = std::make_unique<SequenceNode>("MediumHpSequence");
-	// HPが低い時
-	m_lowHpSequenceNode = std::make_unique<SequenceNode>("LowHpSequence");
+    // プレイヤー範囲内時のシーケンス（範囲内チェック → HP判定実行）
+    m_inOfRange = std::make_unique<SequenceNode>("InOfRangeSequenceNode");
+    m_inOfRange->AddChild(m_isInRangeCheck.get());
+    m_inOfRange->AddChild(m_hpSelectorNode.get());
 
-	m_hightHpSequenceNode->AddChild(m_hightHpCheck.get());
-	m_hightHpSequenceNode->AddChild(m_ChangeChaseState.get());
-	m_hightHpSequenceNode->AddChild(m_hightSelectorNode.get());
-	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
-	 
-	m_mediumHpSequenceNode->AddChild(m_mediumHpCheck.get());
-	m_mediumHpSequenceNode->AddChild(m_ChangeChaseState.get());
-	m_mediumHpSequenceNode->AddChild(m_hightSelectorNode.get());
-	m_hightHpSequenceNode->AddChild(m_AttackSequenceNode.get());
-
-
-	m_lowHpSequenceNode->AddChild(m_lowHpCheck.get());
-	//m_lowHpSequenceNode->AddChild(m_ChangeChaseState.get());
-	//m_lowHpSequenceNode->AddChild(m_messageBalloonScaleOff.get());
-
-	m_hpSelectorNode->AddChild(m_hightHpSequenceNode.get());
-	m_hpSelectorNode->AddChild(m_mediumHpSequenceNode.get());
-	m_hpSelectorNode->AddChild(m_lowHpSequenceNode.get());
-
-	// プレイヤーの範囲内にいるならばHPチェックノードを走らせる
-	m_inOfRange->AddChild(m_hpSelectorNode.get());
-	
-
-	// ルートノードの作成
-	m_root = std::make_unique<SelectorNode>("Root");
-
-	// 子を追加する
-	m_root->AddChild(m_outOfRange.get());
-	m_root->AddChild(m_inOfRange.get());
-
+    // ===========================================
+    // ルートノードの作成と全体構成
+    // ===========================================
+    // ルートセレクター（範囲外処理 または 範囲内処理）
+    m_root = std::make_unique<SelectorNode>("RootSelectorNode");
+    m_root->AddChild(m_outOfRange.get());
+    m_root->AddChild(m_inOfRange.get());
 }
 
 

@@ -104,6 +104,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     float4 output = tex.Sample(sam, uv);
     
     output *= color;
+
     
     float4 lightPos = mul(input.positionWS, lightViewProjection);
         // 現在のピクセルがシャドウマップ上でどの位置にあたるか計算する

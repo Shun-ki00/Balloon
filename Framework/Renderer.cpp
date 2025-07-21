@@ -220,7 +220,7 @@ void Renderer::ModelRender(const DirectX::SimpleMath::Matrix& viewMatrix, const 
 		if (active && renderable->GetIsActive())
 		{
 			if (object->GetObjectID() != IObject::ObjectID::BALLOON)
-			m_shadowMap->Draw(renderable->GetModel(), m_context, m_commonStates, renderable->GetWorldMatrix());
+			m_shadowMap->Draw(renderable->GetModel(), m_context, m_commonStates, object->GetTransform());
 		}
 	}
 	m_shadowMap->End();

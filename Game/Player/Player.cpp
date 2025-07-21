@@ -387,7 +387,7 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 			break;
 		// Y軸で逆ベクトルにする
 		case Message::MessageID::INVERT_Y_VECTOR:
-			if (m_velocity.y > 0.0f) m_velocity.y *= -1.0f;
+			if (m_velocity.y < 0.0f) m_velocity.y *= -1.0f;
 			break;
 		// 衝突した時の処理
 		case Message::MessageID::ON_COLLISION:
@@ -550,6 +550,8 @@ void Player::BalloonLost(const int& balloonObjectNumber, const int& enemyObjectN
 		balloon->GetParent()->SetIsActive(false);
 		// 風船の数を減らす
    		m_balloonIndex--;
+		// SEを再生
+		AudioManager::GetInstance()->PlaySE(XACT_WAVEBANK_SOUNDS_SE::XACT_WAVEBANK_SOUNDS_BALLOON_POP);
 		// 当たったオブジェクト
 		ObjectMessenger::GetInstance()->Dispatch(
 			IObject::ObjectID::ENEMY,
