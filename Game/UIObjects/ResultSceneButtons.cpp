@@ -158,6 +158,18 @@ void ResultSceneButtons::OnMessegeAccepted(Message::MessageData messageData)
 			else
 				SceneManager::GetInstance()->Dispatch(Message::SceneMessageID::FADE_OUT_CANGE_PLAY_SCENE);
 			break;
+		case Message::MessageID::BUTTON_NEXT:
+			// ボタンの番号を減算
+			m_buttonIndex--;
+			if (m_buttonIndex < 1)
+				m_buttonIndex = 2;
+			break;
+		case Message::MessageID::BUTTON_BACK:
+			// ボタンの番号を加算
+			m_buttonIndex++;
+			if (m_buttonIndex > 2)
+				m_buttonIndex = 1;
+			break;
 		default:
 			break;
 	}

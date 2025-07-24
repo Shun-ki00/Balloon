@@ -16,12 +16,8 @@
 #include "Framework/Tween/TweenManager.h"
 
 // 各シーン
-#include "Game/Scenes/DebugScene.h"
 #include "Game/Scenes/TitleScene.h"
-#include "Game/Scenes/GameClearScene.h"
-#include "Game/Scenes/PlayScene.h"
-#include "Game/Scenes/GameOverScene.h"
-#include "Game/Scenes/StageSelectScene.h"
+
 
 
 /// <summary>
@@ -48,10 +44,10 @@ void SceneManager::Initialize()
 	m_commonResources->GetRenderer()->Begin();
 	ObjectMessenger::GetInstance()->Begin();
 	KeyboardMessenger::GetInstance()->Begin();
-	CollisionVisitor::GetInstance()->Begin();
+	CollisionVisitor::GetInstance()->Begin(); 
 
 	// 初期シーンの作成
-	m_currentScene = std::make_unique<TitleScene>();
+	m_currentScene = std::make_unique<TitleScene>();  
 	// 初期シーンの初期化
 	m_currentScene->Initialize();
 

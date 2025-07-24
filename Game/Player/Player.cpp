@@ -403,7 +403,7 @@ void Player::OnMessegeAccepted(Message::MessageData messageData)
 			// 指定のビヘイビア状態を変更
 			if (messageData.dataBool)
 			{
-				m_steeringBehavior->Off(BEHAVIOR_TYPE::PUSH_BACK);
+   				m_steeringBehavior->Off(BEHAVIOR_TYPE::PUSH_BACK);
 				m_steeringBehavior->Off(BEHAVIOR_TYPE::FLOAT_FORCE);
 
 				m_steeringBehavior->On(BEHAVIOR_TYPE::FLOATING);

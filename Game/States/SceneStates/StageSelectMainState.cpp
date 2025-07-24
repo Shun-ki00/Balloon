@@ -27,6 +27,15 @@ void StageSelectMainState::Update(const float& elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	if (m_inputManager->OnKeyDown(InputManager::Keys::Right))
+	{
+		ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::STAGE_SELECT_UI, { Message::MessageID::BUTTON_BACK });
+	}
+	if (m_inputManager->OnKeyDown(InputManager::Keys::Left))
+	{
+		ObjectMessenger::GetInstance()->Dispatch(IObject::ObjectID::STAGE_SELECT_UI, { Message::MessageID::BUTTON_NEXT });
+	}
+
 	if (m_inputManager->OnKeyDown(InputManager::Keys::Escape))
 	{	
 		// シーンにメッセージ送信

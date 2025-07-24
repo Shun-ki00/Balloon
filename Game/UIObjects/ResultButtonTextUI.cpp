@@ -209,6 +209,9 @@ void ResultButtonTextUI::SetButtonActive(const bool& isButton)
 			default:
 				break;
 		}
+
+		m_transform->SetLocalScale({ 0.8f,0.8f,m_transform->GetLocalScale().z });
+		
 	}
 	else
 	{
@@ -223,8 +226,11 @@ void ResultButtonTextUI::SetButtonActive(const bool& isButton)
 			default:
 				break;
 		}
+
+		m_transform->SetLocalScale({ 0.7f,0.7f,m_transform->GetLocalScale().z });
 	}
 
 	// UVのオフセットを設定
 	m_renderableObject->SetUvOffset({ uvOffsetX, uvOffsetY });
+	m_renderableObject->SetScale({ m_transform->GetLocalScale().x, m_transform->GetLocalScale().y });
 }

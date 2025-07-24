@@ -146,23 +146,9 @@ void StageSelectUI::Detach(std::unique_ptr<IObject> object)
 /// <param name="messageData">メッセージデータ</param>
 void StageSelectUI::OnMessegeAccepted(Message::MessageData messageData)
 {
-	UNREFERENCED_PARAMETER(messageData);
-}
-
-/// <summary>
-/// キーボードのメッセージを通知する
-/// </summary>
-/// <param name="type">キータイプ</param>
-/// <param name="key">キー</param>
-void StageSelectUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
-{
-	UNREFERENCED_PARAMETER(type);
-
-	if (m_isCoolTime) return;
-
-	switch (key)
+	switch (messageData.messageId)
 	{
-		case DirectX::Keyboard::Keys::Left:
+		case Message::MessageID::BUTTON_NEXT:
 
 			m_isCoolTime = true;
 
@@ -171,7 +157,7 @@ void StageSelectUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& ke
 
 			// 現在のフレームを小さくする
 			m_childs[m_stageIndex]->GetTransform()->GetTween()->DOMoveZ(0.0f, 0.4f);
-			m_childs[m_stageIndex]->GetTransform()->GetTween()->DOScale(DirectX::SimpleMath::Vector3::One ,0.4f).SetEase(Tween::EasingType::EaseInBack);
+			m_childs[m_stageIndex]->GetTransform()->GetTween()->DOScale(DirectX::SimpleMath::Vector3::One, 0.4f).SetEase(Tween::EasingType::EaseInBack);
 
 			m_stageIndex--;
 			if (m_stageIndex < 0)
@@ -181,13 +167,11 @@ void StageSelectUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& ke
 			m_childs[m_stageIndex]->GetTransform()->GetTween()->DOScale(DirectX::SimpleMath::Vector3::One * 1.2f, 0.4f).SetEase(Tween::EasingType::EaseInOutQuart);
 			// 次のフレームが大きくなったら回転するアニメーションスタート
 			m_childs[m_stageIndex]->GetTransform()->GetTween()->DOMoveZ(10.0f, 0.4f).SetDelay(0.4f).OnComplete([this] {
-				m_childs[m_stageIndex]->GetTransform()->GetTween()->DOMoveZ(-10.0f, 0.4f).SetLoops(100000,Tween::LoopType::Yoyo);
+				m_childs[m_stageIndex]->GetTransform()->GetTween()->DOMoveZ(-10.0f, 0.4f).SetLoops(100000, Tween::LoopType::Yoyo);
 				});
 
-
 			break;
-
-		case DirectX::Keyboard::Keys::Right:
+		case Message::MessageID::BUTTON_BACK:
 
 			m_isCoolTime = true;
 
@@ -208,6 +192,28 @@ void StageSelectUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& ke
 			m_childs[m_stageIndex]->GetTransform()->GetTween()->DOMoveZ(10.0f, 0.4f).SetDelay(0.4f).OnComplete([this] {
 				m_childs[m_stageIndex]->GetTransform()->GetTween()->DOMoveZ(-10.0f, 0.4f).SetLoops(100000, Tween::LoopType::Yoyo);
 				});
+			break;
+		default:
+			break;
+	}
+}
+
+/// <summary>
+/// キーボードのメッセージを通知する
+/// </summary>
+/// <param name="type">キータイプ</param>
+/// <param name="key">キー</param>
+void StageSelectUI::OnKeyPressed(KeyType type, const DirectX::Keyboard::Keys& key)
+{
+	UNREFERENCED_PARAMETER(type);
+
+	if (m_isCoolTime) return;
+
+	switch (key)
+	{
+		case DirectX::Keyboard::Keys::Left:
+			break;
+		case DirectX::Keyboard::Keys::Right:
 			break;
 		default:
 			break;

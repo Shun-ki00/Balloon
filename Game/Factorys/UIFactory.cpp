@@ -229,8 +229,8 @@ std::unique_ptr<IObject> UIFactory::CreateStageSelectUI(
 	ObjectMessenger::GetInstance()->Register(objectID, stageSelect->GetObjectNumber(), stageSelect.get());
 
 	// キーボードメッセンジャーに登録
-	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Left, stageSelect.get());
-	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Right, stageSelect.get());
+	/*KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Left, stageSelect.get());
+	KeyboardMessenger::GetInstance()->Attach(KeyType::ON_KEY_DOWN, DirectX::Keyboard::Keys::Right, stageSelect.get());*/
 
 	// インスタンスを返す
 	return std::move(stageSelect);

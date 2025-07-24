@@ -137,6 +137,9 @@ void Fade::OnMessegeAccepted(Message::MessageData messageData)
 			break;
 		case Message::MessageID::FADE_OUT:
 
+			// 値の初期化処理
+			m_transform->SetLocalScale({ 1.0f ,1.0f ,0.0f });
+
 			// スケールのZ成分をルール画像の進行度を設定
 			m_transform->GetTween()->DOScaleZ(1.1f, 1.0f).OnComplete([this] {
 

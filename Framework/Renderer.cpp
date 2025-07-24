@@ -94,7 +94,7 @@ void Renderer::Render()
 	// ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
 	this->ModelRender(viewMatrix, projectionMatrix);
 	// ƒp[ƒeƒBƒNƒ‹•`‰æ
-	this->ParticleRender(viewMatrix, projectionMatrix);
+	// this->ParticleRender(viewMatrix, projectionMatrix);
 	// UI‚Ì•`‰æ
 	this->UIRender();
 }
@@ -231,6 +231,8 @@ void Renderer::ModelRender(const DirectX::SimpleMath::Matrix& viewMatrix, const 
 	{
 		IObject* object = m_objectKeys[i];
 		IRenderableObject* renderable = m_modelRenderableObjects[object];
+		
+		if (object == nullptr || renderable == nullptr) continue;
 
 		bool active = this->IsHierarchyActive(object);
 
@@ -379,6 +381,8 @@ void Renderer::UIRender()
 	{
 		IObject* object = m_UIObjectKeys[i];
 		UIRenderableObject* renderable = m_UIRenderableObjects[object];
+
+		if (object == nullptr || renderable == nullptr) continue;
 
 		if (!object->GetIsActive() || !renderable->GetIsActive())
 			continue;

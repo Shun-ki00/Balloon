@@ -59,6 +59,9 @@ public:
 		// ボタンを非アクティブ
 		BUTTON_OFF,
 
+		BUTTON_NEXT,
+		BUTTON_BACK,
+
 
 		// 風船の大きさを設定
 		BALLOON_SCALE,
