@@ -96,16 +96,16 @@ DS_OUTPUT main(
             uvOut += patch[idx].uv * w;
         }
     }
-
+    
     // 波計算（XZベース）
     float2 xy = worldPosition.xz;
     float t = TessellationFactor.y;
     
+    // 波の計算
     worldPosition = P(xy, t).xzy;
-
-    // ワールド→クリップ変換
-    float4 pos = mul(float4(worldPosition, 1.0f), matWorld);
     
+    // ワールド座標変換
+    float4 pos = mul(float4(worldPosition, 1.0f), matWorld);
     output.positionWS = pos;
     
     pos = mul(pos, matView);

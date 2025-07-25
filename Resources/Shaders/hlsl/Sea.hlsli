@@ -1,17 +1,16 @@
-
 // === 頂点シェーダー ===
 
 // 入力構造体
 struct VS_INPUT
 {
     float4 position : SV_POSITION; // 頂点位置
-    float2 uv       : TEXCOORD; // UV座標
+    float2 uv : TEXCOORD; // UV座標
 };
 // 出力構造体
 struct VS_OUTPUT
 {
     float4 position : SV_POSITION; // 頂点位置
-    float2 uv       : TEXCOORD;    // UV座標
+    float2 uv : TEXCOORD; // UV座標
 };
 
 
@@ -21,7 +20,7 @@ struct VS_OUTPUT
 struct HS_INPUT
 {
     float4 position : SV_POSITION; // 頂点の位置
-    float2 uv       : TEXCOORD;    // UV座標
+    float2 uv : TEXCOORD; // UV座標
 };
 // 出力構造体
 struct HS_OUTPUT
@@ -32,7 +31,7 @@ struct HS_OUTPUT
 // テッセレーション定数
 struct HS_CONSTANT_OUTPUT
 {
-    float EdgeTess[4]   : SV_TessFactor;       // 各エッジのテッセレーション係数
+    float EdgeTess[4] : SV_TessFactor; // 各エッジのテッセレーション係数
     float InsideTess[2] : SV_InsideTessFactor; // 内側のテッセレーション係数
 };
 
@@ -47,22 +46,21 @@ struct DS_INPUT
 // 出力構造体
 struct DS_OUTPUT
 {
-    float4 position : SV_POSITION;
-    float2 uv : TEXCOORD0;
+    float4 position : SV_POSITION; // 頂点座標
+    float2 uv : TEXCOORD0; // UV座標
     
-    float4 positionWS : POSITION;
+    float4 positionWS : POSITION; // 頂点ワールド座標
 };
 
+// === ピクセルシェーダー ===
 
-// 入力：頂点シェーダーから送られてくるデータ
 struct PS_INPUT
 {
-    float4 position : SV_POSITION;
-    float2 uv : TEXCOORD0;
+    float4 position : SV_POSITION; // 頂点座標
+    float2 uv : TEXCOORD0; // UV座標
     
-    float4 positionWS : POSITION;
+    float4 positionWS : POSITION; // 頂点ワールド座標
 };
-
 
 // 変換用データ
 cbuffer TransformConstBuffer : register(b0)
@@ -130,7 +128,7 @@ cbuffer GerstnerWaveConstBuffer : register(b2)
 cbuffer LightParameters : register(b3)
 {
     float4x4 lightViewProjection : packoffset(c0);
-    float4 lightPosition : packoffset(c4);
-    float3 lightDirirection : packoffset(c5);
-    float3 lightAmbient : packoffset(c6);
+    float4 lightPosition         : packoffset(c4);
+    float3 lightDirirection      : packoffset(c5);
+    float3 lightAmbient          : packoffset(c6);
 };

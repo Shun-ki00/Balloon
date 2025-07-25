@@ -1,6 +1,5 @@
 #include "Sea.hlsli"
 
-
 // テクスチャ
 Texture2D tex : register(t0);
 // シャドウマップテクスチャ
@@ -11,7 +10,6 @@ SamplerState sam : register(s0);
 SamplerComparisonState ShadowMapSampler : register(s1);
 
 // マッハバンド対策
-//#define SHADOW_EPSILON 0.0005f
 static const float SHADOW_EPSILON = 0.0005f;
 
 float random(float2 uv)
@@ -48,8 +46,7 @@ float perlinNoise(float2 uv)
     u.y);
 }
 
-// オリジナルノイズを生成する関数
-float originalNoise(float2 uv)
+float FractalNoise(float2 uv)
 {
     float output = 0.0f;
     float amplitude = 1.0f;
@@ -69,7 +66,7 @@ float originalNoise(float2 uv)
 // 波打ち関数
 void waveUV(inout float2 uv)
 {
-    uv.x += TessellationFactor.y * flowVelocity; // 横移動
+    uv.x += TessellationFactor.y * flowVelocity;    // 横移動
     uv.y += cos(TessellationFactor.y) * swingSpeed; // 縦揺れ
 }
 
@@ -93,8 +90,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     offset = perlinNoise(uv);
     uv += offset;
     
-    // オリジナルノイズ
-    float p = originalNoise(uv * fnUVPower);
+    float p = FractalNoise(uv * fnUVPower);
     uv += float2(p * fnUVPath1 * cos(TessellationFactor.y), p * fnUVPath2 * sin(TessellationFactor.y));
     
     // 波打ち関数
@@ -107,7 +103,7 @@ float4 main(PS_INPUT input) : SV_TARGET
 
     
     float4 lightPos = mul(input.positionWS, lightViewProjection);
-        // 現在のピクセルがシャドウマップ上でどの位置にあたるか計算する
+    // 現在のピクセルがシャドウマップ上でどの位置にあたるか計算する
     float2 suv = lightPos.xy * float2(0.5f, -0.5f) + 0.5f;
     // 通常描画の深度値とライト空間の深度値を比較して影になるか調べる
     // ShadowMapTextureの該当する場所の深度値と現在のピクセルの深度値を比較して、影になるか調べる
@@ -117,7 +113,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     output.rgb *= lerp(lightAmbient, float3(1.0f, 1.0f, 1.0f), shadow);
     
-    output.w = 0.7f;
+    output.a = 0.7f;
     
     return output;
 }
