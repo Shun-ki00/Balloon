@@ -29,15 +29,14 @@ KeyboardMessenger::KeyboardMessenger()
 /// アタッチする
 /// </summary>
 /// <param name="type">キーの押されたタイプ</param>
-/// <param name="keys">キー</param>
+/// <param name="key">キー</param>
 /// <param name="observer">オブジェクト</param>
-void KeyboardMessenger::Attach(const KeyType& type, const DirectX::Keyboard::Keys& keys, IObject* observer)
+void KeyboardMessenger::Attach(const KeyType& type, const DirectX::Keyboard::Keys& key, IObject* observer)
 {
     // アタッチが許可されてなければ登録を行わない
-    if (!m_isAttach) return;
-
+    if (!m_isAttach || !observer) return;
 	// 登録する
-    m_keyList[type].emplace(keys, observer);
+    m_keyList[type].emplace(key, observer);
 }
 
 
@@ -49,31 +48,23 @@ void KeyboardMessenger::Dispatch()
     // アタッチを行っている時は処理を行わない
     if (m_isAttach) return;
 
-    for (const auto& [keyType, multimap] : m_keyList)
+    for (const auto& [keyType, keyObservers] : m_keyList)
     {
-        for (const auto& [key, observer] : multimap)
+        for (const auto& [key, observer] : keyObservers)
         {
-            bool isActive = false;
+            if (!observer) continue;
 
-            // 入力状態をチェック
+            bool isActive = false;
             switch (keyType)
             {
-                case KeyType::ON_KEY: // キーが押され続けている
-                    isActive = m_inputManager->OnKey(key);
-                    break;
-                case KeyType::ON_KEY_DOWN: // キーが押された瞬間
-                    isActive = m_inputManager->OnKeyDown(key);
-                    break;
-                case KeyType::ON_KEY_UP: // キーが離れた瞬間
-                    isActive = m_inputManager->OnKeyUp(key);
-                    break;
+                case KeyType::ON_KEY:      isActive = m_inputManager->OnKey(key); break;    // キーが押され続けている
+                case KeyType::ON_KEY_DOWN: isActive = m_inputManager->OnKeyDown(key); break;// キーが押された瞬間
+                case KeyType::ON_KEY_UP:   isActive = m_inputManager->OnKeyUp(key); break;  // キーが離れた瞬間
             }
 
             // キーが押されていれば通知を送信
             if (isActive)
-            {
                 observer->OnKeyPressed(keyType, key);
-            }
         }
     }
 }

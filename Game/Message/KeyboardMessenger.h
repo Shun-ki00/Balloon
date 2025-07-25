@@ -16,7 +16,7 @@ class KeyboardMessenger
 {
 public:
 	// 観察者をアタッチする
-	void Attach(const KeyType& type, const DirectX::Keyboard::Keys& keys, IObject* observer);
+	void Attach(const KeyType& type, const DirectX::Keyboard::Keys& key, IObject* observer);
 	
 	// メッセージを送信する
 	void Dispatch();

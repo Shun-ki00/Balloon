@@ -45,25 +45,14 @@ void ObjectMessenger::Register(const IObject::ObjectID& objectId, const int& obj
 /// <param name="objectNumber">オブジェクト番号</param>
 /// <param name="messageData">メッセージデータ</param>
 void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& objectNumber, const Message::MessageData& messageData)
-{
-	// アタッチ中の場合メッセージの送信を行わない
+{	
+	// アタッチ中は送信禁止
 	if (m_isAttach) return;
-	
-	// メッセージを送信するオブジェクトを検索する
-	auto typeIt = m_objects.find(objectId);
 
-	// メッセージを送信するオブジェクトが見つかった場合
-	if (typeIt != m_objects.end())
+	// 対象オブジェクトを取得して通知
+	if (IObject* target = this->FindObject(objectId, objectNumber))
 	{
-		// 個体IDで検索
-		auto instanceIt = typeIt->second.find(objectNumber);
-
-		// 個体が見つかった場合はポインタを返す
-		if (instanceIt != typeIt->second.end())
-		{
-			// 送信するオブジェクトのメッセージハンドラを呼び出す
-			instanceIt->second->OnMessegeAccepted(messageData);
-		}
+		target->OnMessegeAccepted(messageData);
 	}
 }
 /// <summary>
@@ -74,27 +63,10 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& obj
 /// <param name="messageID">メッセージID</param>
 void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& objectNumber, const Message::MessageID& messageID)
 {
-	// アタッチ中の場合メッセージの送信を行わない
+	// アタッチ中は送信禁止
 	if (m_isAttach) return;
 
-	Message::MessageData messageData(messageID);
-
-	// メッセージを送信するオブジェクトを検索する
-	auto typeIt = m_objects.find(objectId);
-
-	// メッセージを送信するオブジェクトが見つかった場合
-	if (typeIt != m_objects.end())
-	{
-		// 個体IDで検索
-		auto instanceIt = typeIt->second.find(objectNumber);
-
-		// 個体が見つかった場合はポインタを返す
-		if (instanceIt != typeIt->second.end())
-		{
-			// 送信するオブジェクトのメッセージハンドラを呼び出す
-			instanceIt->second->OnMessegeAccepted(messageData);
-		}
-	}
+	this->Dispatch(objectId, objectNumber, Message::MessageData{ messageID });
 }
 /// <summary>
 /// オブジェクトにメッセージを送信する
@@ -103,18 +75,16 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const int& obj
 /// <param name="messageData">メッセージデータ</param>
 void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const Message::MessageData& messageData)
 {
-	// メッセージを送信するオブジェクトを検索する
-	auto typeIt = m_objects.find(objectId);
+	// アタッチ中は送信禁止
+	if (m_isAttach) return;
 
-	// メッセージを送信するオブジェクトが見つかった場合
-	if (typeIt != m_objects.end())
+	// 対象オブジェクトを取得
+	const auto objects = this->FindObject(objectId);
+
+	// 各オブジェクトにメッセージを送信
+	for (const auto& object : objects)
 	{
-		for (const auto it : typeIt->second)
-		{
-			if (typeIt == m_objects.end()) break;
-			// 送信するオブジェクトのメッセージハンドラを呼び出す
-			it.second->OnMessegeAccepted(messageData);
-		}
+		if (object) object->OnMessegeAccepted(messageData);
 	}
 }
 
@@ -127,24 +97,14 @@ void ObjectMessenger::Dispatch(const IObject::ObjectID& objectId, const Message:
 /// <returns>オブジェクト</returns>
 IObject* ObjectMessenger::FindObject(const IObject::ObjectID& objectId, const int& objectNumber)
 {
-	// 種類ごとのオブジェクトマップを検索
-	auto typeIt = m_objects.find(objectId);
-
-	// 種類が見つかった場合
-	if (typeIt != m_objects.end())
-	{
-		// 個体IDで検索
-		auto instanceIt = typeIt->second.find(objectNumber);
-
-		// 個体が見つかった場合はポインタを返す
-		if (instanceIt != typeIt->second.end())
-		{
-			return instanceIt->second;
-		}
-	}
-
-	// 見つからなかった場合は nullptr を返す
-	return nullptr;
+	// 指定されたオブジェクトIDに対応するマップを探す
+	const auto idIt = m_objects.find(objectId);
+	// 該当するオブジェクトIDが存在しなければ nullptr を返す
+	if (idIt == m_objects.end()) return nullptr;
+	// オブジェクト番号を使って、該当するオブジェクトを検索する
+	const auto objectIt = idIt->second.find(objectNumber);
+	// 見つかればポインタを返し、見つからなければ nullptr を返す
+	return (objectIt != idIt->second.end()) ? objectIt->second : nullptr;
 }
 
 /// <summary>
@@ -154,20 +114,23 @@ IObject* ObjectMessenger::FindObject(const IObject::ObjectID& objectId, const in
 /// <returns>オブジェクト</returns>
 std::vector<IObject*> ObjectMessenger::FindObject(const IObject::ObjectID& objectId)
 {
-	std::vector<IObject*> objects;
+	// 検索結果を格納するための配列を用意
+	std::vector<IObject*> results = {};
 
-	// オブジェクトIDに対応するマップが存在するか確認
-	auto typeIt = m_objects.find(objectId);
-	if (typeIt == m_objects.end()) return objects;
+	// 指定されたオブジェクトIDに対応するマップを探す
+	const auto idIt = m_objects.find(objectId);
+	// グループが存在しない場合は空のリストを返す
+	if (idIt == m_objects.end()) return results;
 
-	// 対象のオブジェクトを配列に詰めて返す
-	for (const auto& [objectNumber, object] : typeIt->second)
+	// 対象のIDに対応するすべてのオブジェクトを走査
+	for (const auto& [_, object] : idIt->second)
 	{
-		if (object->GetObjectID() == objectId)
-			objects.push_back(object);
+		// nullptr チェック
+		if (object) results.push_back(object); // 有効なオブジェクトのみリストに追加
 	}
 
-	return objects;
+	// 検索結果を返す
+	return results;
 }
 
 /// <summary>

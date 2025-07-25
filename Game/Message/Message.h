@@ -8,7 +8,6 @@ public:
 	enum class MessageID : int
 	{
 		NONE = -1,
-
 		// プレイヤー
 		PLAYER_IDLING = 0,
 		PLAYER_ATTCK,
@@ -16,11 +15,9 @@ public:
 		PLAYER_SKILL,
 		EFFECT_NUMBER,
 		PLAYER_ANIMATION,
-
 		PLAYER_TITLE_ANIMATION,
 		PLAYER_SIT_ANIMATION,
 		PLAYER_CLEAR_ANIMATION,
-
 		// 敵
 		ENEMY_IDLING,
 		ENEMY_WANDER,
@@ -32,53 +29,35 @@ public:
 		FIXED,
 		INVERT_Y_VECTOR,
 		BALLOON_LOST,
-
-
+		ON_COLLISION,
 		// エフェクト
 		EXPLOSION,
 		ATTACK,
 		SMOKE,
 		MOVEMENT,
 		BALLOON_EXPLOSION,
-
-		// 判定処理
-		ON_COLLISION,
-
 		// フェード処理
 		FADE_IN,
 		FADE_OUT,
 		FADE_OUT_EXIT_GAME,
-
 		// タイトルロゴのアニメーション
 		TITLE_LOGO_ANIMATION,
 		// スタートテキストのアニメーション
 		START_TEXT_ANIMATION,
 
-		// ボタンをアクティブ
 		BUTTON_ON,
-		// ボタンを非アクティブ
 		BUTTON_OFF,
-
 		BUTTON_NEXT,
 		BUTTON_BACK,
 
-
-		// 風船の大きさを設定
 		BALLOON_SCALE,
-
-		// プレイヤーの高さを設定する
 		PLAYER_HEIGHT,
-
-		// プレイヤーアイコンアニメーション
-		PLAY_PLAYER_ICON_ANIMATION,
-
-		// HPゲージの変更
 		HP_GAUGE,
-
+		
+		PLAY_PLAYER_ICON_ANIMATION,
 		START_TIME,
 		PLAY_COUNTDOWN_ANIMATION,
 		CHANGE_SCENE,
-
 	};
 
 
